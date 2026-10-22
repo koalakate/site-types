@@ -5,7 +5,7 @@
 import DOMPurify from "/_type/vendor/purify.es.js";
 
 const TYPE_NAME = "t1a-slides";
-const TYPE_VERSION = "1.2.0"; // must equal type.json "version"; repin detection compares against it
+const TYPE_VERSION = "1.3.0"; // must equal type.json "version"; repin detection compares against it
 const TYPE_ID = `${TYPE_NAME}@${TYPE_VERSION}`;
 const W = 1920;
 const H = 1080;
@@ -180,6 +180,7 @@ const initialHash = parseHash();
 const params = new URLSearchParams(location.search);
 const CHECK = params.get("check") === "1";
 const PRESENTER = params.get("presenter") === "1";
+const PRINT = params.has("print") && params.get("print") !== "0"; // ?print opens the print dialog once the deck has loaded
 const app = document.getElementById("app");
 document.documentElement.lang = UI_LANG;
 
@@ -1645,6 +1646,17 @@ function buildPrint() {
 
 window.addEventListener("beforeprint", buildPrint);
 
+// ?print: the deck and its slides are loaded; wait for fonts and media of every slide, then print once.
+async function printWhenReady() {
+  if (state.deckStatus !== "ok" || !total()) return;
+  buildPrint();
+  await Promise.race([Promise.all(fontStylesheetLoads), new Promise((resolve) => setTimeout(resolve, 8000))]);
+  await document.fonts.ready;
+  await Promise.all([...printRoot.querySelectorAll(".slide-host")].map(waitForMedia));
+  await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  window.print();
+}
+
 function describe(node, root) {
   const parts = [];
   for (let el = node; el && el !== root; el = el.parentElement) {
@@ -1908,6 +1920,7 @@ async function start() {
   if (PRESENTER) sync.post({ kind: "hello" });
   connectDeployEvents();
   schedulePoll(true);
+  if (PRINT && !CHECK && !PRESENTER) printWhenReady(); // print() blocks, so it is not awaited
 }
 
 start();

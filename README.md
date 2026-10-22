@@ -74,6 +74,7 @@ To release a new version of Slides:
 
 1. Change the viewer and add a sample deck for any new feature.
 2. Bump `version` in `slides/type.json` and `TYPE_VERSION` in `slides/viewer.js`, and update the version in `slides/SKILL.md`.
+   After a change to `slides/presets.css`, run `node render-previews.mjs` in `checks/` and commit the new `slides/previews/*.png`; `slides/presets.json` must list the presets of `presets.css`.
 3. Run the check and open a pull request; its CI runs the check again.
 4. Merge into `main`.
 5. Tag the merge commit `slides-vX.Y.Z` and push the tag. The tag is the baseline for the next release.

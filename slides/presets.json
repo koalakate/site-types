@@ -1,0 +1,7 @@
+[
+  { "key": "t1a", "name": "t1a", "note": "Navy and orange, DM Sans", "scheme": "dark" },
+  { "key": "secondstack", "name": "SecondStack", "note": "Gray and cyan, Geist and Inter, flat cards", "scheme": "light" },
+  { "key": "lakesentry", "name": "LakeSentry", "note": "Deep navy and blue, Outfit and Plus Jakarta Sans", "scheme": "dark" },
+  { "key": "antares", "name": "Antares", "note": "Black, white and one blue, Helvetica", "scheme": "light" },
+  { "key": "swiss", "name": "Swiss", "note": "Black, white and red, Inter Tight, square corners", "scheme": "light" }
+]

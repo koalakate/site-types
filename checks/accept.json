@@ -1,6 +1,6 @@
 {
   "_comment": "Visual changes accepted for one candidate version: \"<version>\": { \"<deck>/<slide>/<stage|print>/<light|dark>\": \"reason\" }. * matches any text.",
-  "1.2.0": {
-    "preset-*": "New sample decks for the theme presets, first rendered by this release."
+  "1.3.0": {
+    "preset-*": "The preset sample decks are new relative to the upstream slides-v1.1.0 baseline (the fork's own tags are not baselines), so every screenshot differs; the other decks stay identical."
   }
 }

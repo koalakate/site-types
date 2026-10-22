@@ -1,4 +1,4 @@
-# Slides with t1a themes 1.2.0
+# Slides with t1a themes 1.3.0
 
 A Slides site is a presentation. The viewer is part of the site type: it shows each slide in a 16:9 frame, with keyboard and touch navigation, an overview, a presenter window with notes and a timer, fullscreen, light and dark themes and print to PDF. You write only the deck data: one JSON file and one HTML fragment per slide. Do not write `index.html`, CSS files or JavaScript.
 
@@ -37,7 +37,9 @@ project/assets/...           images and other media
   - `antares`: Antares. Black, white and one blue, Helvetica.
   - `swiss`: minimal Swiss style. Black, white and red, Inter Tight, square corners.
 
-  When the user asks for a presentation and names no theme, ask them to choose one of these five in one short question, offering `t1a` first; when they name a brand or a style that matches a preset, use it without asking. In `t1a`, use no italics and keep to one orange highlight per slide. Any other key below overrides the preset color by color and font by font, so add them only when the user asks for a change. `scheme` is `light` or `dark` (the audience can switch). `light` and `dark` each take any of the colors `background`, `surface`, `foreground`, `muted`, `accent`, `onAccent`, `border` as CSS color strings. `fonts` takes the roles `display`, `body` and `mono`, each `{"family": "...", "href": "https://fonts.googleapis.com/css2?family=..."}` (Google Fonts only) or `{"family": "...", "faces": [{"src": "assets/fonts/x.woff2", "weight": "100 900"}]}` (files under `project/`).
+  When the user names a brand or a style that matches a preset, use it without asking; otherwise follow "Theme and plan" below.
+
+  In `t1a`, use no italics and keep to one orange highlight per slide. Any other key below overrides the preset color by color and font by font, so add them only when the user asks for a change. `scheme` is `light` or `dark` (the audience can switch). `light` and `dark` each take any of the colors `background`, `surface`, `foreground`, `muted`, `accent`, `onAccent`, `border` as CSS color strings. `fonts` takes the roles `display`, `body` and `mono`, each `{"family": "...", "href": "https://fonts.googleapis.com/css2?family=..."}` (Google Fonts only) or `{"family": "...", "faces": [{"src": "assets/fonts/x.woff2", "weight": "100 900"}]}` (files under `project/`).
 
 ## Slide files
 
@@ -86,7 +88,7 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - CSS `url()` may point only to `project/` files, `https:` addresses or `data:` images; other declarations, and declarations that use backslash escapes, are dropped; `@import` and linked stylesheets are ignored.
   - An `iframe` may show a page under `project/` or any `https:` page (videos, Excalidraw, Figma, forms). A page from another site stays isolated from the deck and cannot navigate it; a page under `project/` is part of the deck (see Interactive slides). SVG `<use>` may reference only `#id` inside the slide.
   - Check mode lists everything the sanitizer removed.
-- Keep each slide to one idea: a heading and at most about six short bullets, one table of up to about seven rows, or one diagram. Split content that does not fit.
+- Keep each slide to one idea: a heading and at most about six short bullets, one table of up to about seven rows, or one diagram. Split content that does not fit. See "Writing" for how much to put on a slide.
 
 ## Interactive slides
 
@@ -98,10 +100,33 @@ Use an app page for anything that reacts: a poll, a form, a quiz, a small game, 
 - `/spot.js` exists only on the published site. Under the local preview server the app must still load and say that saving works once published; test the SDK part on the published deck with the user.
 - While an app has focus, it gets all key presses. For an app under `project/`, Escape gives the keys back to the deck (an app that uses Escape itself can call `preventDefault()`); for an embedded page from another site, the presenter clicks outside it instead. Say this on the slide if the app uses the keyboard.
 
+## Theme and plan
+
+Before you write anything, settle the theme and the plan with the user through `ask_user` (1-4 questions per call; each question has 2-6 options). Write no slide until the plan is answered.
+
+1. **Theme.** If the user named no theme, brand or style, ask one single-select question with the five presets. Offer `t1a` first. Each option's label is the preset name and its description is the note from `/_type/presets.json` (an array of `{key, name, note, scheme}`; `scheme` is the preset's best default). Give each option an `image` preview from `/_type/previews/<key>.png` of this site type; if the tool cannot show images, rely on the descriptions. Set `theme.scheme` to the preset's `scheme` unless the user asks otherwise.
+2. **Plan.** Propose the plan with one multi-select question, one option per meaning block of the story (for example "The problem", "What we built", "Results", "Ask"). Put the slide count in each label ("Results, 3 slides"). Describe each block in one line. Blocks you suggest on your own are off by default and described as suggested; blocks the user asked for are on. Let "other" add a block. The tool allows 6 options: with more than 6 blocks, merge neighbouring blocks to fit, or split the plan over two questions. Changes of depth or order come as chat replies; apply them and re-ask only when the plan changes materially.
+3. **Then write.** The plan answer fixes the blocks and the slide ids. Start the build with step 2 of "Build a deck".
+
+## Writing
+
+- One idea per slide. The title states the conclusion, not the topic ("Revenue grew in every region", not "Revenue").
+- About 25 words of body at most, no filler. Every slide passes "so what?": cut what does not support the title.
+- Every number comes with its comparison and its consequence ("42%, up from 31% last year, so renewals now carry growth").
+- Show the true number of items: 4 stages stay 4. Choose three only when you pick the arguments yourself. Put at most 6 items on a slide: 2-4 in a row, 5-6 in a 2x3 grid. Group or split more.
+- The last slide is the decision or the ask.
+
+## Working with data
+
+- Analyze attached spreadsheets in the workspace with code first: trends, period and segment comparisons, outliers, drivers, shares. Do not write numbers from a glance at the file.
+- Let the plan blocks carry the findings of the analysis.
+- Slides show conclusions and 1-3 key numbers. Draw charts as inline SVG from the analysis and check them against the source numbers.
+- Report contradictions in the data to the user in chat; do not smooth them over on a slide.
+
 ## Build a deck
 
-1. Call `site_types` with `name="t1a-slides"`. Use the exact `type` it reports, for example `t1a-slides@1.2.0`, in every call below.
-2. Plan the deck: the story, the sections and the slide ids, one idea per slide. Start with a `title` slide and end with a closing slide.
+1. Call `site_types` with `name="t1a-slides"`. Use the exact `type` it reports, for example `t1a-slides@1.3.0`, in every call below.
+2. Turn the answered plan into the slide ids, one idea per slide, grouped into sections by block. Start with a `title` slide and end with the decision or ask.
 3. Write `project/deck.json` with the complete `order` first, then the slide files one by one. The viewer shows a placeholder for each listed slide whose file does not exist yet and fills it when the file appears, so you can publish early and keep writing.
 4. Preview and check (below), fix every error, then publish.
 
@@ -109,7 +134,7 @@ Use an app page for anything that reacts: a poll, a form, a quiz, a small game, 
 
 The workspace cannot open the published site. Check the deck locally with the viewer package:
 
-1. Call `import_site` with `type="t1a-slides@1.2.0"` and a new directory, for example `/workspace/sites/<name>-preview/`. It contains `index.html` and `_type/`.
+1. Call `import_site` with `type="t1a-slides@1.3.0"` and a new directory, for example `/workspace/sites/<name>-preview/`. It contains `index.html` and `_type/`.
 2. Copy the deck data into it, replacing any earlier copy, so deleted files do not linger: `rm -rf /workspace/sites/<name>-preview/project && cp -r /workspace/sites/<name>/project /workspace/sites/<name>-preview/`. Repeat after each change. Never publish the preview directory.
 3. Serve it: `python3 -m http.server 8765 --bind 127.0.0.1 --directory /workspace/sites/<name>-preview` in the background.
 4. Open `http://127.0.0.1:8765/?check=1` in the workspace browser. Check mode lists every slide with its issues and outlines overflowing elements. When `document.documentElement.dataset.slidesCheck` is `"done"`, the full report is the JSON text of `#slides-check-report` and the `[slides-check]` console line. `ok` is `false` while any error remains. While slides are still missing, the browser console also shows 404 errors for their files; that is expected.
@@ -117,7 +142,7 @@ The workspace cannot open the published site. Check the deck locally with the vi
 
 ## Publish
 
-- Publish the data directory, `/workspace/sites/<name>/`, which holds `project/` and optionally `_spot.json`, with `publish_site(path=..., site=<name>, type="t1a-slides@1.2.0")`. It needs no `index.html`; never include the preview files. Leave `type_target` empty.
+- Publish the data directory, `/workspace/sites/<name>/`, which holds `project/` and optionally `_spot.json`, with `publish_site(path=..., site=<name>, type="t1a-slides@1.3.0")`. It needs no `index.html`; never include the preview files. Leave `type_target` empty.
 - Only files under `project/` and `_spot.json` belong in it. Publishing refuses other files and names the first offending path; every `.json` file must be valid JSON.
 - An edit of an existing deck starts with `import_site(site=<name>, path=<empty directory>)`, which reports the exact type to publish with. Edit, check and publish with that `type`. A pin mismatch error (409) means the site now pins another version: import it again and redo the edit there.
-- Give the user the link with one sentence on what the deck covers. The presenter view opens with `S`, the overview with `O`, fullscreen with `F`; browser print saves a PDF with one page per slide.
+- Give the user the link with one sentence on what the deck covers. The presenter view opens with `S`, the overview with `O`, fullscreen with `F`; browser print saves a PDF with one page per slide. The link `<site>/?print` opens the print dialog as soon as the deck has loaded, so you can hand the user a one-click PDF link.

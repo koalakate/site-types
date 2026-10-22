@@ -7,7 +7,7 @@
 //   - screenshots every slide on the stage and in print, light and dark, and compares each screenshot
 //     with the same deck rendered by the previous release (the highest slides-v* tag at or below the
 //     candidate version) in the same browser.
-// It also checks the contrast of every theme preset (presets.mjs) and the version: viewer.js TYPE_VERSION equals type.json, and changed package bytes come
+// It also checks the contrast of every theme preset and that presets.json lists them (presets.mjs) and the version: viewer.js TYPE_VERSION equals type.json, and changed package bytes come
 // with a higher version than the baseline tag and the --base ref.
 //
 //   node checks/run.mjs [--deck <name>]... [--baseline <git ref>|none] [--base <git ref>] [--save]
@@ -22,7 +22,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
-import { checkPresets } from "./presets.mjs";
+import { checkPresetList, checkPresets } from "./presets.mjs";
 import { serveSite } from "./serve.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -409,6 +409,21 @@ async function printShots(context, site, deck, scheme, shots, problems) {
   await closePage(page);
 }
 
+// ?print calls window.print() exactly once, after the deck is loaded (the page stubs print to count calls).
+async function printTrigger(context, site, deck, problems) {
+  const page = await context.newPage();
+  await page.addInitScript(() => { window.__printCalls = 0; window.print = () => { window.__printCalls += 1; }; });
+  await page.goto(`${site.url}/?print#${deck.order[0]}`);
+  const printed = await page.waitForFunction(() => window.__printCalls > 0, null, { timeout: 15000 }).then(() => true, () => false);
+  if (!printed) problems.push("?print did not call window.print()");
+  else {
+    await sleep(600);
+    const calls = await page.evaluate(() => window.__printCalls);
+    if (calls !== 1) problems.push(`?print called window.print() ${calls} times`);
+  }
+  await closePage(page);
+}
+
 const hashOf = (page) => page.evaluate(() => decodeURIComponent(location.hash.slice(1)));
 const textIs = (page, selector, text) => page.waitForFunction(([sel, want]) => document.querySelector(sel)?.textContent === want, [selector, text], { timeout: 5000 }).then(() => true, () => false);
 const hashIs = (page, hash) => page.waitForFunction((want) => decodeURIComponent(location.hash.slice(1)) === want, hash, { timeout: 5000 }).then(() => true, () => false);
@@ -580,6 +595,7 @@ async function runCandidate(browser, deck, version, diff) {
       await stageShots(context, site, deck, steps, scheme, shots);
       await printShots(context, site, deck, scheme, shots, problems);
     }
+    await printTrigger(context, site, deck, problems);
     await presenterSync(context, site, deck, problems);
     await interact(context, site, deck, steps, problems);
     if (deck.expect.navigate) await navigate(context, site, deck, steps, shots, diff, problems);
@@ -627,6 +643,7 @@ async function main() {
   if (opts.base) checkVersion(candidate, "base", opts.base, failures);
   if (baselineRef) checkVersion(candidate, "baseline", baselineRef, failures);
   failures.push(...(await checkPresets(path.join(ROOT, TYPE, "presets.css"))));
+  failures.push(...(await checkPresetList(path.join(ROOT, TYPE, "presets.json"), path.join(ROOT, TYPE, "presets.css"))));
   const baseline = baselineRef ? await extractPackage(baselineRef) : null;
   const baselineVersion = baselineRef ? versionAt(baselineRef).text : null;
   const accepted = await loadAccepted(candidate.text);

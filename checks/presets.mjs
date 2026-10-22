@@ -41,8 +41,30 @@ export async function checkPresets(file) {
   return problems;
 }
 
+// presets.json (the picker list: key, name, note, scheme) must list exactly the presets of presets.css, in order.
+export async function checkPresetList(jsonFile, cssFile) {
+  const problems = [];
+  let list;
+  try {
+    list = JSON.parse(await readFile(jsonFile, "utf8"));
+  } catch (error) {
+    return [`${jsonFile}: ${error.message}`];
+  }
+  const css = await readFile(cssFile, "utf8");
+  const keys = [...css.matchAll(/:root\[data-preset="([a-z0-9-]+)"\]\s*\{/g)].map((match) => match[1]);
+  if (!Array.isArray(list)) return [`${jsonFile}: must be an array`];
+  const listed = list.map((item) => item?.key);
+  if (JSON.stringify(listed) !== JSON.stringify(keys)) problems.push(`presets.json keys [${listed.join(", ")}] differ from presets.css presets [${keys.join(", ")}]`);
+  for (const item of list) {
+    for (const field of ["key", "name", "note"]) if (typeof item?.[field] !== "string" || !item[field].trim()) problems.push(`presets.json ${item?.key}: ${field} must be a non-empty string`);
+    if (item?.scheme !== "light" && item?.scheme !== "dark") problems.push(`presets.json ${item?.key}: scheme must be "light" or "dark"`);
+  }
+  return problems;
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const problems = await checkPresets(new URL("../slides/presets.css", import.meta.url).pathname);
+  const dir = new URL("../slides/", import.meta.url).pathname;
+  const problems = [...(await checkPresets(`${dir}presets.css`)), ...(await checkPresetList(`${dir}presets.json`, `${dir}presets.css`))];
   for (const line of problems) console.log(line);
   process.exit(problems.length ? 1 : 0);
 }
