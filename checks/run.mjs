@@ -424,6 +424,28 @@ async function printTrigger(context, site, deck, problems) {
   await closePage(page);
 }
 
+// ?present shows the "Start presenting" overlay; a click on it requests fullscreen and shows slide 1
+// (the page stubs requestFullscreen to count calls).
+async function presentTrigger(context, site, deck, problems) {
+  const page = await context.newPage();
+  await page.addInitScript(() => {
+    window.__fullscreenCalls = 0;
+    Element.prototype.requestFullscreen = function () { window.__fullscreenCalls += 1; return Promise.resolve(); };
+  });
+  await page.goto(`${site.url}/?present#${deck.order.at(-1)}`);
+  const start = page.locator(".present-overlay button");
+  if (!(await start.waitFor({ timeout: 15000 }).then(() => true, () => false))) {
+    problems.push("?present did not show the start overlay");
+  } else {
+    await start.click();
+    const entered = await page.waitForFunction(() => window.__fullscreenCalls === 1, null, { timeout: 5000 }).then(() => true, () => false);
+    if (!entered) problems.push("the ?present overlay did not request fullscreen once");
+    if (await page.locator(".present-overlay").count()) problems.push("the ?present overlay stayed after the click");
+    if (!(await hashIs(page, deck.order[0]))) problems.push(`?present did not start at slide 1, hash is ${await hashOf(page)}`);
+  }
+  await closePage(page);
+}
+
 const hashOf = (page) => page.evaluate(() => decodeURIComponent(location.hash.slice(1)));
 const textIs = (page, selector, text) => page.waitForFunction(([sel, want]) => document.querySelector(sel)?.textContent === want, [selector, text], { timeout: 5000 }).then(() => true, () => false);
 const hashIs = (page, hash) => page.waitForFunction((want) => decodeURIComponent(location.hash.slice(1)) === want, hash, { timeout: 5000 }).then(() => true, () => false);
@@ -596,6 +618,7 @@ async function runCandidate(browser, deck, version, diff) {
       await printShots(context, site, deck, scheme, shots, problems);
     }
     await printTrigger(context, site, deck, problems);
+    await presentTrigger(context, site, deck, problems);
     await presenterSync(context, site, deck, problems);
     await interact(context, site, deck, steps, problems);
     if (deck.expect.navigate) await navigate(context, site, deck, steps, shots, diff, problems);
