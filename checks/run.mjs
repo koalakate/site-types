@@ -7,7 +7,7 @@
 //   - screenshots every slide on the stage and in print, light and dark, and compares each screenshot
 //     with the same deck rendered by the previous release (the highest slides-v* tag at or below the
 //     candidate version) in the same browser.
-// It also checks the version: viewer.js TYPE_VERSION equals type.json, and changed package bytes come
+// It also checks the contrast of every theme preset (presets.mjs) and the version: viewer.js TYPE_VERSION equals type.json, and changed package bytes come
 // with a higher version than the baseline tag and the --base ref.
 //
 //   node checks/run.mjs [--deck <name>]... [--baseline <git ref>|none] [--base <git ref>] [--save]
@@ -16,17 +16,19 @@
 // checks/out/diff/<key>/ as baseline.png, candidate.png and diff.png.
 
 import { execFileSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
+import { checkPresets } from "./presets.mjs";
 import { serveSite } from "./serve.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "..");
 const TYPE = "slides";
+const TYPE_NAME = JSON.parse(readFileSync(path.join(ROOT, TYPE, "type.json"), "utf8")).name; // a fork may rename the type
 const CANDIDATE_DIR = path.join(ROOT, TYPE);
 const DECKS_DIR = path.join(HERE, "decks");
 const OUT_DIR = path.join(HERE, "out");
@@ -192,7 +194,7 @@ function compareIssues(file, issues, expected, expectedErrors, problems) {
 
 function compareReport(report, deck, version) {
   const problems = [];
-  if (report.type !== `${TYPE}@${version}`) problems.push(`check report type is ${report.type}, expected ${TYPE}@${version}`);
+  if (report.type !== `${TYPE_NAME}@${version}`) problems.push(`check report type is ${report.type}, expected ${TYPE_NAME}@${version}`);
   if (!report.complete) problems.push("check mode reports the deck as incomplete");
   if (report.slides.length !== deck.order.length) problems.push(`check mode reports ${report.slides.length} slides, deck.json lists ${deck.order.length}`);
   compareIssues("project/deck.json", report.deck.issues, deck.expect.deckWarnings || [], [], problems);
@@ -624,6 +626,7 @@ async function main() {
   const baselineRef = opts.baseline === "none" ? null : opts.baseline ?? pickBaseline(candidate);
   if (opts.base) checkVersion(candidate, "base", opts.base, failures);
   if (baselineRef) checkVersion(candidate, "baseline", baselineRef, failures);
+  failures.push(...(await checkPresets(path.join(ROOT, TYPE, "presets.css"))));
   const baseline = baselineRef ? await extractPackage(baselineRef) : null;
   const baselineVersion = baselineRef ? versionAt(baselineRef).text : null;
   const accepted = await loadAccepted(candidate.text);

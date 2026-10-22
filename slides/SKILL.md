@@ -1,4 +1,4 @@
-# Slides 1.1.0
+# Slides with t1a themes 1.2.0
 
 A Slides site is a presentation. The viewer is part of the site type: it shows each slide in a 16:9 frame, with keyboard and touch navigation, an overview, a presenter window with notes and a timer, fullscreen, light and dark themes and print to PDF. You write only the deck data: one JSON file and one HTML fragment per slide. Do not write `index.html`, CSS files or JavaScript.
 
@@ -23,14 +23,21 @@ project/assets/...           images and other media
   "sections": {
     "now": { "title": "Where we are", "start": "results" }
   },
-  "theme": { "scheme": "light" }
+  "theme": { "preset": "t1a", "scheme": "light" }
 }
 ```
 
 - `v` is always `1`. `order` lists the slide ids; an id is 1-64 lowercase letters, digits and inner hyphens, and names the file `project/slides/<id>.html`.
 - `sections` is optional. A section runs from its `start` slide to the next section's start; the overview groups slides by section and the slide footer shows the section title.
 - `lang` is optional and sets the language of the slide text.
-- `theme` is optional. Leave it out unless the user asks for a look: the default design is complete. `scheme` is `light` or `dark` (the audience can switch). `light` and `dark` each take any of the colors `background`, `surface`, `foreground`, `muted`, `accent`, `onAccent`, `border` as CSS color strings. `fonts` takes the roles `display`, `body` and `mono`, each `{"family": "...", "href": "https://fonts.googleapis.com/css2?family=..."}` (Google Fonts only) or `{"family": "...", "faces": [{"src": "assets/fonts/x.woff2", "weight": "100 900"}]}` (files under `project/`).
+- `theme` sets the look. `preset` picks one of the built-in themes, each with its own colors for light and dark and its own fonts:
+  - `t1a`: Tier One Analytics. Navy and orange, DM Sans. The house theme: use it when the user does not choose.
+  - `secondstack`: SecondStack. Gray and cyan, Geist headings with Inter text, flat cards.
+  - `lakesentry`: LakeSentry. Deep navy and blue, heavy Outfit headings with Plus Jakarta Sans text.
+  - `antares`: Antares. Black, white and one blue, Helvetica.
+  - `swiss`: minimal Swiss style. Black, white and red, Inter Tight, square corners.
+
+  When the user asks for a presentation and names no theme, ask them to choose one of these five in one short question, offering `t1a` first; when they name a brand or a style that matches a preset, use it without asking. In `t1a`, use no italics and keep to one orange highlight per slide. Any other key below overrides the preset color by color and font by font, so add them only when the user asks for a change. `scheme` is `light` or `dark` (the audience can switch). `light` and `dark` each take any of the colors `background`, `surface`, `foreground`, `muted`, `accent`, `onAccent`, `border` as CSS color strings. `fonts` takes the roles `display`, `body` and `mono`, each `{"family": "...", "href": "https://fonts.googleapis.com/css2?family=..."}` (Google Fonts only) or `{"family": "...", "faces": [{"src": "assets/fonts/x.woff2", "weight": "100 900"}]}` (files under `project/`).
 
 ## Slide files
 
@@ -93,7 +100,7 @@ Use an app page for anything that reacts: a poll, a form, a quiz, a small game, 
 
 ## Build a deck
 
-1. Call `site_types` with `name="slides"`. Use the exact `type` it reports, for example `slides@1.1.0`, in every call below.
+1. Call `site_types` with `name="t1a-slides"`. Use the exact `type` it reports, for example `t1a-slides@1.2.0`, in every call below.
 2. Plan the deck: the story, the sections and the slide ids, one idea per slide. Start with a `title` slide and end with a closing slide.
 3. Write `project/deck.json` with the complete `order` first, then the slide files one by one. The viewer shows a placeholder for each listed slide whose file does not exist yet and fills it when the file appears, so you can publish early and keep writing.
 4. Preview and check (below), fix every error, then publish.
@@ -102,7 +109,7 @@ Use an app page for anything that reacts: a poll, a form, a quiz, a small game, 
 
 The workspace cannot open the published site. Check the deck locally with the viewer package:
 
-1. Call `import_site` with `type="slides@1.1.0"` and a new directory, for example `/workspace/sites/<name>-preview/`. It contains `index.html` and `_type/`.
+1. Call `import_site` with `type="t1a-slides@1.2.0"` and a new directory, for example `/workspace/sites/<name>-preview/`. It contains `index.html` and `_type/`.
 2. Copy the deck data into it, replacing any earlier copy, so deleted files do not linger: `rm -rf /workspace/sites/<name>-preview/project && cp -r /workspace/sites/<name>/project /workspace/sites/<name>-preview/`. Repeat after each change. Never publish the preview directory.
 3. Serve it: `python3 -m http.server 8765 --bind 127.0.0.1 --directory /workspace/sites/<name>-preview` in the background.
 4. Open `http://127.0.0.1:8765/?check=1` in the workspace browser. Check mode lists every slide with its issues and outlines overflowing elements. When `document.documentElement.dataset.slidesCheck` is `"done"`, the full report is the JSON text of `#slides-check-report` and the `[slides-check]` console line. `ok` is `false` while any error remains. While slides are still missing, the browser console also shows 404 errors for their files; that is expected.
@@ -110,7 +117,7 @@ The workspace cannot open the published site. Check the deck locally with the vi
 
 ## Publish
 
-- Publish the data directory, `/workspace/sites/<name>/`, which holds `project/` and optionally `_spot.json`, with `publish_site(path=..., site=<name>, type="slides@1.1.0")`. It needs no `index.html`; never include the preview files. Leave `type_target` empty.
+- Publish the data directory, `/workspace/sites/<name>/`, which holds `project/` and optionally `_spot.json`, with `publish_site(path=..., site=<name>, type="t1a-slides@1.2.0")`. It needs no `index.html`; never include the preview files. Leave `type_target` empty.
 - Only files under `project/` and `_spot.json` belong in it. Publishing refuses other files and names the first offending path; every `.json` file must be valid JSON.
 - An edit of an existing deck starts with `import_site(site=<name>, path=<empty directory>)`, which reports the exact type to publish with. Edit, check and publish with that `type`. A pin mismatch error (409) means the site now pins another version: import it again and redo the edit there.
 - Give the user the link with one sentence on what the deck covers. The presenter view opens with `S`, the overview with `O`, fullscreen with `F`; browser print saves a PDF with one page per slide.

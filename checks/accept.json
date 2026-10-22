@@ -1,3 +1,6 @@
 {
-  "_comment": "Visual changes accepted for one candidate version: \"<version>\": { \"<deck>/<slide>/<stage|print>/<light|dark>\": \"reason\" }. * matches any text."
+  "_comment": "Visual changes accepted for one candidate version: \"<version>\": { \"<deck>/<slide>/<stage|print>/<light|dark>\": \"reason\" }. * matches any text.",
+  "1.2.0": {
+    "preset-*": "New sample decks for the theme presets, first rendered by this release."
+  }
 }

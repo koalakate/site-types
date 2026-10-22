@@ -4,7 +4,9 @@ Site types for SecondStack Sites. A site type is a viewer that many sites share:
 
 | Folder | Type |
 |---|---|
-| [`slides/`](./slides) | Slides: a presentation deck, one HTML section per slide, in a 16:9 viewer with overview, presenter view, fullscreen and print to PDF. |
+| [`slides/`](./slides) | `t1a-slides`: Slides with five built-in themes (t1a, SecondStack, LakeSentry, Antares, Swiss), chosen in `deck.json` with `theme.preset`. A presentation deck, one HTML section per slide, in a 16:9 viewer with overview, presenter view, fullscreen and print to PDF. |
+
+This is a fork of [SecondStack-AI/site-types](https://github.com/SecondStack-AI/site-types). The type is renamed to `t1a-slides`, so it installs beside the original `slides`; take upstream fixes with `git merge upstream/main`. Releases of the fork are tagged `t1a-slides-v<version>`. The release check still compares against the newest upstream `slides-v*` tag.
 
 ## Layout
 

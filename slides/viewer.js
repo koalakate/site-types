@@ -4,8 +4,8 @@
 
 import DOMPurify from "/_type/vendor/purify.es.js";
 
-const TYPE_NAME = "slides";
-const TYPE_VERSION = "1.1.0"; // must equal type.json "version"; repin detection compares against it
+const TYPE_NAME = "t1a-slides";
+const TYPE_VERSION = "1.2.0"; // must equal type.json "version"; repin detection compares against it
 const TYPE_ID = `${TYPE_NAME}@${TYPE_VERSION}`;
 const W = 1920;
 const H = 1080;
@@ -18,7 +18,8 @@ const NO_FOOTER_LAYOUTS = new Set(["title", "section", "image", "blank"]);
 const TOKENS = ["background", "surface", "foreground", "muted", "accent", "onAccent", "border"];
 const FONT_ROLES = ["display", "body", "mono"];
 const DECK_KEYS = new Set(["v", "title", "lang", "order", "sections", "theme"]);
-const THEME_KEYS = new Set(["scheme", "light", "dark", "fonts"]);
+const THEME_KEYS = new Set(["preset", "scheme", "light", "dark", "fonts"]);
+const PRESETS = ["t1a", "secondstack", "lakesentry", "antares", "swiss"]; // defined in presets.css
 const POLL_MIN_MS = 2000;
 const POLL_MAX_MS = 15000;
 const FETCH_CONCURRENCY = 6;
@@ -209,7 +210,7 @@ function validColor(value) {
 
 function normalizeDeck(raw) {
   const issues = [];
-  const deck = { title: "", lang: null, order: [], sections: [], theme: { scheme: null, light: {}, dark: {}, fonts: {} } };
+  const deck = { title: "", lang: null, order: [], sections: [], theme: { preset: null, scheme: null, light: {}, dark: {}, fonts: {} } };
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
     issues.push(issue("error", "deck-not-object", "deck.json must be a JSON object"));
     return { deck, issues };
@@ -271,6 +272,10 @@ function normalizeDeck(raw) {
     } else {
       for (const key of Object.keys(theme)) {
         if (!THEME_KEYS.has(key)) issues.push(issue("warning", "theme-key-unknown", `Unknown theme key "${key}" is ignored`));
+      }
+      if (theme.preset != null) {
+        if (PRESETS.includes(theme.preset)) deck.theme.preset = theme.preset;
+        else issues.push(issue("warning", "theme-preset", `Unknown theme preset ${JSON.stringify(theme.preset)}; known presets: ${PRESETS.join(", ")}`));
       }
       if (theme.scheme != null) {
         if (theme.scheme === "light" || theme.scheme === "dark") deck.theme.scheme = theme.scheme;
@@ -938,6 +943,8 @@ function connectDeployEvents() {
 function applyTheme() {
   const root = document.documentElement;
   const theme = state.deck?.theme;
+  if (theme?.preset) root.dataset.preset = theme.preset;
+  else delete root.dataset.preset;
   for (const scheme of ["light", "dark"]) {
     for (const name of TOKENS) {
       const property = `--${scheme[0]}-${name.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)}`;

@@ -1,8 +1,10 @@
 {
   "format": 1,
-  "name": "slides",
-  "version": "1.1.0",
-  "title": "Slides",
-  "description": "A presentation deck: one HTML section per slide, shown in a 16:9 viewer with overview, presenter view, fullscreen and print to PDF.",
-  "data": ["project/"]
+  "name": "t1a-slides",
+  "version": "1.2.0",
+  "title": "Slides (t1a themes)",
+  "description": "A presentation deck with built-in t1a, SecondStack, LakeSentry, Antares and Swiss themes: one HTML section per slide, shown in a 16:9 viewer with overview, presenter view, fullscreen and print to PDF.",
+  "data": [
+    "project/"
+  ]
 }

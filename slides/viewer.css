@@ -49,6 +49,11 @@
   --font-body: "Inter Variable", var(--font-fallback);
   --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --ease: cubic-bezier(0.2, 0, 0, 1);
+  /* Style knobs that presets.css sets per preset. */
+  --heading-weight-shift: 0;
+  --heading-tracking: 1;
+  --radius-scale: 1;
+  --eyebrow-tracking: 0.14em;
 }
 :root[data-scheme="light"] {
   color-scheme: light;

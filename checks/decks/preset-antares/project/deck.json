@@ -1,0 +1,14 @@
+{
+  "v": 1,
+  "title": "Preset antares",
+  "lang": "en",
+  "order": [
+    "cover",
+    "content",
+    "cards",
+    "statement"
+  ],
+  "theme": {
+    "preset": "antares"
+  }
+}
