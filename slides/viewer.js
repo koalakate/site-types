@@ -5,7 +5,7 @@
 import DOMPurify from "/_type/vendor/purify.es.js";
 
 const TYPE_NAME = "t1a-slides";
-const TYPE_VERSION = "1.3.0"; // must equal type.json "version"; repin detection compares against it
+const TYPE_VERSION = "1.3.1"; // must equal type.json "version"; repin detection compares against it
 const TYPE_ID = `${TYPE_NAME}@${TYPE_VERSION}`;
 const W = 1920;
 const H = 1080;
@@ -38,6 +38,7 @@ const STRINGS = {
     smaller: "Smaller notes", larger: "Larger notes", blackout: "Black screen", goTo: "Go to slide number",
     firstLast: "First or last slide", stepOf: "Step {n} of {total}",
     updated: "This presentation was updated. Reload the page to see the new version.", reload: "Reload",
+    startPresenting: "Start presenting", exitHint: "Press Esc to exit",
   },
   de: {
     slides: "Folien", previous: "Vorherige Folie", next: "Nächste Folie", overview: "Übersicht", close: "Schließen",
@@ -52,6 +53,7 @@ const STRINGS = {
     smaller: "Kleinere Notizen", larger: "Größere Notizen", blackout: "Schwarzer Bildschirm", goTo: "Zu Foliennummer springen",
     firstLast: "Erste oder letzte Folie", stepOf: "Schritt {n} von {total}",
     updated: "Diese Präsentation wurde aktualisiert. Laden Sie die Seite neu, um die neue Version zu sehen.", reload: "Neu laden",
+    startPresenting: "Präsentation starten", exitHint: "Mit Esc beenden",
   },
   es: {
     slides: "Diapositivas", previous: "Diapositiva anterior", next: "Diapositiva siguiente", overview: "Vista general", close: "Cerrar",
@@ -66,6 +68,7 @@ const STRINGS = {
     smaller: "Notas más pequeñas", larger: "Notas más grandes", blackout: "Pantalla en negro", goTo: "Ir al número de diapositiva",
     firstLast: "Primera o última diapositiva", stepOf: "Paso {n} de {total}",
     updated: "Esta presentación se ha actualizado. Recarga la página para ver la nueva versión.", reload: "Recargar",
+    startPresenting: "Empezar la presentación", exitHint: "Pulsa Esc para salir",
   },
   fr: {
     slides: "Diapositives", previous: "Diapositive précédente", next: "Diapositive suivante", overview: "Vue d’ensemble", close: "Fermer",
@@ -80,6 +83,7 @@ const STRINGS = {
     smaller: "Notes plus petites", larger: "Notes plus grandes", blackout: "Écran noir", goTo: "Aller au numéro de diapositive",
     firstLast: "Première ou dernière diapositive", stepOf: "Étape {n} sur {total}",
     updated: "Cette présentation a été mise à jour. Rechargez la page pour voir la nouvelle version.", reload: "Recharger",
+    startPresenting: "Lancer la présentation", exitHint: "Appuyez sur Échap pour quitter",
   },
   pl: {
     slides: "Slajdy", previous: "Poprzedni slajd", next: "Następny slajd", overview: "Przegląd", close: "Zamknij",
@@ -94,6 +98,7 @@ const STRINGS = {
     smaller: "Mniejsze notatki", larger: "Większe notatki", blackout: "Czarny ekran", goTo: "Przejdź do slajdu o numerze",
     firstLast: "Pierwszy lub ostatni slajd", stepOf: "Krok {n} z {total}",
     updated: "Ta prezentacja została zaktualizowana. Odśwież stronę, aby zobaczyć nową wersję.", reload: "Odśwież",
+    startPresenting: "Rozpocznij prezentację", exitHint: "Naciśnij Esc, aby wyjść",
   },
   ru: {
     slides: "Слайды", previous: "Предыдущий слайд", next: "Следующий слайд", overview: "Обзор", close: "Закрыть",
@@ -108,6 +113,7 @@ const STRINGS = {
     smaller: "Уменьшить заметки", larger: "Увеличить заметки", blackout: "Чёрный экран", goTo: "Перейти к слайду по номеру",
     firstLast: "Первый или последний слайд", stepOf: "Шаг {n} из {total}",
     updated: "Эта презентация обновлена. Перезагрузите страницу, чтобы увидеть новую версию.", reload: "Перезагрузить",
+    startPresenting: "Начать показ", exitHint: "Нажмите Esc, чтобы выйти",
   },
 };
 
@@ -181,6 +187,7 @@ const params = new URLSearchParams(location.search);
 const CHECK = params.get("check") === "1";
 const PRESENTER = params.get("presenter") === "1";
 const PRINT = params.has("print") && params.get("print") !== "0"; // ?print opens the print dialog once the deck has loaded
+const PRESENT = params.has("present") && params.get("present") !== "0" && !CHECK && !PRESENTER; // ?present offers fullscreen from slide 1
 const app = document.getElementById("app");
 document.documentElement.lang = UI_LANG;
 
@@ -1251,6 +1258,31 @@ function toggleFullscreen() {
   else document.documentElement.requestFullscreen?.().catch(() => {});
 }
 
+// Fullscreen needs a user gesture in this page, so ?present asks for one click (or Enter or Space).
+function showPresentOverlay() {
+  const begin = () => {
+    close();
+    document.documentElement.requestFullscreen?.().catch(() => {});
+    go(0);
+  };
+  const onKey = (event) => {
+    if (event.key === "Enter" || event.key === " ") begin();
+    else if (event.key === "Escape") close();
+    else return;
+    event.preventDefault();
+    event.stopPropagation();
+  };
+  const close = () => {
+    overlay.remove();
+    document.removeEventListener("keydown", onKey, true);
+  };
+  const button = h("button", { type: "button", class: "present-start", onclick: begin }, icon("play"), t("startPresenting"));
+  const overlay = h("div", { class: "present-overlay" }, button, h("p", { class: "present-hint", text: t("exitHint") }));
+  document.addEventListener("keydown", onKey, true);
+  document.body.append(overlay);
+  button.focus();
+}
+
 function openPresenter() {
   const url = `${location.pathname}?presenter=1${location.hash}`;
   window.open(url, `slides-presenter-${location.host}`, "popup,width=1280,height=800");
@@ -1921,6 +1953,7 @@ async function start() {
   connectDeployEvents();
   schedulePoll(true);
   if (PRINT && !CHECK && !PRESENTER) printWhenReady(); // print() blocks, so it is not awaited
+  if (PRESENT) showPresentOverlay();
 }
 
 start();

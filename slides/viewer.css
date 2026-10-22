@@ -325,6 +325,37 @@ kbd {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ?present: one click to enter fullscreen */
+
+.present-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  padding: 24px;
+  background: color-mix(in oklch, var(--s-background) 82%, transparent);
+  backdrop-filter: blur(6px);
+}
+.present-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border: 0;
+  border-radius: 999px;
+  font: 600 18px/1 var(--font-body);
+  color: var(--s-on-accent);
+  background: var(--s-accent);
+  cursor: pointer;
+}
+.present-start svg { width: 20px; height: 20px; fill: currentColor; stroke: none; }
+.present-start:focus-visible { outline: 3px solid color-mix(in oklch, var(--s-accent) 45%, transparent); outline-offset: 3px; }
+.present-hint { margin: 0; color: var(--s-muted); font-size: 14px; }
+@media print { .present-overlay { display: none; } }
+
 /* Presenter view */
 
 .presenter {
