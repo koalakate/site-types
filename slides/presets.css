@@ -95,7 +95,8 @@
   --font-display: "DM Sans Variable", "Inter Variable", var(--font-fallback);
   --font-body: "DM Sans Variable", "Inter Variable", var(--font-fallback);
   --font-mono: "Roboto Mono Variable", "JetBrains Mono Variable", ui-monospace, monospace;
-  --heading-tracking: 0.5;
+  --heading-weight-shift: 50;
+  --heading-tracking: 0;
   /* The template keeps orange off navy: on dark the accent is teal and the logo is white.
      --*-tone is 1 on dark, for the t1a backgrounds in slide.css. */
   --l-logo: #FF6D00; --d-logo: #FCFCFC;

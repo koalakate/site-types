@@ -80,7 +80,8 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - `td.num` / `th.num` align numbers right; `tr.highlight` emphasizes a row.
   - `ol.agenda` for an agenda: large numbered items; `li.active` marks the part about to start and dims the others.
   - `ol.timeline` for dates on a line: `<li><strong>Week 1-2</strong>What happens</li>`; `li.done` checks a step off, `li.key` highlights the key result.
-  - `ol.journey` for stages as pills on a descending staircase, up to about seven.
+  - `ol.journey` for stages as pills on a descending staircase joined by elbow arrows, up to about seven; `li.key` marks a milestone.
+  - `div.cards.packages` for offers or options: tall outlined cards, each `<p class="meta"><span>Duration</span><span>Price</span></p>`, a line drawing `<div class="art lines"></div>` (`lines`, `bars`, `grid` or `rings`, one per card), `h3` and a short `p`; `card highlight` fills one.
   - `ul.tags` for small outlined pills (industry, technology, scope).
 - Use the theme colors in inline SVG and styles through `var(--accent)`, `var(--foreground)`, `var(--muted)`, `var(--surface)` and `var(--border)`, so the slide works in both themes.
 - A `<style>` element inside the section applies only to that slide, and its rules win over the built-in styles. Prefer the layouts and building blocks above.
@@ -112,10 +113,10 @@ The `t1a` preset is the T1A corporate template; a t1a deck must look like that t
 | Agenda | dark slide with `ol.agenda`, one `li.active`, no heading, `data-footer="off"` |
 | Part divider | `section` with a `data-story`, light |
 | Company or project in numbers | `div.stats` with 3 stats, `ul.tags` below |
-| Case, or work with a partner | `panel` layout: `div.panel.teal` (Databricks), `.blue` (Azure, Salesforce), `.purple` or `.orange`, holding `<div class="lockup"><span class="logo"></span><span>×</span><span>Partner</span></div>` or big `div.stat`s; problem, solution and `ul.tags` on the right |
+| Case, or work with a partner | `panel` layout: `div.panel.teal` (Databricks), `.blue` (Azure, Salesforce), `.purple` or `.orange`, holding `<div class="lockup"><span class="logo"></span><span class="x">×</span><span>Partner</span></div>`; then an `h2` of up to about eight words, which fills the top cell, and below the line one or two short `p` and `ul.tags` |
 | Timeline | `ol.timeline`, 3-6 points |
-| Process or journey | `ol.journey` |
-| Options or packages | `div.cards` with one `card highlight` (purple) |
+| Process or journey | `ol.journey`, milestones as `li.key` (teal) |
+| Options or packages | `div.cards.packages`, 3-4 cards, one `card highlight` (purple) |
 | Comparison | `table`, at most 3-4 columns; the header row is navy |
 | Key message | `statement`, one `strong` phrase |
 | Decision or ask | `center` with `p.eyebrow`, `h2` and `p.lead` |
