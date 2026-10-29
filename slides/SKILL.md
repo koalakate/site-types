@@ -113,7 +113,7 @@ The `t1a` preset is the T1A corporate template; a t1a deck must look like that t
 | Agenda | dark slide with `ol.agenda`, one `li.active`, no heading, `data-footer="off"` |
 | Part divider | `section` with a `data-story`, light |
 | Company or project in numbers | `div.stats` with 3 stats, `ul.tags` below |
-| Case, or work with a partner | `panel` layout: `div.panel.teal` (Databricks), `.blue` (Azure, Salesforce), `.purple` or `.orange`, holding `<div class="lockup"><span class="logo"></span><span class="x">×</span><span>Partner</span></div>`; then an `h2` of up to about eight words, which fills the top cell, and below the line one or two short `p` and `ul.tags` |
+| Case, or work with a partner | `panel` layout: `div.panel.teal` (Databricks), `.blue` (Azure, Salesforce), `.purple` or `.orange`, holding `<div class="lockup"><span class="logo"></span><span class="x">×</span><span>Partner</span></div>`; then the top cell, `<div><h2>…</h2><ul class="tags">…</ul></div>` with a title of up to about eight words and the tags under it; below the line a short `p`, or `div.cols` with Problem and Solution lists |
 | Timeline | `ol.timeline`, 3-6 points |
 | Process or journey | `ol.journey`, milestones as `li.key` (teal) |
 | Options or packages | `div.cards.packages`, 3-4 cards, one `card highlight` (purple) |

@@ -631,6 +631,7 @@
 :where(.frame[data-preset="t1a"][data-layout="quote"] blockquote)::before { background: var(--muted); }
 :where(.frame[data-preset="t1a"] .card.highlight) { background: #6A1B9A; border-color: #6A1B9A; box-shadow: none; --foreground: #FCFCFC; --muted: #E5D6F0; color: #FCFCFC; }
 :where(.frame[data-preset="t1a"] ol.journey > li) { border-color: var(--story-bright); }
+:where(.frame[data-preset="t1a"] ul.tags > li) { padding: 4px 18px; border-width: 1.5px; font-size: 20px; }
 :where(.frame[data-preset="t1a"] ol.journey > li.key) { border-color: color-mix(in srgb, #00CE93 calc(var(--tone) * 100%), #009688); }
 :where(.frame[data-preset="t1a"] .cards.packages > .card.highlight) { background: #6A1B9A; border-color: #6A1B9A; --foreground: #FCFCFC; --muted: #E5D6F0; color: #FCFCFC; }
 
@@ -638,7 +639,8 @@
    the details below the line at 63%. */
 :where(.frame[data-preset="t1a"][data-layout="panel"] > section) { padding: 110px 96px 64px calc(26% + 72px); }
 :where(.frame[data-preset="t1a"][data-layout="panel"] > section > .panel:first-child) { width: 26%; justify-content: flex-start; padding: 110px 48px 64px; }
-:where(.frame[data-preset="t1a"][data-layout="panel"] > section > h2:nth-child(2)) { flex: 0 0 530px; font-size: 112px; line-height: 1.1; }
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section > :nth-child(2)) { flex: 0 0 575px; display: flex; flex-direction: column; gap: 36px; }
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section > :nth-child(2):is(h2), .frame[data-preset="t1a"][data-layout="panel"] > section > :nth-child(2) > h2) { display: block; font-size: 112px; line-height: 1.1; }
 :where(.frame[data-preset="t1a"][data-layout="panel"] > section > :nth-child(n+3)) { font-size: 34px; }
 :where(.frame[data-preset="t1a"][data-layout="panel"] > section)::after {
   content: "";
