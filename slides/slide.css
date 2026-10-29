@@ -692,9 +692,9 @@
   opacity: var(--tone);
 }
 :where(.frame[data-preset="t1a"][data-layout="title"] > section) { justify-content: center; padding-bottom: 168px; }
-:where(.frame[data-preset="t1a"][data-layout="title"] h1) { font-size: 192px; line-height: 1.05; max-width: 9.5em; }
+:where(.frame[data-preset="t1a"][data-layout="title"] h1) { font-size: 144px; line-height: 1.05; max-width: 11em; }
 :where(.frame[data-preset="t1a"][data-layout="title"] .lead) { font-size: 40px; color: var(--muted); }
-/* Type sizes of the template at 1920 px: titles 192 (cover, divider), 144 (case), 85 (slide, agenda). */
+/* Type sizes at 1920 px: titles 192 (divider), 144 (cover, case), 85 (slide, agenda). */
 :where(.frame[data-preset="t1a"] h2) { font-size: 85px; }
 :where(.frame[data-preset="t1a"][data-layout="section"] h2) { font-size: 192px; line-height: 1.05; }
 :where(.frame[data-preset="t1a"] ol.agenda > li) { font-size: 85px; }
