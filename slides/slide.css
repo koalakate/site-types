@@ -458,7 +458,7 @@
 
 :where(ol.agenda) { gap: 24px; margin-block: auto; }
 :where(ol.agenda > li) { padding-left: 0; max-width: none; font-size: 64px; line-height: 1.2; }
-:where(ol.agenda > li)::before { width: auto; margin: 0 0.45em 0 0; font-size: inherit; letter-spacing: 0; color: inherit; font-weight: 700; }
+:where(ol.agenda > li)::before { width: 1.75em; margin: 0; font-size: inherit; letter-spacing: 0; color: inherit; font-weight: 700; }
 :where(ol.agenda:has(> li.active) > li:not(.active)) { color: var(--muted); }
 
 :where(ol.timeline) { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 32px; }
@@ -587,7 +587,7 @@
 :where(.frame[data-preset="t1a"] .eyebrow) { color: var(--muted); }
 :where(.frame[data-preset="t1a"] ul:not(.check, .plain, .tags) > li)::before { left: 10px; top: 0.55em; width: 10px; height: 10px; border-radius: 50%; background: var(--foreground); }
 :where(.frame[data-preset="t1a"] li > ul:not(.check, .plain, .tags) > li)::before { background: none; border: 2px solid var(--foreground); }
-:where(.frame[data-preset="t1a"] ol > li)::before { color: var(--foreground); }
+:where(.frame[data-preset="t1a"] ol:not(.agenda) > li)::before { color: var(--foreground); }
 :where(.frame[data-preset="t1a"] ol.steps > li)::before { background: var(--foreground); color: var(--background); }
 :where(.frame[data-preset="t1a"] .stat) { border-top: 2px solid var(--border); }
 :where(.frame[data-preset="t1a"][data-layout="quote"] blockquote)::before { background: var(--muted); }
