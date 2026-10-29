@@ -91,12 +91,18 @@
   --l-background: #FCFCFC; --l-surface: #FFFFFF; --l-foreground: #111729; --l-muted: #4A5567;
   --l-accent: #E86200; --l-on-accent: #111729; --l-border: #E2E2E2;
   --d-background: #111729; --d-surface: #1C2438; --d-foreground: #FCFCFC; --d-muted: #A3ACBD;
-  --d-accent: #FF6D00; --d-on-accent: #111729; --d-border: #4A5567;
+  --d-accent: #00CE93; --d-on-accent: #111729; --d-border: #4A5567;
   --font-display: "DM Sans Variable", "Inter Variable", var(--font-fallback);
   --font-body: "DM Sans Variable", "Inter Variable", var(--font-fallback);
   --font-mono: "Roboto Mono Variable", "JetBrains Mono Variable", ui-monospace, monospace;
   --heading-tracking: 0.5;
+  /* The template keeps orange off navy: on dark the accent is teal and the logo is white.
+     --*-tone is 1 on dark, for the t1a backgrounds in slide.css. */
+  --l-logo: #FF6D00; --d-logo: #FCFCFC;
+  --l-tone: 0; --d-tone: 1;
 }
+:root[data-preset="t1a"][data-scheme="light"] { --s-logo: var(--l-logo); --s-tone: var(--l-tone); }
+:root[data-preset="t1a"][data-scheme="dark"] { --s-logo: var(--d-logo); --s-tone: var(--d-tone); }
 
 :root[data-preset="secondstack"] {
   --l-background: #F4F5F7; --l-surface: #FFFFFF; --l-foreground: #0B0D10; --l-muted: #565D66;

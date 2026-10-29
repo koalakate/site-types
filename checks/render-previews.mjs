@@ -27,7 +27,9 @@ try {
     const dataDir = await mkdtemp(path.join(os.tmpdir(), "slides-preview-"));
     try {
       await mkdir(path.join(dataDir, "project", "slides"), { recursive: true });
-      await writeFile(path.join(dataDir, "project", "slides", "cover.html"), COVER);
+      // The t1a template keeps its slides light and only the cover dark.
+      const cover = preset.key === "t1a" ? COVER.replace('data-layout="title"', 'data-layout="title" data-theme="dark"') : COVER;
+      await writeFile(path.join(dataDir, "project", "slides", "cover.html"), cover);
       await writeFile(path.join(dataDir, "project", "deck.json"), JSON.stringify({
         v: 1, title: `${preset.name} preview`, lang: "en", order: ["cover"], theme: { preset: preset.key, scheme: preset.scheme },
       }));

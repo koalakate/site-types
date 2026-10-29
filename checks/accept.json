@@ -2,5 +2,9 @@
   "_comment": "Visual changes accepted for one candidate version: \"<version>\": { \"<deck>/<slide>/<stage|print>/<light|dark>\": \"reason\" }. * matches any text.",
   "1.3.1": {
     "preset-*": "The preset sample decks are new relative to the upstream slides-v1.1.0 baseline (the fork's own tags are not baselines), so every screenshot differs; the other decks stay identical."
+  },
+  "1.4.0": {
+    "preset-*": "The preset sample decks are new relative to the upstream slides-v1.1.0 baseline; preset-t1a also changes on purpose: t1a now follows the corporate template (light slides, logo, story backgrounds, no orange text on navy).",
+    "t1a-template/*": "New deck for the t1a template layouts and the orange-on-dark check; it has no baseline in upstream slides-v1.1.0."
   }
 }

@@ -1,4 +1,4 @@
-# Slides with t1a themes 1.3.1
+# Slides with t1a themes 1.4.0
 
 A Slides site is a presentation. The viewer is part of the site type: it shows each slide in a 16:9 frame, with keyboard and touch navigation, an overview, a presenter window with notes and a timer, fullscreen, light and dark themes and print to PDF. You write only the deck data: one JSON file and one HTML fragment per slide. Do not write `index.html`, CSS files or JavaScript.
 
@@ -31,7 +31,7 @@ project/assets/...           images and other media
 - `sections` is optional. A section runs from its `start` slide to the next section's start; the overview groups slides by section and the slide footer shows the section title.
 - `lang` is optional and sets the language of the slide text.
 - `theme` sets the look. `preset` picks one of the built-in themes, each with its own colors for light and dark and its own fonts:
-  - `t1a`: Tier One Analytics. Navy and orange, DM Sans. The house theme: use it when the user does not choose.
+  - `t1a`: Tier One Analytics, built on the corporate presentation template: light slides, navy covers, DM Sans, the T1A logo on every slide. The house theme: use it when the user does not choose, and follow "The t1a template" below.
   - `secondstack`: SecondStack. Gray and cyan, Geist headings with Inter text, flat cards.
   - `lakesentry`: LakeSentry. Deep navy and blue, heavy Outfit headings with Plus Jakarta Sans text.
   - `antares`: Antares. Black, white and one blue, Helvetica.
@@ -39,7 +39,7 @@ project/assets/...           images and other media
 
   When the user names a brand or a style that matches a preset, use it without asking; otherwise follow "Theme and plan" below.
 
-  In `t1a`, use no italics and keep to one orange highlight per slide. Any other key below overrides the preset color by color and font by font, so add them only when the user asks for a change. `scheme` is `light` or `dark` (the audience can switch). `light` and `dark` each take any of the colors `background`, `surface`, `foreground`, `muted`, `accent`, `onAccent`, `border` as CSS color strings. `fonts` takes the roles `display`, `body` and `mono`, each `{"family": "...", "href": "https://fonts.googleapis.com/css2?family=..."}` (Google Fonts only) or `{"family": "...", "faces": [{"src": "assets/fonts/x.woff2", "weight": "100 900"}]}` (files under `project/`).
+  Any other key below overrides the preset color by color and font by font, so add them only when the user asks for a change. `scheme` is `light` or `dark` (the audience can switch). `light` and `dark` each take any of the colors `background`, `surface`, `foreground`, `muted`, `accent`, `onAccent`, `border` as CSS color strings. `fonts` takes the roles `display`, `body` and `mono`, each `{"family": "...", "href": "https://fonts.googleapis.com/css2?family=..."}` (Google Fonts only) or `{"family": "...", "faces": [{"src": "assets/fonts/x.woff2", "weight": "100 900"}]}` (files under `project/`).
 
 ## Slide files
 
@@ -65,6 +65,7 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - `center`: centered content, for a closing slide.
   - `image`: the first child `img` or `figure` fills the slide; text after it sits on a dark scrim at the bottom.
   - `split`: first child is a `div` with the text, last child an `img`, `figure` or `div.media` filling the right half.
+  - `panel`: first child is a `div.panel` that fills the left third with a color; the text follows on the right. For a case or a partner slide.
   - `blank`: no margins and no footer, for a slide you compose entirely yourself.
 - `data-theme="dark"`, `"light"` or `"accent"` on the section gives one slide its own colors, for emphasis.
 - A footer with the deck title, section and slide number appears on every slide except `title`, `section`, `image` and `blank` layouts. `data-footer="off"` hides it on one slide, `data-footer="on"` shows it on one of those layouts.
@@ -77,6 +78,10 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - `p.callout` or `div.callout` for a key takeaway. `ul.check` for a checklist, `ul.plain` without markers.
   - `.grow` makes an element take the remaining height; `.bottom` pushes it to the bottom; `figure.fill` makes an image fill the remaining space.
   - `td.num` / `th.num` align numbers right; `tr.highlight` emphasizes a row.
+  - `ol.agenda` for an agenda: large numbered items; `li.active` marks the part about to start and dims the others.
+  - `ol.timeline` for dates on a line: `<li><strong>Week 1-2</strong>What happens</li>`; `li.done` checks a step off, `li.key` highlights the key result.
+  - `ol.journey` for stages as pills on a descending staircase, up to about seven.
+  - `ul.tags` for small outlined pills (industry, technology, scope).
 - Use the theme colors in inline SVG and styles through `var(--accent)`, `var(--foreground)`, `var(--muted)`, `var(--surface)` and `var(--border)`, so the slide works in both themes.
 - A `<style>` element inside the section applies only to that slide, and its rules win over the built-in styles. Prefer the layouts and building blocks above.
 - CSS animations and transitions are allowed; they replay each time the slide is shown. Write the base style as the end state and animate only from the start (`@keyframes x { from { opacity: 0 } }`): the overview, the presenter's preview, print and check mode show slides without animation.
@@ -89,6 +94,33 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - An `iframe` may show a page under `project/` or any `https:` page (videos, Excalidraw, Figma, forms). A page from another site stays isolated from the deck and cannot navigate it; a page under `project/` is part of the deck (see Interactive slides). SVG `<use>` may reference only `#id` inside the slide.
   - Check mode lists everything the sanitizer removed.
 - Keep each slide to one idea: a heading and at most about six short bullets, one table of up to about seven rows, or one diagram. Split content that does not fit. See "Writing" for how much to put on a slide.
+
+## The t1a template
+
+The `t1a` preset is the T1A corporate template; a t1a deck must look like that template, not like a generic deck.
+
+- Slides are light (`scheme: "light"`). Make the cover dark (`data-layout="title"` with `data-theme="dark"`), and use dark only for the cover, an agenda and a closing statement.
+- `data-story="purple"`, `"teal"`, `"blue"` or `"orange"` on a `title` or `section` slide picks its background: on dark a corner glow with line circles, on light pale spheres at the right edge. Purple is the default. Use one story per section and keep it for the section's divider.
+- The T1A logo appears at the bottom left of every slide by itself. Do not add it, and do not write the company name as a heading or a footer. In a partner lockup, `<span class="logo"></span>` draws it in the lockup's color.
+- Orange is the highlight on light slides only, once per slide: one `strong` in a `statement`, one `.accent` phrase, a `p.callout`. Never write orange text on a dark slide or a dark panel; on dark the accent is teal by itself. Check mode reports `orange-on-dark` as an error.
+- Eyebrows, list markers and numbers stay neutral. No italics; bold only for the key point; underline only for links.
+- Map the plan blocks to the template's layouts:
+
+| Block | Slide |
+|---|---|
+| Cover | `title`, dark, H1 and a short `p.lead` |
+| Agenda | dark slide with `ol.agenda`, one `li.active`, no heading, `data-footer="off"` |
+| Part divider | `section` with a `data-story`, light |
+| Company or project in numbers | `div.stats` with 3 stats, `ul.tags` below |
+| Case, or work with a partner | `panel` layout: `div.panel.teal` (Databricks), `.blue` (Azure, Salesforce), `.purple` or `.orange`, holding `<div class="lockup"><span class="logo"></span><span>×</span><span>Partner</span></div>` or big `div.stat`s; problem, solution and `ul.tags` on the right |
+| Timeline | `ol.timeline`, 3-6 points |
+| Process or journey | `ol.journey` |
+| Options or packages | `div.cards` with one `card highlight` (purple) |
+| Comparison | `table`, at most 3-4 columns; the header row is navy |
+| Key message | `statement`, one `strong` phrase |
+| Decision or ask | `center` with `p.eyebrow`, `h2` and `p.lead` |
+
+- Tables are the last resort; prefer stats or a chart. Draw charts as inline SVG in `var(--foreground)` with one highlight series in `var(--accent)`.
 
 ## Interactive slides
 
@@ -125,7 +157,7 @@ Before you write anything, settle the theme and the plan with the user through `
 
 ## Build a deck
 
-1. Call `site_types` with `name="t1a-slides"`. Use the exact `type` it reports, for example `t1a-slides@1.3.1`, in every call below.
+1. Call `site_types` with `name="t1a-slides"`. Use the exact `type` it reports, for example `t1a-slides@1.4.0`, in every call below.
 2. Turn the answered plan into the slide ids, one idea per slide, grouped into sections by block. Start with a `title` slide and end with the decision or ask.
 3. Write `project/deck.json` with the complete `order` first, then the slide files one by one. The viewer shows a placeholder for each listed slide whose file does not exist yet and fills it when the file appears, so you can publish early and keep writing.
 4. Preview and check (below), fix every error, then publish.
@@ -134,7 +166,7 @@ Before you write anything, settle the theme and the plan with the user through `
 
 The workspace cannot open the published site. Check the deck locally with the viewer package:
 
-1. Call `import_site` with `type="t1a-slides@1.3.1"` and a new directory, for example `/workspace/sites/<name>-preview/`. It contains `index.html` and `_type/`.
+1. Call `import_site` with `type="t1a-slides@1.4.0"` and a new directory, for example `/workspace/sites/<name>-preview/`. It contains `index.html` and `_type/`.
 2. Copy the deck data into it, replacing any earlier copy, so deleted files do not linger: `rm -rf /workspace/sites/<name>-preview/project && cp -r /workspace/sites/<name>/project /workspace/sites/<name>-preview/`. Repeat after each change. Never publish the preview directory.
 3. Serve it: `python3 -m http.server 8765 --bind 127.0.0.1 --directory /workspace/sites/<name>-preview` in the background.
 4. Open `http://127.0.0.1:8765/?check=1` in the workspace browser. Check mode lists every slide with its issues and outlines overflowing elements. When `document.documentElement.dataset.slidesCheck` is `"done"`, the full report is the JSON text of `#slides-check-report` and the `[slides-check]` console line. `ok` is `false` while any error remains. While slides are still missing, the browser console also shows 404 errors for their files; that is expected.
@@ -142,7 +174,7 @@ The workspace cannot open the published site. Check the deck locally with the vi
 
 ## Publish
 
-- Publish the data directory, `/workspace/sites/<name>/`, which holds `project/` and optionally `_spot.json`, with `publish_site(path=..., site=<name>, type="t1a-slides@1.3.1")`. It needs no `index.html`; never include the preview files. Leave `type_target` empty.
+- Publish the data directory, `/workspace/sites/<name>/`, which holds `project/` and optionally `_spot.json`, with `publish_site(path=..., site=<name>, type="t1a-slides@1.4.0")`. It needs no `index.html`; never include the preview files. Leave `type_target` empty.
 - Only files under `project/` and `_spot.json` belong in it. Publishing refuses other files and names the first offending path; every `.json` file must be valid JSON.
 - An edit of an existing deck starts with `import_site(site=<name>, path=<empty directory>)`, which reports the exact type to publish with. Edit, check and publish with that `type`. A pin mismatch error (409) means the site now pins another version: import it again and redo the edit there.
 - Give the user the link with one sentence on what the deck covers. The presenter view opens with `S`, the overview with `O`, fullscreen with `F`; browser print saves a PDF with one page per slide. The link `<site>/?print` opens the print dialog as soon as the deck has loaded, so you can hand the user a one-click PDF link. The link `<site>/?present` shows a "Start presenting" button that opens the deck fullscreen at slide 1, so you can hand the user a one-click presenting link.

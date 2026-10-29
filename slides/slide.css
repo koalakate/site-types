@@ -429,6 +429,176 @@
 
 :where(.frame[data-layout="blank"] > section) { padding: 0; gap: 0; }
 
+/* Panel: a full-height color panel on the left (the first child, div.panel), the slide's text on the right. */
+:where(.frame[data-layout="panel"] > section) { padding-left: calc(32% + 96px); }
+:where(.frame[data-layout="panel"] > section > .panel:first-child) {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 32%;
+  padding: 112px 72px 136px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  text-align: center;
+  background: var(--panel, var(--accent));
+  color: var(--panel-ink, var(--on-accent));
+  --foreground: var(--panel-ink, var(--on-accent));
+  --muted: var(--panel-ink, var(--on-accent));
+}
+:where(.frame[data-layout="panel"] .panel .stat) { border-top-color: currentColor; align-items: center; padding-top: 20px; }
+:where(.frame[data-layout="panel"] .panel .stat > strong) { font-size: 96px; }
+:where(.frame[data-layout="panel"] > section > h2) { font-size: 88px; letter-spacing: calc(-0.035em * var(--heading-tracking)); }
+.frame[data-layout="panel"] .frame-footer { left: calc(32% + 96px); }
+
+/* Agenda, timeline, journey and tags: blocks from the t1a template, styled by every preset. */
+
+:where(ol.agenda) { gap: 24px; margin-block: auto; }
+:where(ol.agenda > li) { padding-left: 0; max-width: none; font-size: 64px; line-height: 1.2; }
+:where(ol.agenda > li)::before { width: auto; margin: 0 0.45em 0 0; font-size: inherit; letter-spacing: 0; color: inherit; font-weight: 700; }
+:where(ol.agenda:has(> li.active) > li:not(.active)) { color: var(--muted); }
+
+:where(ol.timeline) { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 32px; }
+:where(ol.timeline > li) { padding: 76px 0 0; max-width: none; font-size: 27px; line-height: 1.4; color: var(--muted); }
+:where(ol.timeline > li)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 34px;
+  height: 34px;
+  margin: 0;
+  border-radius: 50%;
+  background: var(--background);
+  border: 3px solid var(--foreground);
+  z-index: 1;
+}
+:where(ol.timeline > li)::after { content: ""; position: absolute; top: 23.5px; left: 0; right: -32px; height: 3px; background: var(--foreground); }
+:where(ol.timeline > li:last-child)::after { right: 0; }
+:where(ol.timeline > li > strong) { display: block; margin-bottom: 8px; font-size: 34px; line-height: 1.2; color: var(--foreground); }
+:where(ol.timeline > li.done)::before {
+  border-color: var(--accent);
+  background: var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4L18 8'/%3E%3C/svg%3E") center / 70% no-repeat;
+}
+:where(ol.timeline > li.key), :where(ol.timeline > li.key > strong) { color: var(--accent); }
+
+:where(ol.journey) { gap: 26px; }
+:where(ol.journey > li) {
+  width: fit-content;
+  max-width: none;
+  padding: 12px 36px;
+  border: 3px solid var(--accent);
+  border-radius: 999px;
+  font-size: 34px;
+  line-height: 1.3;
+}
+:where(ol.journey > li)::before { content: none; }
+:where(ol.journey > li:nth-child(2)) { margin-left: 9%; }
+:where(ol.journey > li:nth-child(3)) { margin-left: 18%; }
+:where(ol.journey > li:nth-child(4)) { margin-left: 27%; }
+:where(ol.journey > li:nth-child(5)) { margin-left: 36%; }
+:where(ol.journey > li:nth-child(6)) { margin-left: 45%; }
+:where(ol.journey > li:nth-child(n+7)) { margin-left: 54%; }
+
+:where(ul.tags) { flex-direction: row; flex-wrap: wrap; gap: 12px; }
+:where(ul.tags > li) { padding: 6px 22px; max-width: none; border: 2px solid var(--foreground); border-radius: 999px; font-size: 22px; line-height: 1.3; }
+:where(ul.tags > li)::before { content: none; }
+
+/* t1a: the corporate template. Content slides stay plain, with the logo at the bottom left. Title and
+   section slides carry a story background: on navy a corner glow and line circles, on light pale
+   spheres. --tone is 1 on dark; it blends the two, so a slide's data-theme and the scheme both work.
+   Orange is never text on navy: the dark accent is teal, and eyebrows, markers and numbers stay neutral. */
+
+:where(.frame[data-preset="t1a"]) {
+  --logo: var(--s-logo);
+  --tone: var(--s-tone);
+  --story: #6A1B9A;
+  --story-bright: #A055FF;
+}
+:where(.frame[data-preset="t1a"][data-theme="light"]) { --logo: var(--l-logo); --tone: var(--l-tone); }
+:where(.frame[data-preset="t1a"][data-theme="dark"]) { --logo: var(--d-logo); --tone: var(--d-tone); }
+:where(.frame[data-preset="t1a"][data-theme="accent"]) { --logo: var(--foreground); --tone: 0; }
+:where(.frame[data-preset="t1a"][data-layout="image"]) { --logo: #FCFCFC; }
+:where(.frame[data-preset="t1a"][data-story="teal"]) { --story: #009688; --story-bright: #00CE93; }
+:where(.frame[data-preset="t1a"][data-story="blue"]) { --story: #00A1DF; --story-bright: #31D8FE; }
+:where(.frame[data-preset="t1a"][data-story="orange"]) { --story: #EC671B; --story-bright: #FF9E0C; }
+
+:where(.frame[data-preset="t1a"]:not([data-layout="blank"], [data-layout="panel"]) > section)::after {
+  content: "";
+  position: absolute;
+  left: 128px;
+  bottom: 50px;
+  width: 92px;
+  height: 36px;
+  background: var(--logo);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 39'%3E%3Cpath d='M12.2955 7.35429H0V0H33.4833V7.35429H21.1878V39H12.2955V7.35429Z'/%3E%3Cpath d='M52.8708 0V39H43.9785V7.24286H36.2939V0H52.8708Z'/%3E%3Cpath d='M87.2654 30.6429H69.4259L66.0227 39H56.9109L74.0367 0H82.8192L100 39H90.6686L87.2654 30.6429ZM84.4659 23.79L78.3731 8.85857L72.2802 23.79H84.4659Z'/%3E%3C/svg%3E") left bottom / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 39'%3E%3Cpath d='M12.2955 7.35429H0V0H33.4833V7.35429H21.1878V39H12.2955V7.35429Z'/%3E%3Cpath d='M52.8708 0V39H43.9785V7.24286H36.2939V0H52.8708Z'/%3E%3Cpath d='M87.2654 30.6429H69.4259L66.0227 39H56.9109L74.0367 0H82.8192L100 39H90.6686L87.2654 30.6429ZM84.4659 23.79L78.3731 8.85857L72.2802 23.79H84.4659Z'/%3E%3C/svg%3E") left bottom / contain no-repeat;
+  pointer-events: none;
+}
+:where(.frame[data-preset="t1a"] .logo) {
+  display: inline-block;
+  flex: none;
+  width: 200px;
+  aspect-ratio: 100 / 39;
+  background: var(--logo-ink, currentColor);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 39'%3E%3Cpath d='M12.2955 7.35429H0V0H33.4833V7.35429H21.1878V39H12.2955V7.35429Z'/%3E%3Cpath d='M52.8708 0V39H43.9785V7.24286H36.2939V0H52.8708Z'/%3E%3Cpath d='M87.2654 30.6429H69.4259L66.0227 39H56.9109L74.0367 0H82.8192L100 39H90.6686L87.2654 30.6429ZM84.4659 23.79L78.3731 8.85857L72.2802 23.79H84.4659Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 39'%3E%3Cpath d='M12.2955 7.35429H0V0H33.4833V7.35429H21.1878V39H12.2955V7.35429Z'/%3E%3Cpath d='M52.8708 0V39H43.9785V7.24286H36.2939V0H52.8708Z'/%3E%3Cpath d='M87.2654 30.6429H69.4259L66.0227 39H56.9109L74.0367 0H82.8192L100 39H90.6686L87.2654 30.6429ZM84.4659 23.79L78.3731 8.85857L72.2802 23.79H84.4659Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.frame[data-preset="t1a"] .frame-footer { left: 268px; }
+.frame[data-preset="t1a"][data-layout="panel"] .frame-footer { left: calc(32% + 96px); }
+
+/* Partner panels, as in the template's case slides: the lockup stays white, the text dark on bright colors. */
+:where(.frame[data-preset="t1a"] .panel) { --panel: var(--story-bright); --panel-ink: #111729; --logo-ink: #FCFCFC; }
+:where(.frame[data-preset="t1a"] .panel.teal) { --panel: #00CE93; --panel-ink: #111729; }
+:where(.frame[data-preset="t1a"] .panel.blue) { --panel: #00A1DF; --panel-ink: #111729; }
+:where(.frame[data-preset="t1a"] .panel.orange) { --panel: #FF6D00; --panel-ink: #111729; }
+:where(.frame[data-preset="t1a"] .panel.purple) { --panel: #6A1B9A; --panel-ink: #FCFCFC; }
+:where(.frame[data-preset="t1a"] .panel.navy) { --panel: #111729; --panel-ink: #FCFCFC; }
+:where(.frame[data-preset="t1a"] .lockup) { display: flex; flex-direction: column; align-items: center; gap: 18px; color: #FCFCFC; font-size: 44px; font-weight: 600; line-height: 1.1; }
+:where(.frame[data-preset="t1a"] .lockup img) { max-width: 260px; max-height: 120px; }
+
+:where(.frame[data-preset="t1a"]:is([data-layout="title"], [data-layout="section"]))::before {
+  background:
+    radial-gradient(52% 78% at 100% 0%, color-mix(in srgb, var(--story) calc(var(--tone) * 80%), transparent), transparent 76%),
+    radial-gradient(circle 330px at calc(100% - 20px) 50%, transparent 0, color-mix(in srgb, var(--story-bright) calc((1 - var(--tone)) * 10%), transparent) 50%, color-mix(in srgb, var(--story-bright) calc((1 - var(--tone)) * 46%), transparent) 97%, transparent 100%),
+    radial-gradient(circle 190px at calc(100% + 30px) 9%, transparent 0, color-mix(in srgb, var(--story-bright) calc((1 - var(--tone)) * 8%), transparent) 50%, color-mix(in srgb, var(--story-bright) calc((1 - var(--tone)) * 30%), transparent) 97%, transparent 100%),
+    radial-gradient(circle 190px at calc(100% + 30px) 91%, transparent 0, color-mix(in srgb, var(--story-bright) calc((1 - var(--tone)) * 8%), transparent) 50%, color-mix(in srgb, var(--story-bright) calc((1 - var(--tone)) * 30%), transparent) 97%, transparent 100%);
+}
+:where(.frame[data-preset="t1a"]:is([data-layout="title"], [data-layout="section"]) > section) { isolation: isolate; }
+:where(.frame[data-preset="t1a"]:is([data-layout="title"], [data-layout="section"]) > section)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: auto;
+  height: auto;
+  margin: 0;
+  border-radius: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 1080' fill='none' stroke='%23FCFCFC' stroke-opacity='.32' stroke-width='2'%3E%3Ccircle cx='600' cy='300' r='300'/%3E%3Ccircle cx='600' cy='780' r='300'/%3E%3Ccircle cx='450' cy='540' r='380'/%3E%3Ccircle cx='750' cy='540' r='380'/%3E%3C/svg%3E") right -220px center / auto 100% no-repeat;
+  opacity: var(--tone);
+}
+:where(.frame[data-preset="t1a"][data-layout="title"] > section) { justify-content: center; padding-bottom: 168px; }
+:where(.frame[data-preset="t1a"][data-layout="title"] h1) { font-size: 128px; max-width: 11em; }
+:where(.frame[data-preset="t1a"][data-layout="title"] .lead) { font-size: 40px; color: var(--muted); }
+
+:where(.frame[data-preset="t1a"] .eyebrow) { color: var(--muted); }
+:where(.frame[data-preset="t1a"] ul:not(.check, .plain, .tags) > li)::before { left: 10px; top: 0.55em; width: 10px; height: 10px; border-radius: 50%; background: var(--foreground); }
+:where(.frame[data-preset="t1a"] li > ul:not(.check, .plain, .tags) > li)::before { background: none; border: 2px solid var(--foreground); }
+:where(.frame[data-preset="t1a"] ol > li)::before { color: var(--foreground); }
+:where(.frame[data-preset="t1a"] ol.steps > li)::before { background: var(--foreground); color: var(--background); }
+:where(.frame[data-preset="t1a"] .stat) { border-top: 2px solid var(--border); }
+:where(.frame[data-preset="t1a"][data-layout="quote"] blockquote)::before { background: var(--muted); }
+:where(.frame[data-preset="t1a"] .card.highlight) { background: #6A1B9A; border-color: #6A1B9A; box-shadow: none; --foreground: #FCFCFC; --muted: #E5D6F0; color: #FCFCFC; }
+:where(.frame[data-preset="t1a"] ol.journey > li) { border-color: var(--story-bright); }
+:where(.frame[data-preset="t1a"] em), :where(.frame[data-preset="t1a"] i) { font-style: normal; }
+:where(.frame[data-preset="t1a"] ol.timeline) { --accent: color-mix(in srgb, #00CE93 calc(var(--tone) * 100%), #009688); }
+:where(.frame[data-preset="t1a"] th) { padding: 18px 32px 18px 24px; border-bottom: 0; background: color-mix(in srgb, var(--surface) calc(var(--tone) * 100%), #111729); color: #FCFCFC; letter-spacing: 0.04em; }
+:where(.frame[data-preset="t1a"] td:first-child) { padding-left: 24px; }
+:where(.frame[data-preset="t1a"] tr.highlight td) { color: var(--foreground); background: var(--surface); }
+
 /* Builds. The viewer sets data-step-hidden on steps not revealed yet; they keep their place, so the
    layout does not move. Stills never set it. A slide's own rules for [data-step] and
    [data-step-hidden] win, so an author can change the effect. Revealed steps look exactly as
