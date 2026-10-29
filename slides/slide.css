@@ -462,48 +462,61 @@
 :where(ol.agenda:has(> li.active) > li:not(.active)) { color: var(--muted); }
 
 :where(ol.timeline) { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 32px; }
-:where(ol.timeline > li) { padding: 76px 0 0; max-width: none; font-size: 27px; line-height: 1.4; color: var(--muted); }
+/* The date sits above the line, the description below it. */
+:where(ol.timeline > li) { padding: 0; max-width: none; font-size: 29px; line-height: 1.4; }
 :where(ol.timeline > li)::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 8px;
-  width: 34px;
-  height: 34px;
+  top: 56px;
+  width: 30px;
+  height: 30px;
   margin: 0;
   border-radius: 50%;
   background: var(--background);
-  border: 3px solid var(--foreground);
+  border: 2.5px solid var(--foreground);
   z-index: 1;
 }
-:where(ol.timeline > li)::after { content: ""; position: absolute; top: 23.5px; left: 0; right: -32px; height: 3px; background: var(--foreground); }
+:where(ol.timeline > li)::after { content: ""; position: absolute; top: 70px; left: 0; right: -32px; height: 2px; background: var(--foreground); }
 :where(ol.timeline > li:last-child)::after { right: 0; }
-:where(ol.timeline > li > strong) { display: block; margin-bottom: 8px; font-size: 34px; line-height: 1.2; color: var(--foreground); }
+:where(ol.timeline > li > strong) { display: block; margin-bottom: 76px; font-size: 37px; line-height: 44px; color: var(--foreground); }
 :where(ol.timeline > li.done)::before {
   border-color: var(--accent);
   background: var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4L18 8'/%3E%3C/svg%3E") center / 70% no-repeat;
 }
-:where(ol.timeline > li.key), :where(ol.timeline > li.key > strong) { color: var(--accent); }
+:where(ol.timeline > li.key) { color: var(--accent); font-weight: 600; }
 
-:where(ol.journey) { gap: 26px; }
+/* Status marks for comparisons: yes, partly, no. */
+:where(.yes, .part, .no) { display: inline-block; width: 40px; height: 40px; border-radius: 50%; vertical-align: middle; background: center / 64% no-repeat; }
+:where(.yes) { background-color: var(--accent); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4L18 8'/%3E%3C/svg%3E"); }
+:where(.part) { background-color: var(--muted); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round'%3E%3Cpath d='M12 6v8M12 18v.5'/%3E%3C/svg%3E"); }
+:where(.no) { background-color: var(--border); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round'%3E%3Cpath d='M7 7l10 10M17 7L7 17'/%3E%3C/svg%3E"); }
+/* A comparison table: options as large centered column heads, features as rows. */
+:where(table.compare th) { font-size: 40px; font-weight: 650; letter-spacing: 0; text-transform: none; color: var(--foreground); text-align: center; border-bottom-width: 1px; }
+:where(table.compare td) { padding-block: 14px; font-size: 29px; text-align: center; vertical-align: middle; }
+:where(table.compare th:first-child), :where(table.compare td:first-child) { text-align: left; }
+
+:where(ol.journey) { gap: 26px; isolation: isolate; }
 :where(ol.journey > li) {
   width: fit-content;
   max-width: none;
   padding: 12px 36px;
   border: 3px solid var(--accent);
   border-radius: 999px;
+  background: var(--background);
   font-size: 36px;
   line-height: 1.3;
 }
 :where(ol.journey > li.key) { border-color: var(--foreground); }
-/* An elbow arrow runs from each pill's end down onto the next pill. */
+/* An elbow arrow comes out from under each pill's end and runs down onto the next pill. */
 :where(ol.journey > li:not(:last-child))::after {
   content: "";
   position: absolute;
-  left: 100%;
-  top: 50%;
-  width: 72px;
-  height: calc(50% + 6px);
+  z-index: -1;
+  left: calc(100% - 48px);
+  top: calc(50% - 6px);
+  width: 120px;
+  height: calc(50% + 20px);
   border-top: 12px solid var(--border);
   border-right: 12px solid var(--border);
 }
@@ -511,8 +524,9 @@
 :where(ol.journey > li:not(:last-child))::before {
   content: "";
   position: absolute;
+  z-index: -1;
   left: calc(100% + 46px);
-  top: calc(100% + 6px);
+  top: calc(100% + 14px);
   width: 0;
   height: 0;
   margin: 0;
@@ -531,9 +545,9 @@
 :where(.cards.packages) { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; flex: 1 1 auto; min-height: 0; }
 :where(.cards.packages > .card) { gap: 16px; padding: 18px 22px 26px; border: 2px solid var(--foreground); border-radius: 0; background: none; }
 :where(.cards.packages > .card.highlight) { background: var(--accent); border-color: var(--accent); box-shadow: none; color: var(--on-accent); --foreground: var(--on-accent); --muted: var(--on-accent); }
-:where(.cards.packages .meta) { display: flex; justify-content: space-between; gap: 16px; font-size: 20px; color: var(--muted); }
+:where(.cards.packages .meta) { display: flex; justify-content: space-between; gap: 16px; font-size: 24px; color: var(--muted); }
 :where(.cards.packages .art) { flex: none; width: 100%; aspect-ratio: 1; background: currentColor; -webkit-mask: var(--art) center / contain no-repeat; mask: var(--art) center / contain no-repeat; }
-:where(.cards.packages h3) { margin-top: auto; font-size: 34px; line-height: 1.15; }
+:where(.cards.packages h3) { margin-top: auto; font-size: 37px; line-height: 1.15; }
 :where(.cards.packages .card p:not(.meta)) { font-size: 22px; line-height: 1.4; }
 :where(.art) { --art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-2 -2 204 204' fill='none' stroke='black' stroke-width='1.6'%3E%3Ccircle cx='100' cy='100' r='95'/%3E%3C/svg%3E"); }
 :where(.art.lines) { --art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-2 -2 204 204' fill='none' stroke='black' stroke-width='1.6'%3E%3Ccircle cx='100' cy='100' r='95'/%3E%3Cpath d='M10 130H190M16 145H184M26 160H174M40 175H160'/%3E%3C/svg%3E"); }
@@ -633,7 +647,9 @@
 :where(.frame[data-preset="t1a"] li > ul:not(.check, .plain, .tags) > li)::before { background: none; border: 2px solid var(--foreground); }
 :where(.frame[data-preset="t1a"] ol:not(.agenda) > li)::before { color: var(--foreground); }
 :where(.frame[data-preset="t1a"] ol.steps > li)::before { background: var(--foreground); color: var(--background); }
-:where(.frame[data-preset="t1a"] .stat) { border-top: 2px solid var(--border); }
+:where(.frame[data-preset="t1a"] .stat) { gap: 6px; padding-top: 0; border-top: 0; }
+:where(.frame[data-preset="t1a"] .stat > span), :where(.frame[data-preset="t1a"] .stat > p) { font-size: 29px; }
+:where(.frame[data-preset="t1a"] .card:not(.highlight, .packages > *)) { border: 0; background: #FFFFFF; box-shadow: 0 10px 40px rgb(17 23 41 / 0.09); --foreground: #111729; --muted: #4A5567; color: #111729; }
 :where(.frame[data-preset="t1a"][data-layout="quote"] blockquote)::before { background: var(--muted); }
 :where(.frame[data-preset="t1a"] .card.highlight) { background: #6A1B9A; border-color: #6A1B9A; box-shadow: none; --foreground: #FCFCFC; --muted: #E5D6F0; color: #FCFCFC; }
 :where(.frame[data-preset="t1a"] ol.journey > li) { border-color: var(--story-bright); }
@@ -643,9 +659,9 @@
 
 /* The partner case: a narrow panel, hairline guides across the slide, the title in the top cell and
    the details below the line at 63%. */
-:where(.frame[data-preset="t1a"][data-layout="panel"] > section) { padding: 110px 96px 64px calc(26% + 72px); }
-:where(.frame[data-preset="t1a"][data-layout="panel"] > section > .panel:first-child) { width: 26%; justify-content: flex-start; padding: 110px 48px 64px; }
-:where(.frame[data-preset="t1a"][data-layout="panel"] > section > :nth-child(2)) { flex: 0 0 575px; display: flex; flex-direction: column; gap: 36px; overflow: hidden; }
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section) { padding: 170px 120px 40px calc(26.5% + 74px); }
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section > .panel:first-child) { width: 26.5%; justify-content: flex-start; padding: 150px 48px 64px; }
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section > :nth-child(2)) { flex: 0 0 540px; display: flex; flex-direction: column; gap: 36px; overflow: hidden; }
 :where(.frame[data-preset="t1a"][data-layout="panel"] > section > :nth-child(2):is(h2), .frame[data-preset="t1a"][data-layout="panel"] > section > :nth-child(2) > h2) { display: block; font-size: 144px; line-height: 1.08; }
 :where(.frame[data-preset="t1a"][data-layout="panel"] > section > :nth-child(n+3)) { font-size: 40px; }
 :where(.frame[data-preset="t1a"][data-layout="panel"] > section)::after {
@@ -655,20 +671,24 @@
   pointer-events: none;
   --line: color-mix(in srgb, var(--foreground) 70%, transparent);
   background:
-    linear-gradient(to right, transparent 26px, var(--line) 26px 29px, transparent 29px),
-    linear-gradient(to left, transparent 26px, var(--line) 26px 29px, transparent 29px),
-    linear-gradient(to bottom, transparent 58px, var(--line) 58px 61px, transparent 61px),
-    linear-gradient(to bottom, transparent 680px, var(--line) 680px 683px, transparent 683px),
-    linear-gradient(to top, transparent 34px, var(--line) 34px 37px, transparent 37px);
+    linear-gradient(to right, transparent 46px, var(--line) 46px 49px, transparent 49px),
+    linear-gradient(to left, transparent 18px, var(--line) 18px 21px, transparent 21px),
+    linear-gradient(to bottom, transparent 42px, var(--line) 42px 45px, transparent 45px),
+    linear-gradient(to bottom, transparent 688px, var(--line) 688px 691px, transparent 691px),
+    linear-gradient(to top, transparent 18px, var(--line) 18px 21px, transparent 21px);
 }
 .frame[data-preset="t1a"][data-layout="panel"] .frame-footer { display: none; }
 :where(.frame[data-preset="t1a"] .lockup) { font-weight: 500; }
 :where(.frame[data-preset="t1a"] .lockup .logo) { width: 170px; }
-:where(.frame[data-preset="t1a"] .lockup .x) { font-size: 72px; font-weight: 200; line-height: 0.8; }
+:where(.frame[data-preset="t1a"] .lockup .x) { font-size: 96px; font-weight: 200; line-height: 0.7; }
 :where(.frame[data-preset="t1a"] em), :where(.frame[data-preset="t1a"] i) { font-style: normal; }
 :where(.frame[data-preset="t1a"] ol.timeline) { --accent: color-mix(in srgb, #00CE93 calc(var(--tone) * 100%), #009688); }
-:where(.frame[data-preset="t1a"] th) { padding: 18px 32px 18px 24px; border-bottom: 0; background: color-mix(in srgb, var(--surface) calc(var(--tone) * 100%), #111729); color: #FCFCFC; letter-spacing: 0.04em; }
-:where(.frame[data-preset="t1a"] td:first-child) { padding-left: 24px; }
+:where(.frame[data-preset="t1a"] table:not(.compare) th) { padding: 18px 32px 18px 24px; border-bottom: 0; background: color-mix(in srgb, var(--surface) calc(var(--tone) * 100%), #111729); color: #FCFCFC; font-size: 26px; letter-spacing: 0; text-transform: none; }
+:where(.frame[data-preset="t1a"] td) { font-size: 29px; }
+:where(.frame[data-preset="t1a"] .yes) { background-color: #009688; }
+:where(.frame[data-preset="t1a"] .part) { background-color: #FFC107; }
+:where(.frame[data-preset="t1a"] .no) { background-color: #BDBDBD; }
+:where(.frame[data-preset="t1a"] table:not(.compare) td:first-child) { padding-left: 24px; }
 :where(.frame[data-preset="t1a"] tr.highlight td) { color: var(--foreground); background: var(--surface); }
 
 /* Builds. The viewer sets data-step-hidden on steps not revealed yet; they keep their place, so the

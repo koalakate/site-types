@@ -83,6 +83,7 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - `ol.journey` for stages as pills on a descending staircase joined by elbow arrows, up to about seven; `li.key` marks a milestone.
   - `div.cards.packages` for offers or options: tall outlined cards, each `<p class="meta"><span>Duration</span><span>Price</span></p>`, a line drawing `<div class="art lines"></div>` (`lines`, `bars`, `grid` or `rings`, one per card), `h3` and a short `p`; `card highlight` fills one.
   - `ul.tags` for small outlined pills (industry, technology, scope).
+  - `table.compare` for options side by side: the options as column heads, the features as rows, and `<span class="yes"></span>`, `<span class="part"></span>` or `<span class="no"></span>` in the cells.
 - Use the theme colors in inline SVG and styles through `var(--accent)`, `var(--foreground)`, `var(--muted)`, `var(--surface)` and `var(--border)`, so the slide works in both themes.
 - A `<style>` element inside the section applies only to that slide, and its rules win over the built-in styles. Prefer the layouts and building blocks above.
 - CSS animations and transitions are allowed; they replay each time the slide is shown. Write the base style as the end state and animate only from the start (`@keyframes x { from { opacity: 0 } }`): the overview, the presenter's preview, print and check mode show slides without animation.
@@ -117,7 +118,8 @@ The `t1a` preset is the T1A corporate template; a t1a deck must look like that t
 | Timeline | `ol.timeline`, 3-6 points |
 | Process or journey | `ol.journey`, milestones as `li.key` (teal) |
 | Options or packages | `div.cards.packages`, 3-4 cards, one `card highlight` (purple) |
-| Comparison | `table`, at most 3-4 columns; the header row is navy |
+| Comparison of options | `table.compare` with yes, part and no marks, at most 3-4 columns |
+| Data table | `table`, at most 3-4 columns; the header row is navy |
 | Key message | `statement`, one `strong` phrase |
 | Decision or ask | `center` with `p.eyebrow`, `h2` and `p.lead` |
 
