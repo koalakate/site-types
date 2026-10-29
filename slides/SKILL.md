@@ -83,6 +83,7 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - `ol.journey` for stages as pills on a descending staircase joined by elbow arrows, up to about seven; `li.key` marks a milestone.
   - `div.cards.packages` for offers or options: tall outlined cards, each `<p class="meta"><span>Duration</span><span>Price</span></p>`, a line drawing `<div class="art lines"></div>` (`lines`, `bars`, `grid` or `rings`, one per card), `h3` and a short `p`; `card highlight` fills one.
   - `ul.tags` for small outlined pills (industry, technology, scope).
+  - `div.onepager` on a `blank` slide for the company or a project on one page: four cells between hairlines, `div.brand` (in t1a `<span class="logo"></span>` and a `p` tagline), `div.hero` (a `div.stat`, an optional `p.site` link; add `globe` to the class for a dotted globe), `div.fact` (a `div.stat` and one `p`) and `div.partners` (a `p` label and `ul.logos` with partner names or `img`).
   - `table.compare` for options side by side: the options as column heads, the features as rows, and `<span class="yes"></span>`, `<span class="part"></span>` or `<span class="no"></span>` in the cells.
 - Use the theme colors in inline SVG and styles through `var(--accent)`, `var(--foreground)`, `var(--muted)`, `var(--surface)` and `var(--border)`, so the slide works in both themes.
 - A `<style>` element inside the section applies only to that slide, and its rules win over the built-in styles. Prefer the layouts and building blocks above.
@@ -113,7 +114,8 @@ The `t1a` preset is the T1A corporate template; a t1a deck must look like that t
 | Cover | `title`, dark, H1 and a short `p.lead` |
 | Agenda | dark slide with `ol.agenda`, one `li.active`, no heading, `data-footer="off"` |
 | Part divider | `section` with a `data-story`, light |
-| Company or project in numbers | `div.stats` with 3 stats, `ul.tags` below |
+| Company one-pager | `blank` slide with `div.onepager` |
+| Project in numbers | `div.stats` with 3 stats, `ul.tags` below |
 | Case, or work with a partner | `panel` layout: `div.panel.teal` (Databricks), `.blue` (Azure, Salesforce), `.purple` or `.orange`, holding `<div class="lockup"><span class="logo"></span><span class="x">×</span><span>Partner</span></div>`; then the top cell, `<div><h2>…</h2><ul class="tags">…</ul></div>` with a title of at most about 35 characters (it is set at the template's 144 px) and the tags under it; below the line a short `p`, or `div.cols` with Problem and Solution lists |
 | Timeline | `ol.timeline`, 3-6 points |
 | Process or journey | `ol.journey`, milestones as `li.key` (teal) |
