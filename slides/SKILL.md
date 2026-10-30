@@ -108,6 +108,8 @@ The `t1a` preset is the T1A corporate template; a t1a deck must look like that t
 - `data-story="purple"`, `"teal"`, `"blue"` or `"orange"` on a `title` or `section` slide picks its background: on dark a corner glow with line circles, on light pale spheres at the right edge. Purple is the default. Use one story per section and keep it for the section's divider.
 - The T1A logo appears at the bottom left of every slide by itself. Do not add it, and do not write the company name as a heading or a footer. In a partner lockup, `<span class="logo"></span>` draws it in the lockup's color.
 - Orange is the highlight on light slides only, once per slide: one `strong` in a `statement`, one `.accent` phrase, a `p.callout`. Never write orange text on a dark slide or a dark panel; on dark the accent is teal by itself. Check mode reports `orange-on-dark` as an error.
+- Do not use `data-theme="accent"` in t1a: the template has no full orange slide. Use the `image` layout only with a real photo the user gave; never with a placeholder picture.
+- Draw product screens for `div.laptop` and `div.window` with `var(--background)`, `var(--surface)` and `var(--border)`, so the screen follows a dark slide.
 - Eyebrows, list markers and numbers stay neutral. No italics; bold only for the key point; underline only for links.
 - Map the plan blocks to the template's layouts:
 

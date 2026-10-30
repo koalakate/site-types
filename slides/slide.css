@@ -577,7 +577,7 @@
   border-bottom-width: 22px;
   border-radius: 28px 28px 0 0;
   box-shadow: 0 0 0 3px #C9CCD2;
-  background: #FFFFFF;
+  background: var(--background);
 }
 :where(.laptop)::after {
   content: "";
@@ -787,6 +787,9 @@
 :where(.frame[data-preset="t1a"] .stat) { gap: 6px; padding-top: 0; border-top: 0; }
 :where(.frame[data-preset="t1a"] .stat > span), :where(.frame[data-preset="t1a"] .stat > p) { font-size: 29px; }
 :where(.frame[data-preset="t1a"] .card:not(.highlight, .packages > *)) { border: 0; background: #FFFFFF; box-shadow: 0 10px 40px rgb(17 23 41 / 0.09); --foreground: #111729; --muted: #4A5567; color: #111729; }
+/* On dark, cards are navy panels and the showcase caption strip is the highlight purple. */
+:where(.frame[data-preset="t1a"] .card:not(.highlight, .packages > *)) { background: color-mix(in srgb, #1C2438 calc(var(--tone) * 100%), #FFFFFF); box-shadow: 0 10px 40px rgb(17 23 41 / calc(0.09 + var(--tone) * 0.3)); --foreground: color-mix(in srgb, #FCFCFC calc(var(--tone) * 100%), #111729); --muted: color-mix(in srgb, #A3ACBD calc(var(--tone) * 100%), #4A5567); color: var(--foreground); }
+:where(.frame[data-preset="t1a"] .showcase .band) { background: color-mix(in srgb, #6A1B9A calc(var(--tone) * 100%), var(--foreground)); color: color-mix(in srgb, #FCFCFC calc(var(--tone) * 100%), var(--background)); }
 :where(.frame[data-preset="t1a"][data-layout="quote"] blockquote)::before { background: var(--muted); }
 :where(.frame[data-preset="t1a"] .card.highlight) { background: #6A1B9A; border-color: #6A1B9A; box-shadow: none; --foreground: #FCFCFC; --muted: #E5D6F0; color: #FCFCFC; }
 :where(.frame[data-preset="t1a"] ol.journey > li), :where(.frame[data-preset="t1a"] ul.owners > li)::before { border-color: var(--story-bright); }
