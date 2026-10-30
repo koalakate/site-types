@@ -34,7 +34,7 @@ project/assets/...           images and other media
   - `t1a`: Tier One Analytics, built on the corporate presentation template: light slides, navy covers, DM Sans, the T1A logo on every slide. The house theme: use it when the user does not choose, and follow "The t1a template" below.
   - `secondstack`: SecondStack. Gray and cyan, Geist headings with Inter text, flat cards.
   - `lakesentry`: LakeSentry. Deep navy and blue, heavy Outfit headings with Plus Jakarta Sans text.
-  - `antares`: Antares. Black, white and one blue, Helvetica.
+  - `antares`: Antares. White slides and Helvetica; a short `p.eyebrow` first on a slide is its label at the top left, and the deck title sits at the top right. `p.lead` and `statement` text is a quiet gray with the key phrases in `strong`; blue marks numbers and charts; the cover and dividers sit on a soft orange-and-blue gradient.
   - `swiss`: minimal Swiss style. Black, white and red, Inter Tight, square corners.
 
   When the user names a brand or a style that matches a preset, use it without asking; otherwise follow "Theme and plan" below.
