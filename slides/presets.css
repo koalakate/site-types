@@ -117,39 +117,57 @@
 }
 
 :root[data-preset="lakesentry"] {
-  --l-background: #FCFCFC; --l-surface: #FFFFFF; --l-foreground: #0F172A; --l-muted: #64748B;
-  --l-accent: #0A5EB5; --l-on-accent: #F0F6FE; --l-border: #E2E8F0;
-  --d-background: #001233; --d-surface: #001845; --d-foreground: #FFFFFF; --d-muted: #8B9CC7;
-  --d-accent: #5B9BFF; --d-on-accent: #001233; --d-border: #162746;
+  --l-logo-img: url("/_type/brand/lakesentry-logo.svg"); --d-logo-img: url("/_type/brand/lakesentry-logo-inverted.svg");
+  --l-background: #FFFFFF; --l-surface: #FFFFFF; --l-foreground: #101729; --l-muted: #5B6478;
+  --l-accent: #4F6BD8; --l-on-accent: #FFFFFF; --l-border: #E3E7EE;
+  --d-background: #001233; --d-surface: #0A1F4A; --d-foreground: #FFFFFF; --d-muted: #A3B0D3;
+  --d-accent: #7D97F0; --d-on-accent: #001233; --d-border: #1C3160;
   --font-display: "Outfit Variable", "Inter Variable", var(--font-fallback);
-  --font-body: "Plus Jakarta Sans Variable", "Inter Variable", var(--font-fallback);
-  --heading-weight-shift: 100;
-  --heading-tracking: 0.8;
-  --radius-scale: 0.45;
-  --eyebrow-tracking: 0.15em;
+  --font-body: "Inter Variable", var(--font-fallback);
+  --font-lead: "Plus Jakarta Sans Variable", "Inter Variable", var(--font-fallback);
+  --heading-weight-shift: 50;
+  --heading-tracking: 0.6;
+  --radius-scale: 0.5;
+  --eyebrow-tracking: 0.04em;
+  /* Lead text is lavender gray with the key phrases in strong; red and green mark one number or word. */
+  --l-lead: #A1A1B4; --d-lead: #7F8DB8;
+  --l-signal: #BC473B; --d-signal: #FF7A6B;
+  --l-good: #2E9E5B; --d-good: #4ACB7E;
 }
+:root[data-preset="lakesentry"][data-scheme="light"] { --s-logo-img: var(--l-logo-img); --s-lead: var(--l-lead); --s-signal: var(--l-signal); --s-good: var(--l-good); }
+:root[data-preset="lakesentry"][data-scheme="dark"] { --s-logo-img: var(--d-logo-img); --s-lead: var(--d-lead); --s-signal: var(--d-signal); --s-good: var(--d-good); }
 
 :root[data-preset="antares"] {
-  --l-background: #FFFFFF; --l-surface: #FAFAFA; --l-foreground: #0A0A0A; --l-muted: #525252;
-  --l-accent: #2563EB; --l-on-accent: #FFFFFF; --l-border: #E5E5E5;
-  --d-background: #0A0A0A; --d-surface: #171717; --d-foreground: #FAFAFA; --d-muted: #B3B3B3;
-  --d-accent: #2563EB; --d-on-accent: #FFFFFF; --d-border: #262626;
+  --l-background: #FFFFFF; --l-surface: #F5F5F7; --l-foreground: #000000; --l-muted: #6E6E80;
+  --l-accent: #3A6FE6; --l-on-accent: #FFFFFF; --l-border: #DCDCE2;
+  --d-background: #0A0A0A; --d-surface: #17171A; --d-foreground: #FAFAFA; --d-muted: #A1A1B4;
+  --d-accent: #4E82EE; --d-on-accent: #0A0A0A; --d-border: #2C2C33;
   --font-display: "Helvetica Neue", Helvetica, Arial, "Inter Variable", sans-serif;
   --font-body: "Helvetica Neue", Helvetica, Arial, "Inter Variable", sans-serif;
   --heading-weight-shift: 50;
-  --heading-tracking: 1.2;
-  --radius-scale: 0.5;
-  --eyebrow-tracking: 0.08em;
+  --heading-tracking: 0.6;
+  --radius-scale: 0.6;
+  --eyebrow-tracking: 0;
+  /* Lead and statement text is this quiet gray, with the key phrases in strong at full contrast. */
+  --l-quiet: #A1A1B4; --d-quiet: #6A6A7C;
+  /* The cover gradient: a gray mist with a pale glow; orange and blue corners stay in both schemes. */
+  --l-mist: #C4C7CF; --d-mist: #17181D; --l-haze: #8E929C; --d-haze: #2E3038; --l-glow: #FFFFFF; --d-glow: #4A4E5C;
 }
+:root[data-preset="antares"][data-scheme="light"] { --s-quiet: var(--l-quiet); --s-mist: var(--l-mist); --s-haze: var(--l-haze); --s-glow: var(--l-glow); }
+:root[data-preset="antares"][data-scheme="dark"] { --s-quiet: var(--d-quiet); --s-mist: var(--d-mist); --s-haze: var(--d-haze); --s-glow: var(--d-glow); }
 
 :root[data-preset="swiss"] {
-  --l-background: #FFFFFF; --l-surface: #F2F2F2; --l-foreground: #000000; --l-muted: #5C5C5C;
-  --l-accent: #E30613; --l-on-accent: #FFFFFF; --l-border: #D6D6D6;
-  --d-background: #0A0A0A; --d-surface: #1A1A1A; --d-foreground: #FFFFFF; --d-muted: #A3A3A3;
-  --d-accent: #FF3B3B; --d-on-accent: #0A0A0A; --d-border: #333333;
+  --l-background: #FFFFFF; --l-surface: #F4F4F6; --l-foreground: #0A0A0A; --l-muted: #6B6B76;
+  --l-accent: #6C5CE7; --l-on-accent: #FFFFFF; --l-border: #E2E2E6;
+  --d-background: #0A0A0A; --d-surface: #18181B; --d-foreground: #FFFFFF; --d-muted: #A0A0AB;
+  --d-accent: #9086F2; --d-on-accent: #0A0A0A; --d-border: #2E2E33;
   --font-display: "Inter Tight Variable", "Inter Variable", var(--font-fallback);
-  --heading-weight-shift: 50;
-  --heading-tracking: 1.1;
+  --heading-weight-shift: 100;
+  --heading-tracking: 0.85;
   --radius-scale: 0;
-  --eyebrow-tracking: 0.1em;
+  --eyebrow-tracking: 0;
+  /* --*-tone is 1 on dark: the glow behind covers in slide.css. */
+  --l-tone: 0; --d-tone: 1;
 }
+:root[data-preset="swiss"][data-scheme="light"] { --s-tone: var(--l-tone); }
+:root[data-preset="swiss"][data-scheme="dark"] { --s-tone: var(--d-tone); }

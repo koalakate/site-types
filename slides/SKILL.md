@@ -1,4 +1,4 @@
-# Slides with t1a themes 1.4.0
+# Slides with t1a themes 1.5.0
 
 A Slides site is a presentation. The viewer is part of the site type: it shows each slide in a 16:9 frame, with keyboard and touch navigation, an overview, a presenter window with notes and a timer, fullscreen, light and dark themes and print to PDF. You write only the deck data: one JSON file and one HTML fragment per slide. Do not write `index.html`, CSS files or JavaScript.
 
@@ -33,9 +33,9 @@ project/assets/...           images and other media
 - `theme` sets the look. `preset` picks one of the built-in themes, each with its own colors for light and dark and its own fonts:
   - `t1a`: Tier One Analytics, built on the corporate presentation template: light slides, navy covers, DM Sans, the T1A logo on every slide. The house theme: use it when the user does not choose, and follow "The t1a template" below.
   - `secondstack`: SecondStack. Gray and cyan, Geist headings with Inter text, flat cards.
-  - `lakesentry`: LakeSentry. Deep navy and blue, heavy Outfit headings with Plus Jakarta Sans text.
-  - `antares`: Antares. Black, white and one blue, Helvetica.
-  - `swiss`: minimal Swiss style. Black, white and red, Inter Tight, square corners.
+  - `lakesentry`: LakeSentry. White slides, navy Outfit titles, Inter text, periwinkle blue; dark is deep navy. Start content slides with a `p.eyebrow` ("The problem"), it sits at the top left and the deck title at the top right. Write `p.lead` as a lavender-gray sentence with the key phrases in `strong`. On the cover, wrap the last line of the `h1` in `span.accent` and add a `div.window` with the product screen last. `em` in a heading is red, for one word; `.good` makes one money number green. The red lighthouse stands at the bottom right of every slide by itself; `<span class="logo">LakeSentry</span>` first on the cover or the closing slide draws the logo, inverted on dark.
+  - `antares`: Antares. White slides and Helvetica; `<span class="logo">antares</span>` draws the wordmark in the text color (on the cover put it in the `h1`); a short `p.eyebrow` first on a slide is its label at the top left, and the deck title sits at the top right. `p.lead` and `statement` text is a quiet gray with the key phrases in `strong`; blue marks numbers and charts; the cover and dividers sit on a soft orange-and-blue gradient.
+  - `swiss`: minimal Swiss style. Monochrome with one violet accent, tight Inter Tight headings, square corners; section dividers are always dark with a soft gray glow.
 
   When the user names a brand or a style that matches a preset, use it without asking; otherwise follow "Theme and plan" below.
 
@@ -74,7 +74,7 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - `div.cols` puts its children side by side in equal columns; add `wide-left` or `wide-right` for 3:2, `middle` to center them vertically.
   - `div.cards` with `div.card` children (`h3` + `p`); `card highlight` marks one.
   - `div.stats` with `div.stat` children: `<strong>42%</strong><span>label</span>`.
-  - `ol.steps` for a numbered process: `<li><strong>Step</strong>Description</li>`.
+  - `ol.steps` for a numbered process: `<li><strong>Step</strong>Description</li>`. `ol.steps.numerals` sets large pale numbers 01, 02, 03 above each step instead of the small discs.
   - `p.callout` or `div.callout` for a key takeaway. `ul.check` for a checklist, `ul.plain` without markers.
   - `.grow` makes an element take the remaining height; `.bottom` pushes it to the bottom; `figure.fill` makes an image fill the remaining space.
   - `td.num` / `th.num` align numbers right; `tr.highlight` emphasizes a row.
@@ -84,6 +84,7 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - `div.cards.packages` for offers or options: tall outlined cards, each `<p class="meta"><span>Duration</span><span>Price</span></p>`, a line drawing `<div class="art lines"></div>` (`lines`, `bars`, `grid` or `rings`, one per card), `h3` and a short `p`; `card highlight` fills one.
   - `ul.tags` for small outlined pills (industry, technology, scope).
   - `div.onepager` on a `blank` slide for the company or a project on one page: four cells between hairlines, `div.brand` (in t1a `<span class="logo"></span>` and a `p` tagline), `div.hero` (a `div.stat`, an optional `p.site` link; in t1a add `globe` to the class for the t1a.com globe with the office pins), `div.fact` (a `div.stat` and one `p`) and `div.partners` (a `p` label and `ul.logos` with one partner logo `img` per item, from `project/assets/`).
+  - `div.window` frames one `img`, inline `svg` or `iframe` as a product screen in a browser window with three dots.
   - `div.showcase` for a product on a laptop with the key numbers beside it: the first child is a `div` with a `p.band` caption on a dark strip from the slide edge and a `div.stats` of up to 3 stats stacked; the second child is `div.laptop` holding one `img`, inline `svg` or `iframe` as the screen (16:10). Draw a product screen as inline SVG in the product's own colors and say in the notes when it is an illustration.
   - `table.compare` for options side by side: the options as column heads, the features as rows, and `<span class="yes"></span>`, `<span class="part"></span>` or `<span class="no"></span>` in the cells.
 - Use the theme colors in inline SVG and styles through `var(--accent)`, `var(--foreground)`, `var(--muted)`, `var(--surface)` and `var(--border)`, so the slide works in both themes.
@@ -164,7 +165,7 @@ Before you write anything, settle the theme and the plan with the user through `
 
 ## Build a deck
 
-1. Call `site_types` with `name="t1a-slides"`. Use the exact `type` it reports, for example `t1a-slides@1.4.0`, in every call below.
+1. Call `site_types` with `name="t1a-slides"`. Use the exact `type` it reports, for example `t1a-slides@1.5.0`, in every call below.
 2. Turn the answered plan into the slide ids, one idea per slide, grouped into sections by block. Start with a `title` slide and end with the decision or ask.
 3. Write `project/deck.json` with the complete `order` first, then the slide files one by one. The viewer shows a placeholder for each listed slide whose file does not exist yet and fills it when the file appears, so you can publish early and keep writing.
 4. Preview and check (below), fix every error, then publish.
@@ -173,7 +174,7 @@ Before you write anything, settle the theme and the plan with the user through `
 
 The workspace cannot open the published site. Check the deck locally with the viewer package:
 
-1. Call `import_site` with `type="t1a-slides@1.4.0"` and a new directory, for example `/workspace/sites/<name>-preview/`. It contains `index.html` and `_type/`.
+1. Call `import_site` with `type="t1a-slides@1.5.0"` and a new directory, for example `/workspace/sites/<name>-preview/`. It contains `index.html` and `_type/`.
 2. Copy the deck data into it, replacing any earlier copy, so deleted files do not linger: `rm -rf /workspace/sites/<name>-preview/project && cp -r /workspace/sites/<name>/project /workspace/sites/<name>-preview/`. Repeat after each change. Never publish the preview directory.
 3. Serve it: `python3 -m http.server 8765 --bind 127.0.0.1 --directory /workspace/sites/<name>-preview` in the background.
 4. Open `http://127.0.0.1:8765/?check=1` in the workspace browser. Check mode lists every slide with its issues and outlines overflowing elements. When `document.documentElement.dataset.slidesCheck` is `"done"`, the full report is the JSON text of `#slides-check-report` and the `[slides-check]` console line. `ok` is `false` while any error remains. While slides are still missing, the browser console also shows 404 errors for their files; that is expected.
@@ -181,7 +182,7 @@ The workspace cannot open the published site. Check the deck locally with the vi
 
 ## Publish
 
-- Publish the data directory, `/workspace/sites/<name>/`, which holds `project/` and optionally `_spot.json`, with `publish_site(path=..., site=<name>, type="t1a-slides@1.4.0")`. It needs no `index.html`; never include the preview files. Leave `type_target` empty.
+- Publish the data directory, `/workspace/sites/<name>/`, which holds `project/` and optionally `_spot.json`, with `publish_site(path=..., site=<name>, type="t1a-slides@1.5.0")`. It needs no `index.html`; never include the preview files. Leave `type_target` empty.
 - Only files under `project/` and `_spot.json` belong in it. Publishing refuses other files and names the first offending path; every `.json` file must be valid JSON.
 - An edit of an existing deck starts with `import_site(site=<name>, path=<empty directory>)`, which reports the exact type to publish with. Edit, check and publish with that `type`. A pin mismatch error (409) means the site now pins another version: import it again and redo the edit there.
 - Give the user the link with one sentence on what the deck covers. The presenter view opens with `S`, the overview with `O`, fullscreen with `F`; browser print saves a PDF with one page per slide. The link `<site>/?print` opens the print dialog as soon as the deck has loaded, so you can hand the user a one-click PDF link. The link `<site>/?present` shows a "Start presenting" button that opens the deck fullscreen at slide 1, so you can hand the user a one-click presenting link.

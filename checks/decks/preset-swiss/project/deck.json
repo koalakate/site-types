@@ -1,13 +1,21 @@
 {
   "v": 1,
-  "title": "Preset swiss",
+  "title": "Information design agency",
   "lang": "en",
   "order": [
     "cover",
+    "problem",
+    "section-research",
+    "approach",
     "content",
     "cards",
+    "numbers",
+    "options",
     "statement"
   ],
+  "sections": {
+    "research": { "title": "Market research", "start": "section-research" }
+  },
   "theme": {
     "preset": "swiss"
   }
