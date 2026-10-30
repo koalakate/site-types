@@ -1,12 +1,16 @@
 {
   "v": 1,
-  "title": "Preset antares",
+  "title": "getantares.io",
   "lang": "en",
   "order": [
     "cover",
-    "content",
-    "cards",
-    "statement"
+    "challenge",
+    "why",
+    "analyzer",
+    "converter",
+    "architecture",
+    "migrate",
+    "options"
   ],
   "theme": {
     "preset": "antares"
