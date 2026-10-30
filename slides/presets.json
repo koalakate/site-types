@@ -1,7 +1,7 @@
 [
   { "key": "t1a", "name": "t1a", "note": "The corporate template: light slides, navy covers, DM Sans", "scheme": "light" },
   { "key": "secondstack", "name": "SecondStack", "note": "Gray and cyan, Geist and Inter, flat cards", "scheme": "light" },
-  { "key": "lakesentry", "name": "LakeSentry", "note": "Deep navy and blue, Outfit and Plus Jakarta Sans", "scheme": "dark" },
+  { "key": "lakesentry", "name": "LakeSentry", "note": "White and navy with periwinkle blue, Outfit and Inter", "scheme": "light" },
   { "key": "antares", "name": "Antares", "note": "White and black, quiet gray lead text, one blue, Helvetica, gradient cover", "scheme": "light" },
   { "key": "swiss", "name": "Swiss", "note": "Monochrome Swiss grid, one violet accent, tight Inter Tight, dark section dividers", "scheme": "light" }
 ]
