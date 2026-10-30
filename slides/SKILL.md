@@ -80,10 +80,11 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - `td.num` / `th.num` align numbers right; `tr.highlight` emphasizes a row.
   - `ol.agenda` for an agenda: large numbered items; `li.active` marks the part about to start and dims the others.
   - `ol.timeline` for dates on a line: `<li><strong>Week 1-2</strong>What happens</li>`; `li.done` checks a step off, `li.key` highlights the key result.
-  - `ol.journey` for stages as pills on a descending staircase joined by elbow arrows, up to about seven; `li.key` marks a milestone.
+  - `ol.journey` for stages as pills on a descending staircase joined by elbow arrows, up to about seven. The outline color says who does the stage: plain pills are ours (purple in t1a), `li.partner` (teal in t1a) is done by the partner or the client. Use `li.partner` only when the work is split, and then add `ul.owners` after the list, `<li>T1A</li><li class="partner">Partner</li>`, as the legend. Never use the color for milestones.
   - `div.cards.packages` for offers or options: tall outlined cards, each `<p class="meta"><span>Duration</span><span>Price</span></p>`, a line drawing `<div class="art lines"></div>` (`lines`, `bars`, `grid` or `rings`, one per card), `h3` and a short `p`; `card highlight` fills one.
   - `ul.tags` for small outlined pills (industry, technology, scope).
   - `div.onepager` on a `blank` slide for the company or a project on one page: four cells between hairlines, `div.brand` (in t1a `<span class="logo"></span>` and a `p` tagline), `div.hero` (a `div.stat`, an optional `p.site` link; in t1a add `globe` to the class for the t1a.com globe with the office pins), `div.fact` (a `div.stat` and one `p`) and `div.partners` (a `p` label and `ul.logos` with one partner logo `img` per item, from `project/assets/`).
+  - `div.showcase` for a product on a laptop with the key numbers beside it: the first child is a `div` with a `p.band` caption on a dark strip from the slide edge and a `div.stats` of up to 3 stats stacked; the second child is `div.laptop` holding one `img`, inline `svg` or `iframe` as the screen (16:10). Draw a product screen as inline SVG in the product's own colors and say in the notes when it is an illustration.
   - `table.compare` for options side by side: the options as column heads, the features as rows, and `<span class="yes"></span>`, `<span class="part"></span>` or `<span class="no"></span>` in the cells.
 - Use the theme colors in inline SVG and styles through `var(--accent)`, `var(--foreground)`, `var(--muted)`, `var(--surface)` and `var(--border)`, so the slide works in both themes.
 - A `<style>` element inside the section applies only to that slide, and its rules win over the built-in styles. Prefer the layouts and building blocks above.
@@ -115,10 +116,11 @@ The `t1a` preset is the T1A corporate template; a t1a deck must look like that t
 | Agenda | dark slide with `ol.agenda`, one `li.active`, no heading, `data-footer="off"` |
 | Part divider | `section` with a `data-story`, light |
 | Company one-pager | `blank` slide with `div.onepager` |
+| Product or app with key numbers | `div.showcase`: the h2, a `p.band` caption, 3 stats, the screen on `div.laptop` |
 | Project in numbers | `div.stats` with 3 stats, `ul.tags` below |
 | Case, or work with a partner | `panel` layout: `div.panel.teal` (Databricks), `.blue` (Azure, Salesforce), `.purple` or `.orange`, holding `<div class="lockup"><span class="logo"></span><span class="x">×</span><span>Partner</span></div>`; then the top cell, `<div><h2>…</h2><ul class="tags">…</ul></div>` with a title of at most about 35 characters (it is set at the template's 144 px) and the tags under it; below the line a short `p`, or `div.cols` with Problem and Solution lists |
 | Timeline | `ol.timeline`, 3-6 points |
-| Process or journey | `ol.journey`, milestones as `li.key` (teal) |
+| Process or journey | `ol.journey`; stages the partner or the client does as `li.partner` (teal) with a `ul.owners` legend; all purple when T1A does everything |
 | Options or packages | `div.cards.packages`, 3-4 cards, one `card highlight` (purple) |
 | Comparison of options | `table.compare` with yes, part and no marks, at most 3-4 columns |
 | Data table | `table`, at most 3-4 columns; the header row is navy |

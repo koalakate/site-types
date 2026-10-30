@@ -1721,7 +1721,7 @@ function waitForMedia(frame) {
   return Promise.race([Promise.all(pending), new Promise((resolve) => setTimeout(resolve, 8000))]);
 }
 
-const BLEED = ':is([data-layout="image"]) > section > :is(img, figure, video):first-child, :is([data-layout="split"]) > section > :is(img, figure, video, svg, .media):last-child, :is([data-layout="panel"]) > section > .panel:first-child';
+const BLEED = ':is([data-layout="image"]) > section > :is(img, figure, video):first-child, :is([data-layout="split"]) > section > :is(img, figure, video, svg, .media):last-child, :is([data-layout="panel"]) > section > .panel:first-child, .showcase .band, .showcase > .laptop';
 
 // Computed colors come as rgb() or color(srgb ...); either gives [r, g, b, a] in 0..1.
 function rgba(value) {
