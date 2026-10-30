@@ -790,6 +790,79 @@
 :where(.frame[data-preset="t1a"] table:not(.compare) td:first-child) { padding-left: 24px; }
 :where(.frame[data-preset="t1a"] tr.highlight td) { color: var(--foreground); background: var(--surface); }
 
+/* swiss: a monochrome grid with one accent. Labels are small and plain, the deck label and the page
+   number sit at the top, rules are hairlines in the foreground color, and color appears only with intent.
+   Section dividers are always dark with a soft gray glow; covers follow the scheme. */
+
+:where(.frame[data-preset="swiss"]) {
+  font-feature-settings: "ss01", "cv11";
+  /* Accent slides are the full violet with white text in both schemes. */
+  --s-accent-fill: var(--l-accent);
+  --s-on-accent-fill: var(--l-on-accent);
+}
+.frame[data-preset="swiss"] .frame-footer { top: 52px; bottom: auto; color: var(--foreground); font-weight: 500; }
+:where(.frame[data-preset="swiss"] .eyebrow) { font-size: 26px; font-weight: 600; text-transform: none; color: var(--foreground); }
+:where(.frame[data-preset="swiss"] :is(h1, h2, h3)), :where(.frame[data-preset="swiss"][data-layout="statement"] section > p) { word-spacing: 0.06em; }
+:where(.frame[data-preset="swiss"] h2) { font-size: 84px; line-height: 1.02; }
+:where(.frame[data-preset="swiss"] h3) { font-size: 40px; }
+:where(.frame[data-preset="swiss"] .lead) { color: var(--muted); font-weight: 500; }
+:where(.frame[data-preset="swiss"] .lead :is(strong, b)) { color: var(--foreground); font-weight: 650; }
+:where(.frame[data-preset="swiss"] ul:not(.check, .plain, .tags, .owners, .logos) > li)::before { top: 0.68em; width: 18px; height: 3px; border-radius: 0; background: var(--foreground); }
+:where(.frame[data-preset="swiss"] li > ul:not(.check, .plain, .tags, .owners, .logos) > li)::before { width: 10px; height: 10px; top: 0.5em; border: 0; border-radius: 0; background: var(--muted); }
+:where(.frame[data-preset="swiss"] ol:not(.agenda, .steps, .timeline, .journey) > li)::before { color: var(--foreground); }
+:where(.frame[data-preset="swiss"] ol.steps > li)::before { width: 44px; height: 44px; font-size: 22px; font-weight: 600; }
+:where(.frame[data-preset="swiss"] ol.steps > li)::after { content: none; }
+:where(.frame[data-preset="swiss"] ol.steps > li) { padding-top: 76px; font-size: 30px; }
+:where(.frame[data-preset="swiss"] ol.steps > li > strong) { font-size: 38px; }
+:where(.frame[data-preset="swiss"] .stat) { padding-top: 28px; border-top: 2px solid var(--foreground); }
+:where(.frame[data-preset="swiss"] .card) { padding: 32px 0 0; background: none; border: 0; border-top: 2px solid var(--foreground); }
+:where(.frame[data-preset="swiss"] .cards) { --ink: var(--foreground); --paper: var(--background); }
+:where(.frame[data-preset="swiss"] .card.highlight) { padding: 32px 36px 40px; border-top-color: var(--ink); box-shadow: none; background: var(--ink); color: var(--paper); --foreground: var(--paper); --muted: color-mix(in oklab, var(--paper) 70%, var(--ink)); }
+:where(.frame[data-preset="swiss"] .callout) { border-left-width: 4px; }
+:where(.frame[data-preset="swiss"] blockquote) { border-left: 4px solid var(--foreground); }
+:where(.frame[data-preset="swiss"] th) { font-size: 24px; letter-spacing: 0; text-transform: none; color: var(--foreground); }
+:where(.frame[data-preset="swiss"] tr.highlight td) { color: var(--foreground); background: var(--surface); }
+:where(.frame[data-preset="swiss"] code) { border: 0; }
+:where(.frame[data-preset="swiss"] ul.tags > li) { border-width: 1.5px; font-size: 22px; }
+:where(.frame[data-preset="swiss"] mark) { border-radius: 0; }
+
+/* The statement reads like the references' problem slides: muted text, the point in strong or em. */
+:where(.frame[data-preset="swiss"][data-layout="statement"]:not([data-theme="accent"])) :where(h2, section > p:not(.eyebrow, .small, .muted, .meta)) { color: var(--muted); font-weight: 700; font-size: 80px; line-height: 1.12; max-width: 20em; }
+:where(.frame[data-preset="swiss"][data-layout="statement"]:not([data-theme="accent"])) :where(em, strong, .accent) { color: var(--foreground); }
+:where(.frame[data-preset="swiss"][data-layout="statement"]:not([data-theme="accent"]) > section) { justify-content: flex-start; padding-top: 200px; }
+:where(.frame[data-preset="swiss"][data-layout="quote"] blockquote)::before { background: var(--foreground); }
+
+/* Covers: the title huge and tight at the bottom left, no accent bar. */
+:where(.frame[data-preset="swiss"][data-layout="title"] > section)::before { content: none; }
+:where(.frame[data-preset="swiss"][data-layout="title"] > section) { padding-top: 52px; padding-bottom: 128px; }
+:where(.frame[data-preset="swiss"][data-layout="title"] h1) { font-size: 216px; line-height: 0.92; letter-spacing: -0.045em; word-spacing: 0.1em; max-width: 9em; }
+:where(.frame[data-preset="swiss"][data-layout="title"] .lead) { font-size: 40px; max-width: 30em; }
+:where(.frame[data-preset="swiss"][data-layout="title"] .eyebrow) { position: absolute; top: 52px; left: 128px; margin: 0; font-size: 26px; }
+:where(.frame[data-preset="swiss"][data-layout="title"] .meta) { position: absolute; top: 52px; right: 128px; margin: 0; color: var(--foreground); }
+
+/* Section dividers: dark in both schemes, a soft light glow as in the agency's plan deck. */
+:where(.frame[data-preset="swiss"][data-layout="section"]) {
+  --background: var(--d-background); --surface: var(--d-surface); --foreground: var(--d-foreground);
+  --muted: var(--d-muted); --accent: var(--d-accent); --on-accent: var(--d-on-accent); --border: var(--d-border);
+}
+:where(.frame[data-preset="swiss"]) { --tone: var(--s-tone); }
+:where(.frame[data-preset="swiss"][data-theme="light"]), :where(.frame[data-preset="swiss"][data-theme="accent"]) { --tone: 0; }
+:where(.frame[data-preset="swiss"][data-theme="dark"]), :where(.frame[data-preset="swiss"][data-layout="section"]) { --tone: 1; }
+:where(.frame[data-preset="swiss"]:is([data-layout="title"], [data-layout="section"]))::before {
+  inset: -120px;
+  opacity: var(--tone);
+  background:
+    radial-gradient(30% 52% at 46% 32%, rgb(236 236 240 / 0.6), transparent 72%),
+    radial-gradient(28% 44% at 62% 54%, rgb(150 156 172 / 0.4), transparent 74%),
+    radial-gradient(55% 65% at 95% 105%, rgb(88 96 120 / 0.36), transparent 70%);
+  filter: blur(40px);
+}
+:where(.frame[data-preset="swiss"]:is([data-layout="title"], [data-layout="section"]) > section) { isolation: isolate; }
+:where(.frame[data-preset="swiss"][data-layout="section"] > section) { justify-content: flex-end; padding-bottom: 148px; }
+:where(.frame[data-preset="swiss"][data-layout="section"] h2) { font-size: 176px; line-height: 0.95; font-weight: 500; letter-spacing: -0.045em; max-width: 9em; }
+:where(.frame[data-preset="swiss"][data-layout="section"] .eyebrow) { color: var(--muted); font-weight: 500; }
+:where(.frame[data-preset="swiss"][data-layout="section"] .lead) { font-size: 32px; max-width: 26em; color: var(--muted); }
+
 /* Builds. The viewer sets data-step-hidden on steps not revealed yet; they keep their place, so the
    layout does not move. Stills never set it. A slide's own rules for [data-step] and
    [data-step-hidden] win, so an author can change the effect. Revealed steps look exactly as

@@ -35,7 +35,7 @@ project/assets/...           images and other media
   - `secondstack`: SecondStack. Gray and cyan, Geist headings with Inter text, flat cards.
   - `lakesentry`: LakeSentry. Deep navy and blue, heavy Outfit headings with Plus Jakarta Sans text.
   - `antares`: Antares. Black, white and one blue, Helvetica.
-  - `swiss`: minimal Swiss style. Black, white and red, Inter Tight, square corners.
+  - `swiss`: minimal Swiss style. Monochrome with one violet accent, tight Inter Tight headings, square corners; section dividers are always dark with a soft gray glow.
 
   When the user names a brand or a style that matches a preset, use it without asking; otherwise follow "Theme and plan" below.
 
