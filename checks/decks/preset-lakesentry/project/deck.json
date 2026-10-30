@@ -1,12 +1,16 @@
 {
   "v": 1,
-  "title": "Preset lakesentry",
+  "title": "lakesentry.io",
   "lang": "en",
   "order": [
     "cover",
-    "content",
-    "cards",
-    "statement"
+    "problem",
+    "solution",
+    "impact",
+    "how",
+    "teams",
+    "pricing",
+    "start"
   ],
   "theme": {
     "preset": "lakesentry"

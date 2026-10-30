@@ -33,7 +33,7 @@ project/assets/...           images and other media
 - `theme` sets the look. `preset` picks one of the built-in themes, each with its own colors for light and dark and its own fonts:
   - `t1a`: Tier One Analytics, built on the corporate presentation template: light slides, navy covers, DM Sans, the T1A logo on every slide. The house theme: use it when the user does not choose, and follow "The t1a template" below.
   - `secondstack`: SecondStack. Gray and cyan, Geist headings with Inter text, flat cards.
-  - `lakesentry`: LakeSentry. Deep navy and blue, heavy Outfit headings with Plus Jakarta Sans text.
+  - `lakesentry`: LakeSentry. White slides, navy Outfit titles, Inter text, periwinkle blue; dark is deep navy. Start content slides with a `p.eyebrow` ("The problem"), it sits at the top left and the deck title at the top right. Write `p.lead` as a lavender-gray sentence with the key phrases in `strong`. On the cover, wrap the last line of the `h1` in `span.accent` and add a `div.window` with the product screen last. `em` in a heading is red, for one word; `.good` makes one money number green.
   - `antares`: Antares. Black, white and one blue, Helvetica.
   - `swiss`: minimal Swiss style. Black, white and red, Inter Tight, square corners.
 
@@ -74,7 +74,7 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - `div.cols` puts its children side by side in equal columns; add `wide-left` or `wide-right` for 3:2, `middle` to center them vertically.
   - `div.cards` with `div.card` children (`h3` + `p`); `card highlight` marks one.
   - `div.stats` with `div.stat` children: `<strong>42%</strong><span>label</span>`.
-  - `ol.steps` for a numbered process: `<li><strong>Step</strong>Description</li>`.
+  - `ol.steps` for a numbered process: `<li><strong>Step</strong>Description</li>`. `ol.steps.numerals` sets large pale numbers 01, 02, 03 above each step instead of the small discs.
   - `p.callout` or `div.callout` for a key takeaway. `ul.check` for a checklist, `ul.plain` without markers.
   - `.grow` makes an element take the remaining height; `.bottom` pushes it to the bottom; `figure.fill` makes an image fill the remaining space.
   - `td.num` / `th.num` align numbers right; `tr.highlight` emphasizes a row.
@@ -84,6 +84,7 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - `div.cards.packages` for offers or options: tall outlined cards, each `<p class="meta"><span>Duration</span><span>Price</span></p>`, a line drawing `<div class="art lines"></div>` (`lines`, `bars`, `grid` or `rings`, one per card), `h3` and a short `p`; `card highlight` fills one.
   - `ul.tags` for small outlined pills (industry, technology, scope).
   - `div.onepager` on a `blank` slide for the company or a project on one page: four cells between hairlines, `div.brand` (in t1a `<span class="logo"></span>` and a `p` tagline), `div.hero` (a `div.stat`, an optional `p.site` link; in t1a add `globe` to the class for the t1a.com globe with the office pins), `div.fact` (a `div.stat` and one `p`) and `div.partners` (a `p` label and `ul.logos` with one partner logo `img` per item, from `project/assets/`).
+  - `div.window` frames one `img`, inline `svg` or `iframe` as a product screen in a browser window with three dots.
   - `div.showcase` for a product on a laptop with the key numbers beside it: the first child is a `div` with a `p.band` caption on a dark strip from the slide edge and a `div.stats` of up to 3 stats stacked; the second child is `div.laptop` holding one `img`, inline `svg` or `iframe` as the screen (16:10). Draw a product screen as inline SVG in the product's own colors and say in the notes when it is an illustration.
   - `table.compare` for options side by side: the options as column heads, the features as rows, and `<span class="yes"></span>`, `<span class="part"></span>` or `<span class="no"></span>` in the cells.
 - Use the theme colors in inline SVG and styles through `var(--accent)`, `var(--foreground)`, `var(--muted)`, `var(--surface)` and `var(--border)`, so the slide works in both themes.

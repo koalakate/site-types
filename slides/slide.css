@@ -234,6 +234,8 @@
 :where(.cols.wide-right) { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
 :where(.cols.middle) { align-items: center; }
 :where(.cols > *) { display: flex; flex-direction: column; gap: 28px; min-width: 0; }
+/* Text set straight in a column keeps its inline flow; inline strong and em must not become flex items. */
+:where(.cols > :is(p, h1, h2, h3, h4)) { display: block; }
 
 :where(.cards) { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 32px; }
 :where(.card) {
@@ -292,6 +294,22 @@
 }
 :where(ol.steps > li:last-child)::after { content: none; }
 :where(ol.steps > li > strong) { display: block; margin-bottom: 10px; font-size: 36px; line-height: 1.2; color: var(--foreground); }
+:where(ol.steps.numerals > li) { padding-top: 160px; }
+:where(ol.steps.numerals > li)::before {
+  content: counter(item, decimal-leading-zero);
+  width: auto;
+  height: auto;
+  display: block;
+  border-radius: 0;
+  background: none;
+  color: color-mix(in oklab, var(--foreground) 12%, var(--background));
+  font-family: var(--font-display);
+  font-size: 160px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+:where(ol.steps.numerals > li)::after { content: none; }
 
 :where(.callout) {
   padding: 34px 44px;
@@ -583,6 +601,26 @@
   background: #B9BCC2;
 }
 
+/* Window: a product screen in a browser frame, three dots on a top bar. Holds one img, svg or iframe. */
+:where(.window) {
+  position: relative;
+  min-width: 0;
+  padding-top: 44px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: calc(24px * var(--radius-scale));
+}
+:where(.window)::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 44px;
+  border-bottom: 1px solid var(--border);
+  background: radial-gradient(circle 7px at 28px 50%, #FF5F57 6px, transparent 7px), radial-gradient(circle 7px at 52px 50%, #FEBC2E 6px, transparent 7px), radial-gradient(circle 7px at 76px 50%, #28C840 6px, transparent 7px), var(--background);
+}
+:where(.window > :is(img, svg, iframe, video)) { display: block; width: 100%; height: auto; border-radius: 0; }
+
 /* Status marks for comparisons: yes, partly, no. */
 :where(.yes, .part, .no) { display: inline-block; width: 40px; height: 40px; border-radius: 50%; vertical-align: middle; background: center / 64% no-repeat; }
 :where(.yes) { background-color: var(--accent); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4L18 8'/%3E%3C/svg%3E"); }
@@ -789,6 +827,69 @@
 :where(.frame[data-preset="t1a"] .no) { background-color: #BDBDBD; }
 :where(.frame[data-preset="t1a"] table:not(.compare) td:first-child) { padding-left: 24px; }
 :where(.frame[data-preset="t1a"] tr.highlight td) { color: var(--foreground); background: var(--surface); }
+
+/* lakesentry: the product deck. White slides with navy Outfit titles, a small uppercase eyebrow at the
+   top left and the deck title at the top right; lead text is lavender gray with navy strong phrases.
+   Cards are white with a soft shadow, steps are small blue discs, the cover a gray-to-lavender wash. */
+
+:where(.frame[data-preset="lakesentry"]) { --lead: var(--s-lead); --signal: var(--s-signal); --good: var(--s-good); --shadow: 0 12px 40px rgb(16 23 41 / 0.08); }
+:where(.frame[data-preset="lakesentry"][data-theme="light"]) { --lead: var(--l-lead); --signal: var(--l-signal); --good: var(--l-good); }
+:where(.frame[data-preset="lakesentry"][data-theme="dark"]) { --lead: var(--d-lead); --signal: var(--d-signal); --good: var(--d-good); }
+:where(.frame[data-preset="lakesentry"][data-theme="accent"]) { --lead: var(--muted); --signal: var(--foreground); --good: var(--foreground); }
+
+:where(.frame[data-preset="lakesentry"] > section) { padding: 72px 104px 112px; gap: 36px; }
+:where(.frame[data-preset="lakesentry"] .eyebrow) { font-size: 20px; font-weight: 500; color: var(--foreground); }
+:where(.frame[data-preset="lakesentry"] section > .eyebrow:first-child + :is(h1, h2)) { margin-top: 64px; }
+:where(.frame[data-preset="lakesentry"] h2) { font-size: 80px; line-height: 1.1; }
+:where(.frame[data-preset="lakesentry"] h3) { font-family: var(--font-body); font-size: 32px; font-weight: 650; letter-spacing: -0.01em; }
+:where(.frame[data-preset="lakesentry"] :is(h1, h2) em), :where(.frame[data-preset="lakesentry"] .signal) { font-style: normal; color: var(--signal); }
+:where(.frame[data-preset="lakesentry"] .good) { color: var(--good); }
+:where(.frame[data-preset="lakesentry"] .lead) { font-family: var(--font-lead); font-size: 44px; font-weight: 700; line-height: 1.32; letter-spacing: -0.01em; color: var(--lead); }
+:where(.frame[data-preset="lakesentry"] .lead strong) { color: var(--foreground); font-weight: 700; }
+:where(.frame[data-preset="lakesentry"] ul:not(.check, .plain, .tags, .owners, .logos) > li)::before { left: 6px; top: 0.7em; width: 16px; height: 2.5px; background: var(--foreground); }
+
+:where(.frame[data-preset="lakesentry"] ol.steps) { gap: 64px; }
+:where(.frame[data-preset="lakesentry"] ol.steps > li) { padding-top: 68px; font-size: 26px; color: var(--foreground); }
+:where(.frame[data-preset="lakesentry"] ol.steps:not(.numerals) > li)::before { width: 42px; height: 42px; font-size: 21px; font-weight: 500; }
+:where(.frame[data-preset="lakesentry"] ol.steps > li)::after { content: none; }
+:where(.frame[data-preset="lakesentry"] ol.steps > li > strong) { font-size: 32px; margin-bottom: 14px; }
+:where(.frame[data-preset="lakesentry"] ol.steps.numerals > li) { padding-top: 168px; }
+:where(.frame[data-preset="lakesentry"] ol.steps.numerals > li)::before { font-size: 170px; color: color-mix(in srgb, var(--accent) 14%, var(--background)); }
+
+:where(.frame[data-preset="lakesentry"] .card) { gap: 14px; padding: 40px 40px 44px; border: 0; background: var(--surface); box-shadow: var(--shadow); border-radius: 16px; }
+:where(.frame[data-preset="lakesentry"] .card .eyebrow) { font-size: 18px; font-weight: 600; color: var(--accent); }
+:where(.frame[data-preset="lakesentry"] .card :is(p, li)) { font-size: 26px; color: var(--foreground); }
+:where(.frame[data-preset="lakesentry"] .card.highlight) { box-shadow: 0 0 0 2px var(--border), 0 24px 64px rgb(16 23 41 / 0.14); margin-top: -16px; margin-bottom: -16px; }
+:where(.frame[data-preset="lakesentry"][data-theme="dark"] .card.highlight) { box-shadow: 0 0 0 2px var(--accent); }
+:where(.frame[data-preset="lakesentry"] .card .stat > strong) { font-size: 72px; }
+
+:where(.frame[data-preset="lakesentry"] .stat) { gap: 8px; padding-top: 0; border-top: 0; }
+:where(.frame[data-preset="lakesentry"] .stat > strong) { font-size: 112px; font-weight: 700; }
+:where(.frame[data-preset="lakesentry"] .stat > :is(span, p)) { font-size: 24px; color: var(--foreground); }
+
+:where(.frame[data-preset="lakesentry"] .window) { border-radius: 14px; box-shadow: 0 0 0 1px var(--border), 0 30px 80px rgb(16 23 41 / 0.16); }
+
+:where(.frame[data-preset="lakesentry"][data-layout="title"])::before {
+  background:
+    radial-gradient(60% 80% at 100% 0%, color-mix(in srgb, #9DAEF0 calc(var(--tone, 1) * 75%), transparent), transparent 70%),
+    radial-gradient(70% 90% at 0% 60%, color-mix(in srgb, #A9ABB4 calc(var(--tone, 1) * 70%), transparent), transparent 75%),
+    radial-gradient(50% 60% at 70% 100%, color-mix(in srgb, #FFFFFF calc(var(--tone, 1) * 60%), transparent), transparent 70%);
+}
+:where(.frame[data-preset="lakesentry"][data-theme="dark"][data-layout="title"]) { --tone: 0.35; }
+:where(.frame[data-preset="lakesentry"][data-layout="title"] > section) { justify-content: center; padding-bottom: 112px; }
+:where(.frame[data-preset="lakesentry"][data-layout="title"] > section)::before { content: none; }
+:where(.frame[data-preset="lakesentry"][data-layout="title"] h1) { font-size: 116px; line-height: 1.06; max-width: 8.4em; }
+:where(.frame[data-preset="lakesentry"][data-layout="title"] h1 .accent) { color: var(--accent); }
+:where(.frame[data-preset="lakesentry"][data-layout="title"] .lead) { font-family: var(--font-body); font-size: 34px; font-weight: 400; line-height: 1.35; max-width: 23em; color: var(--foreground); }
+:where(.frame[data-preset="lakesentry"][data-layout="title"] > section > .window:last-child) { position: absolute; right: 104px; top: 200px; width: 760px; }
+:where(.frame[data-preset="lakesentry"][data-layout="title"] > section:has(> .window:last-child) > :not(.window)) { max-width: 960px; }
+:where(.frame[data-preset="lakesentry"][data-layout="center"] h2) { font-size: 112px; max-width: 11em; }
+:where(.frame[data-preset="lakesentry"] .stats) { align-items: end; }
+
+/* The deck title takes the top right, the slide number the bottom right. */
+.frame[data-preset="lakesentry"] .frame-footer { inset: 0; display: block; font-size: 20px; color: var(--foreground); }
+.frame[data-preset="lakesentry"] .frame-footer-title { position: absolute; top: 72px; right: 104px; max-width: 40%; }
+.frame[data-preset="lakesentry"] .frame-footer-num { position: absolute; right: 104px; bottom: 52px; }
 
 /* Builds. The viewer sets data-step-hidden on steps not revealed yet; they keep their place, so the
    layout does not move. Stills never set it. A slide's own rules for [data-step] and
