@@ -429,6 +429,367 @@
 
 :where(.frame[data-layout="blank"] > section) { padding: 0; gap: 0; }
 
+/* Panel: a full-height color panel on the left (the first child, div.panel), the slide's text on the right. */
+:where(.frame[data-layout="panel"] > section) { padding-left: calc(32% + 96px); }
+:where(.frame[data-layout="panel"] > section > .panel:first-child) {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 32%;
+  padding: 112px 72px 136px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  text-align: center;
+  background: var(--panel, var(--accent));
+  color: var(--panel-ink, var(--on-accent));
+  --foreground: var(--panel-ink, var(--on-accent));
+  --muted: var(--panel-ink, var(--on-accent));
+}
+:where(.frame[data-layout="panel"] .panel .stat) { border-top-color: currentColor; align-items: center; padding-top: 20px; }
+:where(.frame[data-layout="panel"] .panel .stat > strong) { font-size: 96px; }
+:where(.frame[data-layout="panel"] > section > h2) { font-size: 88px; letter-spacing: calc(-0.035em * var(--heading-tracking)); }
+.frame[data-layout="panel"] .frame-footer { left: calc(32% + 96px); }
+
+/* Agenda, timeline, journey and tags: blocks from the t1a template, styled by every preset. */
+
+:where(ol.agenda) { gap: 24px; margin-block: auto; }
+:where(ol.agenda > li) { padding-left: 0; max-width: none; font-size: 64px; line-height: 1.2; }
+:where(ol.agenda > li)::before { width: 1.75em; margin: 0; font-size: inherit; letter-spacing: 0; color: inherit; font-weight: 700; }
+:where(ol.agenda:has(> li.active) > li:not(.active)) { color: var(--muted); }
+
+:where(ol.timeline) { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 32px; }
+/* The date sits above the line, the description below it. */
+:where(ol.timeline > li) { padding: 0; max-width: none; font-size: 29px; line-height: 1.4; }
+:where(ol.timeline > li)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 56px;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  border-radius: 50%;
+  background: var(--background);
+  border: 2.5px solid var(--foreground);
+  z-index: 1;
+}
+:where(ol.timeline > li)::after { content: ""; position: absolute; top: 70px; left: 0; right: -32px; height: 2px; background: var(--foreground); }
+:where(ol.timeline > li:last-child)::after { right: 0; }
+:where(ol.timeline > li > strong) { display: block; margin-bottom: 76px; font-size: 37px; line-height: 44px; color: var(--foreground); }
+:where(ol.timeline > li.done)::before {
+  border-color: var(--accent);
+  background: var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4L18 8'/%3E%3C/svg%3E") center / 70% no-repeat;
+}
+:where(ol.timeline > li.key) { color: var(--accent); font-weight: 600; }
+
+/* One-pager: the company or project on one slide, four cells between hairlines. Use it on a blank slide:
+   .brand (logo and tagline), .hero (a big stat, a link, a globe), .fact (a stat and a sentence), .partners. */
+:where(.onepager) {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 32% 28% 40%;
+  grid-template-rows: 66% 34%;
+}
+:where(.onepager > *) { position: relative; min-width: 0; min-height: 0; padding: 48px 56px; border: 0 solid var(--border); }
+:where(.onepager > .brand) { grid-area: 1 / 1; display: flex; flex-direction: column; justify-content: space-between; border-right-width: 2px; border-bottom-width: 2px; }
+:where(.onepager > .brand) { padding: 48px 40px; }
+:where(.onepager > .brand p) { font-size: 30px; line-height: 1.3; text-transform: uppercase; }
+:where(.onepager > .hero) { grid-area: 1 / 2 / 2 / 4; border-bottom-width: 2px; clip-path: inset(0); }
+:where(.onepager > .fact) { grid-area: 2 / 1 / 3 / 3; display: flex; align-items: center; gap: 56px; border-right-width: 2px; }
+:where(.onepager > .fact > p) { display: flex; align-items: center; gap: 56px; font-size: 32px; line-height: 1.35; }
+:where(.onepager > .fact > p)::before { content: "/"; font-size: 110px; font-weight: 300; line-height: 1; }
+:where(.onepager > .partners) { grid-area: 2 / 3; display: flex; flex-direction: column; gap: 24px; padding: 32px 48px; }
+:where(.onepager > .partners > p) { font-size: 29px; }
+:where(.onepager .stat) { padding: 0; border: 0; gap: 4px; }
+:where(.onepager .stat > strong) { font-size: 160px; line-height: 0.95; }
+:where(.onepager .stat > span) { font-size: 29px; color: var(--foreground); }
+:where(.onepager .site) { position: absolute; top: 56px; right: 64px; font-size: 40px; font-weight: 650; }
+:where(ul.logos) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 32px; align-items: center; }
+:where(ul.logos > li) { padding: 0; max-width: none; font-size: 32px; font-weight: 700; color: var(--muted); text-align: center; }
+:where(ul.logos > li)::before { content: none; }
+:where(ul.logos img) { max-height: 60px; max-width: 78%; margin-inline: auto; object-fit: contain; }
+/* The globe from t1a.com behind the hero cell's text: North America and Europe with the office pins. */
+:where(.onepager > .hero.globe)::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: 30px;
+  top: 190px;
+  width: 1200px;
+  height: 1160px;
+  background: url("/_type/brand/t1a-globe.png") center top / contain no-repeat;
+}
+:where(.onepager > .hero) { isolation: isolate; }
+
+/* Showcase: a product on a laptop with the key numbers beside it. The left column holds a p.band caption
+   on a dark strip from the slide edge and a div.stats; the right child .laptop frames one img, svg or iframe. */
+:where(.showcase) {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 560px minmax(0, 1fr);
+  gap: 100px;
+  align-items: start;
+}
+:where(.showcase > :first-child) { display: flex; flex-direction: column; gap: 48px; min-width: 0; }
+:where(.showcase .band) {
+  margin-left: -128px;
+  padding: 22px 40px 22px 128px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 37px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+:where(.showcase .stats) { grid-auto-flow: row; gap: 44px; }
+:where(.showcase .stat > strong) { font-size: 85px; }
+:where(.laptop) { position: relative; margin-right: -128px; padding: 0 40px 40px 0; min-width: 0; }
+:where(.laptop > :first-child) {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border: 16px solid #0B0D12;
+  border-bottom-width: 22px;
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 0 0 3px #C9CCD2;
+  background: #FFFFFF;
+}
+:where(.laptop)::after {
+  content: "";
+  position: absolute;
+  left: -64px;
+  right: -40px;
+  bottom: 6px;
+  height: 34px;
+  border-radius: 0 0 28px 28px / 0 0 34px 34px;
+  background: linear-gradient(#E3E5E8, #A9ADB4);
+}
+:where(.laptop)::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: calc(50% - 20px - 110px);
+  bottom: 28px;
+  width: 220px;
+  height: 12px;
+  border-radius: 0 0 12px 12px;
+  background: #B9BCC2;
+}
+
+/* Status marks for comparisons: yes, partly, no. */
+:where(.yes, .part, .no) { display: inline-block; width: 40px; height: 40px; border-radius: 50%; vertical-align: middle; background: center / 64% no-repeat; }
+:where(.yes) { background-color: var(--accent); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4L18 8'/%3E%3C/svg%3E"); }
+:where(.part) { background-color: var(--muted); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round'%3E%3Cpath d='M12 6v8M12 18v.5'/%3E%3C/svg%3E"); }
+:where(.no) { background-color: var(--border); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round'%3E%3Cpath d='M7 7l10 10M17 7L7 17'/%3E%3C/svg%3E"); }
+/* A comparison table: options as large centered column heads, features as rows. */
+:where(table.compare th) { font-size: 40px; font-weight: 650; letter-spacing: 0; text-transform: none; color: var(--foreground); text-align: center; border-bottom-width: 1px; }
+:where(table.compare td) { padding-block: 14px; font-size: 29px; text-align: center; vertical-align: middle; }
+:where(table.compare th:first-child), :where(table.compare td:first-child) { text-align: left; }
+
+/* A thick elbow arrow starts just past each pill's end and its head lands on the next pill's top edge;
+   viewer.js shifts each pill under the arrow of the one above, since pill widths vary. */
+:where(ol.journey) { --arrow: 26px; --head: 22px; --run: 96px; gap: 40px; }
+:where(ol.journey > li) {
+  width: fit-content;
+  max-width: none;
+  padding: 10px 36px;
+  border: 3px solid var(--accent);
+  border-radius: 999px;
+  background: var(--background);
+  font-size: 36px;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+:where(ol.journey > li.partner) { border-color: var(--foreground); }
+/* Who does which stage: a legend under the journey, one ring per owner in the pill colors. */
+:where(ul.owners) { position: absolute; top: 300px; right: 128px; gap: 20px; }
+:where(ul.owners > li) { padding-left: 52px; font-size: 29px; }
+:where(ul.owners > li)::before { content: ""; position: absolute; left: 0; top: 0.22em; width: 32px; height: 20px; border-radius: 999px; border: 3px solid var(--accent); background: none; }
+:where(ul.owners > li.partner)::before { border-color: var(--foreground); }
+:where(ol.journey > li:not(:last-child))::after {
+  content: "";
+  position: absolute;
+  left: calc(100% + 8px);
+  top: calc(50% - var(--arrow) / 2);
+  width: var(--run);
+  height: calc(50% + var(--arrow) / 2 + 40px - var(--head));
+  border-top: var(--arrow) solid var(--border);
+  border-right: var(--arrow) solid var(--border);
+}
+:where(ol.journey > li)::before { content: none; }
+:where(ol.journey > li:not(:last-child))::before {
+  content: "";
+  position: absolute;
+  left: calc(100% + 8px + var(--run) - var(--arrow) / 2 - var(--arrow));
+  top: calc(100% + 40px - var(--head));
+  width: 0;
+  height: 0;
+  margin: 0;
+  border-left: var(--arrow) solid transparent;
+  border-right: var(--arrow) solid transparent;
+  border-top: var(--head) solid var(--border);
+}
+
+/* Packages: tall outlined cards with a meta row, a line drawing and a title; .highlight is filled. */
+:where(.cards.packages) { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; flex: 1 1 auto; min-height: 0; }
+:where(.cards.packages > .card) { gap: 16px; padding: 18px 22px 26px; border: 2px solid var(--foreground); border-radius: 0; background: none; }
+:where(.cards.packages > .card.highlight) { background: var(--accent); border-color: var(--accent); box-shadow: none; color: var(--on-accent); --foreground: var(--on-accent); --muted: var(--on-accent); }
+:where(.cards.packages .meta) { display: flex; justify-content: space-between; gap: 16px; font-size: 24px; color: var(--muted); }
+:where(.cards.packages .art) { flex: none; width: 100%; aspect-ratio: 1; background: currentColor; -webkit-mask: var(--art) center / contain no-repeat; mask: var(--art) center / contain no-repeat; }
+:where(.cards.packages h3) { margin-top: auto; font-size: 37px; line-height: 1.15; }
+:where(.cards.packages .card p:not(.meta)) { font-size: 22px; line-height: 1.4; }
+:where(.art) { --art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-2 -2 204 204' fill='none' stroke='black' stroke-width='1.6'%3E%3Ccircle cx='100' cy='100' r='95'/%3E%3C/svg%3E"); }
+:where(.art.lines) { --art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-2 -2 204 204' fill='none' stroke='black' stroke-width='1.6'%3E%3Ccircle cx='100' cy='100' r='95'/%3E%3Cpath d='M10 130H190M16 145H184M26 160H174M40 175H160'/%3E%3C/svg%3E"); }
+:where(.art.bars) { --art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-2 -2 204 204' fill='none' stroke='black' stroke-width='1.6'%3E%3Ccircle cx='100' cy='100' r='95'/%3E%3Cpath d='M55 75V125M68 75V125M81 75V125M94 75V125M107 75V125M120 75V125M133 75V125M146 75V125'/%3E%3C/svg%3E"); }
+:where(.art.grid) { --art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-2 -2 204 204' fill='none' stroke='black' stroke-width='1.6'%3E%3Ccircle cx='100' cy='100' r='95'/%3E%3Ccircle cx='100' cy='100' r='30'/%3E%3Cpath d='M70 10V190M130 10V190M10 70H190M10 130H190'/%3E%3C/svg%3E"); }
+:where(.art.rings) { --art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-2 -2 204 204' fill='none' stroke='black' stroke-width='1.6'%3E%3Ccircle cx='100' cy='100' r='95'/%3E%3Ccircle cx='100' cy='50' r='45'/%3E%3Ccircle cx='100' cy='100' r='26'/%3E%3Ccircle cx='100' cy='150' r='45'/%3E%3Cpath d='M5 100H195'/%3E%3C/svg%3E"); }
+
+:where(ul.tags) { flex-direction: row; flex-wrap: wrap; gap: 12px; }
+:where(ul.tags > li) { padding: 6px 22px; max-width: none; border: 2px solid var(--foreground); border-radius: 999px; font-size: 22px; line-height: 1.3; }
+:where(ul.tags > li)::before { content: none; }
+
+/* t1a: the corporate template. Content slides stay plain, with the logo at the bottom left. Title and
+   section slides carry a story background: on navy a corner glow and line circles, on light pale
+   spheres. --tone is 1 on dark; it blends the two, so a slide's data-theme and the scheme both work.
+   Orange is never text on navy: the dark accent is teal, and eyebrows, markers and numbers stay neutral. */
+
+:where(.frame[data-preset="t1a"]) {
+  /* The template uses static DM Sans, the 14 pt optical size; the variable font would narrow large text. */
+  font-variation-settings: "opsz" 14;
+  --logo: var(--s-logo);
+  --tone: var(--s-tone);
+  --story: #6A1B9A;
+  --story-bright: #A055FF;
+}
+:where(.frame[data-preset="t1a"][data-theme="light"]) { --logo: var(--l-logo); --tone: var(--l-tone); }
+:where(.frame[data-preset="t1a"][data-theme="dark"]) { --logo: var(--d-logo); --tone: var(--d-tone); }
+:where(.frame[data-preset="t1a"][data-theme="accent"]) { --logo: var(--foreground); --tone: 0; }
+:where(.frame[data-preset="t1a"][data-layout="image"]) { --logo: #FCFCFC; }
+:where(.frame[data-preset="t1a"][data-story="teal"]) { --story: #009688; --story-bright: #00CE93; }
+:where(.frame[data-preset="t1a"][data-story="blue"]) { --story: #00A1DF; --story-bright: #31D8FE; }
+:where(.frame[data-preset="t1a"][data-story="orange"]) { --story: #EC671B; --story-bright: #FF9E0C; }
+
+:where(.frame[data-preset="t1a"]:not([data-layout="blank"], [data-layout="panel"]) > section)::after {
+  content: "";
+  position: absolute;
+  left: 128px;
+  bottom: 50px;
+  width: 92px;
+  height: 36px;
+  background: var(--logo);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 39'%3E%3Cpath d='M12.2955 7.35429H0V0H33.4833V7.35429H21.1878V39H12.2955V7.35429Z'/%3E%3Cpath d='M52.8708 0V39H43.9785V7.24286H36.2939V0H52.8708Z'/%3E%3Cpath d='M87.2654 30.6429H69.4259L66.0227 39H56.9109L74.0367 0H82.8192L100 39H90.6686L87.2654 30.6429ZM84.4659 23.79L78.3731 8.85857L72.2802 23.79H84.4659Z'/%3E%3C/svg%3E") left bottom / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 39'%3E%3Cpath d='M12.2955 7.35429H0V0H33.4833V7.35429H21.1878V39H12.2955V7.35429Z'/%3E%3Cpath d='M52.8708 0V39H43.9785V7.24286H36.2939V0H52.8708Z'/%3E%3Cpath d='M87.2654 30.6429H69.4259L66.0227 39H56.9109L74.0367 0H82.8192L100 39H90.6686L87.2654 30.6429ZM84.4659 23.79L78.3731 8.85857L72.2802 23.79H84.4659Z'/%3E%3C/svg%3E") left bottom / contain no-repeat;
+  pointer-events: none;
+}
+:where(.frame[data-preset="t1a"] .logo) {
+  display: inline-block;
+  flex: none;
+  width: 200px;
+  aspect-ratio: 100 / 39;
+  background: var(--logo-ink, currentColor);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 39'%3E%3Cpath d='M12.2955 7.35429H0V0H33.4833V7.35429H21.1878V39H12.2955V7.35429Z'/%3E%3Cpath d='M52.8708 0V39H43.9785V7.24286H36.2939V0H52.8708Z'/%3E%3Cpath d='M87.2654 30.6429H69.4259L66.0227 39H56.9109L74.0367 0H82.8192L100 39H90.6686L87.2654 30.6429ZM84.4659 23.79L78.3731 8.85857L72.2802 23.79H84.4659Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 39'%3E%3Cpath d='M12.2955 7.35429H0V0H33.4833V7.35429H21.1878V39H12.2955V7.35429Z'/%3E%3Cpath d='M52.8708 0V39H43.9785V7.24286H36.2939V0H52.8708Z'/%3E%3Cpath d='M87.2654 30.6429H69.4259L66.0227 39H56.9109L74.0367 0H82.8192L100 39H90.6686L87.2654 30.6429ZM84.4659 23.79L78.3731 8.85857L72.2802 23.79H84.4659Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.frame[data-preset="t1a"] .frame-footer { left: 268px; }
+.frame[data-preset="t1a"][data-layout="panel"] .frame-footer { left: calc(32% + 96px); }
+
+/* Partner panels, as in the template's case slides: the lockup stays white, the text dark on bright colors. */
+:where(.frame[data-preset="t1a"] .panel) { --panel: var(--story-bright); --panel-ink: #111729; --logo-ink: #FCFCFC; }
+:where(.frame[data-preset="t1a"] .panel.teal) { --panel: #00CE93; --panel-ink: #111729; }
+:where(.frame[data-preset="t1a"] .panel.blue) { --panel: #00A1DF; --panel-ink: #111729; }
+:where(.frame[data-preset="t1a"] .panel.orange) { --panel: #FF6D00; --panel-ink: #111729; }
+:where(.frame[data-preset="t1a"] .panel.purple) { --panel: #6A1B9A; --panel-ink: #FCFCFC; }
+:where(.frame[data-preset="t1a"] .panel.navy) { --panel: #111729; --panel-ink: #FCFCFC; }
+:where(.frame[data-preset="t1a"] .onepager .logo) { width: 300px; --logo-ink: color-mix(in srgb, #FCFCFC calc(var(--tone) * 100%), #591881); }
+/* On dark, partner logos turn white, as in the template's dark one-pager. */
+:where(.frame[data-preset="t1a"] ul.logos img) { filter: brightness(calc(1 - var(--tone))) invert(var(--tone)); }
+:where(.frame[data-preset="t1a"] .lockup) { display: flex; flex-direction: column; align-items: center; gap: 18px; color: #FCFCFC; font-size: 44px; font-weight: 600; line-height: 1.1; }
+:where(.frame[data-preset="t1a"] .lockup img) { max-width: 260px; max-height: 120px; }
+
+:where(.frame[data-preset="t1a"]:is([data-layout="title"], [data-layout="section"]))::before {
+  background:
+    radial-gradient(52% 78% at 100% 0%, color-mix(in srgb, var(--story) calc(var(--tone) * 80%), transparent), transparent 76%),
+    radial-gradient(circle 330px at calc(100% - 20px) 50%, transparent 0, color-mix(in srgb, var(--story-bright) calc((1 - var(--tone)) * 10%), transparent) 50%, color-mix(in srgb, var(--story-bright) calc((1 - var(--tone)) * 46%), transparent) 97%, transparent 100%),
+    radial-gradient(circle 190px at calc(100% + 30px) 9%, transparent 0, color-mix(in srgb, var(--story-bright) calc((1 - var(--tone)) * 8%), transparent) 50%, color-mix(in srgb, var(--story-bright) calc((1 - var(--tone)) * 30%), transparent) 97%, transparent 100%),
+    radial-gradient(circle 190px at calc(100% + 30px) 91%, transparent 0, color-mix(in srgb, var(--story-bright) calc((1 - var(--tone)) * 8%), transparent) 50%, color-mix(in srgb, var(--story-bright) calc((1 - var(--tone)) * 30%), transparent) 97%, transparent 100%);
+}
+:where(.frame[data-preset="t1a"]:is([data-layout="title"], [data-layout="section"]) > section) { isolation: isolate; }
+:where(.frame[data-preset="t1a"]:is([data-layout="title"], [data-layout="section"]) > section)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: auto;
+  height: auto;
+  margin: 0;
+  border-radius: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 1080' fill='none' stroke='%23FCFCFC' stroke-opacity='.32' stroke-width='2'%3E%3Ccircle cx='600' cy='300' r='300'/%3E%3Ccircle cx='600' cy='780' r='300'/%3E%3Ccircle cx='450' cy='540' r='380'/%3E%3Ccircle cx='750' cy='540' r='380'/%3E%3C/svg%3E") right -220px center / auto 100% no-repeat;
+  opacity: var(--tone);
+}
+:where(.frame[data-preset="t1a"][data-layout="title"] > section) { justify-content: center; padding-bottom: 168px; }
+:where(.frame[data-preset="t1a"][data-layout="title"] h1) { font-size: 144px; line-height: 1.05; max-width: 11em; }
+:where(.frame[data-preset="t1a"][data-layout="title"] .lead) { font-size: 40px; color: var(--muted); }
+/* Type sizes at 1920 px: titles 192 (divider), 144 (cover, case), 85 (slide, agenda). */
+:where(.frame[data-preset="t1a"] h2) { font-size: 85px; }
+:where(.frame[data-preset="t1a"][data-layout="section"] h2) { font-size: 192px; line-height: 1.05; }
+:where(.frame[data-preset="t1a"] ol.agenda > li) { font-size: 85px; }
+
+:where(.frame[data-preset="t1a"] .eyebrow) { color: var(--muted); }
+:where(.frame[data-preset="t1a"] ul:not(.check, .plain, .tags, .owners) > li)::before { left: 10px; top: 0.55em; width: 10px; height: 10px; border-radius: 50%; background: var(--foreground); }
+:where(.frame[data-preset="t1a"] li > ul:not(.check, .plain, .tags, .owners) > li)::before { background: none; border: 2px solid var(--foreground); }
+:where(.frame[data-preset="t1a"] ol:not(.agenda) > li)::before { color: var(--foreground); }
+:where(.frame[data-preset="t1a"] ol.steps > li)::before { background: var(--foreground); color: var(--background); }
+:where(.frame[data-preset="t1a"] .stat) { gap: 6px; padding-top: 0; border-top: 0; }
+:where(.frame[data-preset="t1a"] .stat > span), :where(.frame[data-preset="t1a"] .stat > p) { font-size: 29px; }
+:where(.frame[data-preset="t1a"] .card:not(.highlight, .packages > *)) { border: 0; background: #FFFFFF; box-shadow: 0 10px 40px rgb(17 23 41 / 0.09); --foreground: #111729; --muted: #4A5567; color: #111729; }
+:where(.frame[data-preset="t1a"][data-layout="quote"] blockquote)::before { background: var(--muted); }
+:where(.frame[data-preset="t1a"] .card.highlight) { background: #6A1B9A; border-color: #6A1B9A; box-shadow: none; --foreground: #FCFCFC; --muted: #E5D6F0; color: #FCFCFC; }
+:where(.frame[data-preset="t1a"] ol.journey > li), :where(.frame[data-preset="t1a"] ul.owners > li)::before { border-color: var(--story-bright); }
+:where(.frame[data-preset="t1a"] ul.tags > li) { padding: 4px 20px; border-width: 1.5px; font-size: 24px; }
+:where(.frame[data-preset="t1a"] ul.owners > li.partner)::before, :where(.frame[data-preset="t1a"] ol.journey > li.partner) { border-color: color-mix(in srgb, #00CE93 calc(var(--tone) * 100%), #009688); }
+:where(.frame[data-preset="t1a"] .cards.packages > .card.highlight) { background: #6A1B9A; border-color: #6A1B9A; --foreground: #FCFCFC; --muted: #E5D6F0; color: #FCFCFC; }
+
+/* The partner case: a narrow panel, hairline guides across the slide, the title in the top cell and
+   the details below the line at 63%. */
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section) { padding: 170px 120px 40px calc(26.5% + 74px); }
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section > .panel:first-child) { width: 26.5%; justify-content: flex-start; padding: 150px 48px 64px; }
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section > :nth-child(2)) { flex: 0 0 540px; display: flex; flex-direction: column; gap: 36px; overflow: hidden; }
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section > :nth-child(2):is(h2), .frame[data-preset="t1a"][data-layout="panel"] > section > :nth-child(2) > h2) { display: block; font-size: 144px; line-height: 1.08; }
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section > :nth-child(n+3)) { font-size: 40px; }
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  --line: color-mix(in srgb, var(--foreground) 70%, transparent);
+  background:
+    linear-gradient(to right, transparent 46px, var(--line) 46px 49px, transparent 49px),
+    linear-gradient(to left, transparent 18px, var(--line) 18px 21px, transparent 21px),
+    linear-gradient(to bottom, transparent 42px, var(--line) 42px 45px, transparent 45px),
+    linear-gradient(to bottom, transparent 688px, var(--line) 688px 691px, transparent 691px),
+    linear-gradient(to top, transparent 18px, var(--line) 18px 21px, transparent 21px);
+}
+.frame[data-preset="t1a"][data-layout="panel"] .frame-footer { display: none; }
+:where(.frame[data-preset="t1a"] .lockup) { font-weight: 500; }
+:where(.frame[data-preset="t1a"] .lockup .logo) { width: 170px; }
+:where(.frame[data-preset="t1a"] .lockup .x) { font-size: 96px; font-weight: 200; line-height: 0.7; }
+:where(.frame[data-preset="t1a"] em), :where(.frame[data-preset="t1a"] i) { font-style: normal; }
+:where(.frame[data-preset="t1a"] ol.timeline) { --accent: color-mix(in srgb, #00CE93 calc(var(--tone) * 100%), #009688); }
+:where(.frame[data-preset="t1a"] table:not(.compare) th) { padding: 18px 32px 18px 24px; border-bottom: 0; background: color-mix(in srgb, var(--surface) calc(var(--tone) * 100%), #111729); color: #FCFCFC; font-size: 26px; letter-spacing: 0; text-transform: none; }
+:where(.frame[data-preset="t1a"] td) { font-size: 29px; }
+:where(.frame[data-preset="t1a"] .yes) { background-color: #009688; }
+:where(.frame[data-preset="t1a"] .part) { background-color: #FFC107; }
+:where(.frame[data-preset="t1a"] .no) { background-color: #BDBDBD; }
+:where(.frame[data-preset="t1a"] table:not(.compare) td:first-child) { padding-left: 24px; }
+:where(.frame[data-preset="t1a"] tr.highlight td) { color: var(--foreground); background: var(--surface); }
+
 /* Builds. The viewer sets data-step-hidden on steps not revealed yet; they keep their place, so the
    layout does not move. Stills never set it. A slide's own rules for [data-step] and
    [data-step-hidden] win, so an author can change the effect. Revealed steps look exactly as

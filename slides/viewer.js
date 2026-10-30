@@ -5,14 +5,15 @@
 import DOMPurify from "/_type/vendor/purify.es.js";
 
 const TYPE_NAME = "t1a-slides";
-const TYPE_VERSION = "1.3.1"; // must equal type.json "version"; repin detection compares against it
+const TYPE_VERSION = "1.4.0"; // must equal type.json "version"; repin detection compares against it
 const TYPE_ID = `${TYPE_NAME}@${TYPE_VERSION}`;
 const W = 1920;
 const H = 1080;
 const DATA_ROOT = "/project/";
 const DECK_URL = "/project/deck.json";
 const SLIDE_ID_RE = /^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$/;
-const LAYOUTS = new Set(["title", "section", "statement", "quote", "center", "image", "split", "blank"]);
+const LAYOUTS = new Set(["title", "section", "statement", "quote", "center", "image", "split", "panel", "blank"]);
+const STORIES = new Set(["purple", "teal", "blue", "orange"]); // t1a title and section backgrounds
 const SLIDE_THEMES = new Set(["light", "dark", "accent"]);
 const NO_FOOTER_LAYOUTS = new Set(["title", "section", "image", "blank"]);
 const TOKENS = ["background", "surface", "foreground", "muted", "accent", "onAccent", "border"];
@@ -676,6 +677,8 @@ function parseSlide(id, text) {
   if (layout && !LAYOUTS.has(layout)) issues.push(issue("warning", "layout-unknown", `Unknown data-layout "${layout}"; known: ${[...LAYOUTS].join(", ")}`));
   const theme = section.getAttribute("data-theme");
   if (theme && !SLIDE_THEMES.has(theme)) issues.push(issue("warning", "slide-theme-unknown", `Unknown data-theme "${theme}"; known: ${[...SLIDE_THEMES].join(", ")}`));
+  const story = section.getAttribute("data-story");
+  if (story && !STORIES.has(story)) issues.push(issue("warning", "slide-story-unknown", `Unknown data-story "${story}"; known: ${[...STORIES].join(", ")}`));
 
   // Slide CSS goes only to sanitizeStylesheet; DOMPurify would drop a whole <style> whose text has "<".
   const styleTexts = [...headStyles];
@@ -702,6 +705,7 @@ function parseSlide(id, text) {
     sheets,
     layout: LAYOUTS.has(layout) ? layout : null,
     theme: SLIDE_THEMES.has(theme) ? theme : null,
+    story: STORIES.has(story) ? story : null,
     footer: section.getAttribute("data-footer"),
     title,
     notes,
@@ -1038,6 +1042,8 @@ function buildFrame(index, { thumb = false, step = 0 } = {}) {
   frame.append(slide.fragment.cloneNode(true));
   if (slide.layout) frame.dataset.layout = slide.layout;
   if (slide.theme) frame.dataset.theme = slide.theme;
+  if (slide.story) frame.dataset.story = slide.story;
+  if (state.deck.theme.preset) frame.dataset.preset = state.deck.theme.preset;
   const footer = slide.footer === "on" || (slide.footer !== "off" && !NO_FOOTER_LAYOUTS.has(slide.layout));
   if (footer) {
     const section = sectionAt(index);
@@ -1104,7 +1110,41 @@ function mountFrame(host, { frame, sheets, still }) {
   // Still frames are pictures: clicks reach the overview button and nothing inside takes focus.
   frame.inert = Boolean(still);
   root.replaceChildren(frame);
+  for (const list of frame.querySelectorAll("ol.journey")) {
+    for (const item of list.children) journeyObserver.observe(item);
+  }
 }
+
+// Each journey pill starts so the elbow arrow of the pill above lands on its top edge, near its start.
+// When that runs past the right edge, the arrows land further into the pills, never on a rounded end.
+// Pills are measured unscaled, and the observer reruns this when fonts load or the frame is attached.
+function layoutJourney(list) {
+  const items = [...list.children];
+  const style = getComputedStyle(list);
+  const arrow = parseFloat(style.getPropertyValue("--arrow"));
+  const drop = 8 + parseFloat(style.getPropertyValue("--run")) - arrow / 2;
+  const widths = items.map((item) => item.offsetWidth);
+  const edge = items.map((item) => item.offsetHeight / 2 + arrow); // closest a landing comes to a pill's end
+  const lands = widths.map((width) => Math.min(140, width * 0.4));
+  const lefts = () => widths.reduce((acc, width, index) => [...acc, index ? acc[index - 1] + widths[index - 1] + drop - lands[index] : 0], []);
+  const over = lefts().at(-1) + widths.at(-1) - list.clientWidth;
+  if (over > 0) {
+    const slack = widths.map((width, index) => (index ? Math.max(0, width - edge[index] - lands[index]) : 0));
+    const share = Math.min(1, over / (slack.reduce((sum, value) => sum + value, 0) || 1));
+    slack.forEach((value, index) => { lands[index] += value * share; });
+  }
+  lefts().forEach((left, index) => { items[index].style.marginLeft = `${Math.max(0, left)}px`; });
+}
+
+// A pill removed with its frame reports a zero size once and is dropped then.
+const journeyObserver = new ResizeObserver((entries) => {
+  const lists = new Set();
+  for (const { target } of entries) {
+    if (target.isConnected) lists.add(target.parentElement);
+    else journeyObserver.unobserve(target);
+  }
+  for (const list of lists) layoutJourney(list);
+});
 
 // A .slot scales its 1920x1080 host to the slot's box.
 const slotObserver = new ResizeObserver((entries) => {
@@ -1715,7 +1755,30 @@ function waitForMedia(frame) {
   return Promise.race([Promise.all(pending), new Promise((resolve) => setTimeout(resolve, 8000))]);
 }
 
-const BLEED = ':is([data-layout="image"]) > section > :is(img, figure, video):first-child, :is([data-layout="split"]) > section > :is(img, figure, video, svg, .media):last-child';
+const BLEED = ':is([data-layout="image"]) > section > :is(img, figure, video):first-child, :is([data-layout="split"]) > section > :is(img, figure, video, svg, .media):last-child, :is([data-layout="panel"]) > section > .panel:first-child, .showcase .band, .showcase > .laptop';
+
+// Computed colors come as rgb() or color(srgb ...); either gives [r, g, b, a] in 0..1.
+function rgba(value) {
+  const parts = value.match(/[\d.]+%?/g)?.map((part) => (part.endsWith("%") ? parseFloat(part) / 100 : parseFloat(part))) || [];
+  if (value.startsWith("rgb")) return [parts[0] / 255, parts[1] / 255, parts[2] / 255, parts[3] ?? 1];
+  if (value.startsWith("color(srgb")) return [parts[0], parts[1], parts[2], parts[3] ?? 1];
+  return null;
+}
+
+// The t1a template never sets orange text on navy: true when el's text is orange and the first
+// opaque background behind it is dark.
+function orangeOnDark(el, frame) {
+  const color = rgba(getComputedStyle(el).color);
+  if (!color || color[3] < 0.5) return false;
+  const [r, g, b] = color;
+  if (!(r > 0.8 && g > 0.25 && g < 0.72 && b < 0.3)) return false;
+  for (let node = el; node; node = node === frame ? null : node.parentElement || node.getRootNode().host) {
+    const bg = rgba(getComputedStyle(node).backgroundColor);
+    if (!bg || bg[3] < 0.5) continue;
+    return 0.2126 * bg[0] + 0.7152 * bg[1] + 0.0722 * bg[2] < 0.35;
+  }
+  return false;
+}
 
 function measureFrame(frame) {
   const issues = [];
@@ -1761,11 +1824,18 @@ function measureFrame(frame) {
   }
   const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT);
   const range = document.createRange();
+  const orange = new Set();
   for (let node = walker.nextNode(); node; node = walker.nextNode()) {
     if (!node.textContent.trim() || node.parentElement?.closest("style")) continue;
     if (getComputedStyle(node.parentElement).visibility === "hidden") continue;
     range.selectNodeContents(node);
     check(node.parentElement, range.getBoundingClientRect(), 0.3 * parseFloat(getComputedStyle(node.parentElement).fontSize));
+    if (frame.dataset.preset === "t1a" && layout !== "image" && orangeOnDark(node.parentElement, frame)) orange.add(node.parentElement);
+  }
+  if (orange.size) {
+    const first = [...orange][0];
+    issues.push(issue("error", "orange-on-dark", `${describe(first, frame)}${orange.size > 1 ? ` and ${orange.size - 1} more` : ""}: t1a keeps orange text off dark backgrounds; use the foreground color, or the slide's light theme`, { element: describe(first, frame) }));
+    marks.push(all.indexOf(first));
   }
   // Report the outermost offenders only: a child of an overflowing element adds no information.
   worst.sort((a, b) => b.amount - a.amount);

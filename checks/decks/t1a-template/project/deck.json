@@ -1,0 +1,34 @@
+{
+  "v": 1,
+  "title": "Moving BI to Databricks",
+  "lang": "en",
+  "order": [
+    "cover",
+    "agenda",
+    "section-scope",
+    "one-pager",
+    "partner-case",
+    "showcase",
+    "statement",
+    "timeline",
+    "journey",
+    "packages",
+    "comparison",
+    "ask",
+    "orange-text"
+  ],
+  "sections": {
+    "scope": {
+      "title": "Scope",
+      "start": "section-scope"
+    },
+    "plan": {
+      "title": "Plan",
+      "start": "timeline"
+    }
+  },
+  "theme": {
+    "preset": "t1a",
+    "scheme": "light"
+  }
+}

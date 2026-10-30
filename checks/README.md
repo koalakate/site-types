@@ -12,6 +12,7 @@
 | `notes` | presenter notes |
 | `checkmode` | check mode's own detector: one slide that fits, one that overflows the safe area, one whose `section` clips |
 | `builds` | click-to-reveal steps: `data-step`, equal numbers together, SVG steps, an author's own effect, empty and invalid values, a `data-step` on the section (ignored), nested steps, and a `step` class from a deck's own markup that must stay a non-build (steps 0, stage identical to 1.0.0) |
+| `t1a-template` | the t1a corporate template: dark cover with a story, agenda, section divider, stats with tags, `panel` with a partner lockup, `ol.timeline`, `ol.journey`, highlighted card, navy table header, and an `orange-on-dark` error |
 | `sanitizer` | payloads that must stay inert: script, `on*` (including handlers that fire without a click: `onerror` on a failing image, animation and transition events, `ontoggle`, `autofocus` with `onfocus`), `javascript:` and `data:` URLs (links and frames), `srcdoc`, forms, object/embed, SVG animation, base/meta/link, CSS `@import`, `url()` and escapes, mutation XSS |
 
 Besides check mode and the screenshots, every deck is driven once: → through the audience view, every step included, with the counter checked, O for the overview and Escape to close it, a step announcing what it revealed and waiting steps inert, and a link whose fragment ends in a line break still opening the deck; the presenter window follows the audience window and the audience follows the presenter back, with the notes read on the way; and each scheme's PDF is printed and its pages counted.
