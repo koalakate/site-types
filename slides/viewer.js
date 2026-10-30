@@ -1110,7 +1110,41 @@ function mountFrame(host, { frame, sheets, still }) {
   // Still frames are pictures: clicks reach the overview button and nothing inside takes focus.
   frame.inert = Boolean(still);
   root.replaceChildren(frame);
+  for (const list of frame.querySelectorAll("ol.journey")) {
+    for (const item of list.children) journeyObserver.observe(item);
+  }
 }
+
+// Each journey pill starts so the elbow arrow of the pill above lands on its top edge, near its start.
+// When that runs past the right edge, the arrows land further into the pills, never on a rounded end.
+// Pills are measured unscaled, and the observer reruns this when fonts load or the frame is attached.
+function layoutJourney(list) {
+  const items = [...list.children];
+  const style = getComputedStyle(list);
+  const arrow = parseFloat(style.getPropertyValue("--arrow"));
+  const drop = 8 + parseFloat(style.getPropertyValue("--run")) - arrow / 2;
+  const widths = items.map((item) => item.offsetWidth);
+  const edge = items.map((item) => item.offsetHeight / 2 + arrow); // closest a landing comes to a pill's end
+  const lands = widths.map((width) => Math.min(140, width * 0.4));
+  const lefts = () => widths.reduce((acc, width, index) => [...acc, index ? acc[index - 1] + widths[index - 1] + drop - lands[index] : 0], []);
+  const over = lefts().at(-1) + widths.at(-1) - list.clientWidth;
+  if (over > 0) {
+    const slack = widths.map((width, index) => (index ? Math.max(0, width - edge[index] - lands[index]) : 0));
+    const share = Math.min(1, over / (slack.reduce((sum, value) => sum + value, 0) || 1));
+    slack.forEach((value, index) => { lands[index] += value * share; });
+  }
+  lefts().forEach((left, index) => { items[index].style.marginLeft = `${Math.max(0, left)}px`; });
+}
+
+// A pill removed with its frame reports a zero size once and is dropped then.
+const journeyObserver = new ResizeObserver((entries) => {
+  const lists = new Set();
+  for (const { target } of entries) {
+    if (target.isConnected) lists.add(target.parentElement);
+    else journeyObserver.unobserve(target);
+  }
+  for (const list of lists) layoutJourney(list);
+});
 
 // A .slot scales its 1920x1080 host to the slot's box.
 const slotObserver = new ResizeObserver((entries) => {
