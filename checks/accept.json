@@ -10,5 +10,9 @@
   "1.5.0": {
     "preset-*": "The preset sample decks are new relative to the upstream slides-v1.1.0 baseline; antares, lakesentry and swiss now follow the brand decks they were drawn from.",
     "t1a-template/*": "The t1a template deck has no baseline in upstream slides-v1.1.0."
+  },
+  "1.6.0": {
+    "preset-*": "The preset sample decks are new relative to the upstream slides-v1.1.0 baseline; t1a numerals, dark cards and showcase captions changed on purpose.",
+    "t1a-template/*": "The t1a template deck has no baseline in upstream slides-v1.1.0; it now covers the rest of the template's slide types."
   }
 }

@@ -5,7 +5,7 @@
 import DOMPurify from "/_type/vendor/purify.es.js";
 
 const TYPE_NAME = "t1a-slides";
-const TYPE_VERSION = "1.5.0"; // must equal type.json "version"; repin detection compares against it
+const TYPE_VERSION = "1.6.0"; // must equal type.json "version"; repin detection compares against it
 const TYPE_ID = `${TYPE_NAME}@${TYPE_VERSION}`;
 const W = 1920;
 const H = 1080;
