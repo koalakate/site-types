@@ -566,6 +566,54 @@
 }
 :where(.showcase .stats) { grid-auto-flow: row; gap: 44px; }
 :where(.showcase .stat > strong) { font-size: 85px; }
+/* The phone variant, as on the template's second killer-features slide: numbers, a phone that runs off the
+   bottom edge, and a third column with a p.band strip to the right edge and a ul.bars list. */
+:where(.showcase:has(> .phone)) { grid-template-columns: 500px 440px minmax(0, 1fr); gap: 0 64px; align-self: stretch; }
+:where(.showcase > .phone) {
+  position: relative;
+  align-self: stretch;
+  margin-bottom: -44px;
+  padding: 64px 16px 0;
+  border: 7px solid #CFC7B2;
+  border-bottom: 0;
+  border-radius: 76px 76px 0 0;
+  background: #3A3A3C;
+  box-shadow: inset 0 0 0 9px #0B0D12;
+}
+:where(.showcase > .phone)::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  width: 124px;
+  height: 36px;
+  margin-left: -62px;
+  border-radius: 18px;
+  background: #0B0D12;
+}
+:where(.showcase > .phone)::after {
+  content: "9:41";
+  position: absolute;
+  top: 24px;
+  left: 56px;
+  color: #FFFFFF;
+  font-size: 24px;
+  font-weight: 600;
+}
+:where(.showcase > .phone > :first-child) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 56px 56px 0 0;
+  background: var(--background);
+}
+:where(.showcase:has(> .phone) > :last-child:not(.phone)) { display: flex; flex-direction: column; gap: 44px; min-width: 0; padding-top: 120px; }
+:where(.showcase:has(> .phone) > :last-child:not(.phone) .band) { margin: 0 -128px 0 -64px; padding: 22px 128px 22px 64px; }
+:where(ul.bars) { display: flex; flex-direction: column; gap: 40px; }
+:where(ul.bars > li) { padding-left: 32px; font-size: 29px; line-height: 1.3; }
+:where(ul.bars > li)::before { content: ""; left: 0; top: 0.15em; bottom: 0.15em; width: 6px; height: auto; border: 0; border-radius: 0; background: var(--foreground); }
 :where(.laptop) { position: relative; margin-right: -128px; padding: 0 40px 40px 0; min-width: 0; }
 :where(.laptop > :first-child) {
   display: block;
@@ -577,7 +625,7 @@
   border-bottom-width: 22px;
   border-radius: 28px 28px 0 0;
   box-shadow: 0 0 0 3px #C9CCD2;
-  background: #FFFFFF;
+  background: var(--background);
 }
 :where(.laptop)::after {
   content: "";
@@ -693,6 +741,299 @@
 :where(ul.tags > li) { padding: 6px 22px; max-width: none; border: 2px solid var(--foreground); border-radius: 999px; font-size: 22px; line-height: 1.3; }
 :where(ul.tags > li)::before { content: none; }
 
+/* Picture first in a split: the image fills the left half and the text sits at the top right. */
+:where(.frame[data-layout="split"] > section:has(> :is(img, figure, video, svg, .media):first-child)) { padding-left: 0; padding-right: 128px; align-items: flex-start; }
+:where(.frame[data-layout="split"] > section > :is(img, figure, video, svg, .media):first-child) {
+  flex: 0 0 48%;
+  align-self: stretch;
+  width: 48%;
+  height: 1080px;
+  max-width: none;
+  margin: -112px 0 -136px;
+  object-fit: cover;
+  border-radius: 0;
+}
+:where(.frame[data-layout="split"] > section > :is(img, figure, video, svg, .media):first-child ~ div:last-child) { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 40px; }
+.frame[data-layout="split"]:has(> section > :is(img, figure, video, svg, .media):first-child) .frame-footer { left: calc(48% + 96px); right: 128px; }
+/* Pictures side by side (a .cols of figures only), each with a centered caption. */
+:where(.cols:not(:has(> :not(figure))) > figure > :is(img, svg, .media)) { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+:where(.cols:not(:has(> :not(figure))) > figure > figcaption) { font-size: 31px; line-height: 1.35; color: var(--foreground); text-align: center; text-wrap: balance; }
+
+/* A panel with key numbers instead of a lockup. */
+:where(.frame[data-layout="panel"] .panel:has(> .stats)) { align-items: stretch; text-align: left; }
+:where(.frame[data-layout="panel"] .panel > .stats) { grid-auto-flow: row; gap: 56px; }
+:where(.frame[data-layout="panel"] .panel > .stats .stat) { align-items: flex-start; gap: 4px; padding-top: 0; border-top: 0; }
+:where(.frame[data-layout="panel"] .panel > .stats .stat > strong) { font-size: 72px; }
+:where(.frame[data-layout="panel"] .panel > .stats .stat > span) { font-size: 32px; line-height: 1.25; color: inherit; }
+
+/* Icon points: 2-6 items, each an .icon, an optional h3 and a short text; 5-6 items make a 3x2 grid.
+   .icon takes a built-in icon name as a second class or holds an inline svg; .badges puts it in a disc. */
+:where(ul.points) { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 72px 64px; }
+:where(ul.points:has(> li:nth-child(5))) { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+:where(ul.points > li) { display: flex; flex-direction: column; gap: 20px; padding: 0; max-width: none; font-size: 29px; line-height: 1.4; }
+:where(ul.points > li)::before { content: none; }
+:where(ul.points h3) { margin-top: 8px; font-size: 37px; line-height: 1.2; }
+:where(ul.points p) { max-width: none; }
+:where(.icon) { display: block; flex: none; width: 104px; height: 104px; color: var(--accent); }
+:where(.icon)::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: currentColor;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+:where(.icon:has(> svg))::before { content: none; }
+:where(.icon > svg) { display: block; width: 100%; height: 100%; }
+:where(ul.points.badges .icon) { width: 160px; height: 160px; padding: 40px; border-radius: 50%; background: var(--foreground); color: var(--background); }
+:where(.icon.lock) { --icon: url("/_type/icons/lock.svg"); }
+:where(.icon.shield) { --icon: url("/_type/icons/shield.svg"); }
+:where(.icon.star) { --icon: url("/_type/icons/star.svg"); }
+:where(.icon.heart) { --icon: url("/_type/icons/heart.svg"); }
+:where(.icon.bell) { --icon: url("/_type/icons/bell.svg"); }
+:where(.icon.award) { --icon: url("/_type/icons/award.svg"); }
+:where(.icon.book) { --icon: url("/_type/icons/book.svg"); }
+:where(.icon.check) { --icon: url("/_type/icons/check.svg"); }
+:where(.icon.sliders) { --icon: url("/_type/icons/sliders.svg"); }
+:where(.icon.map) { --icon: url("/_type/icons/map.svg"); }
+:where(.icon.chart) { --icon: url("/_type/icons/chart.svg"); }
+:where(.icon.trend) { --icon: url("/_type/icons/trend.svg"); }
+:where(.icon.pie) { --icon: url("/_type/icons/pie.svg"); }
+:where(.icon.users) { --icon: url("/_type/icons/users.svg"); }
+:where(.icon.user) { --icon: url("/_type/icons/user.svg"); }
+:where(.icon.cloud) { --icon: url("/_type/icons/cloud.svg"); }
+:where(.icon.database) { --icon: url("/_type/icons/database.svg"); }
+:where(.icon.server) { --icon: url("/_type/icons/server.svg"); }
+:where(.icon.cpu) { --icon: url("/_type/icons/cpu.svg"); }
+:where(.icon.code) { --icon: url("/_type/icons/code.svg"); }
+:where(.icon.rocket) { --icon: url("/_type/icons/rocket.svg"); }
+:where(.icon.gear) { --icon: url("/_type/icons/gear.svg"); }
+:where(.icon.clock) { --icon: url("/_type/icons/clock.svg"); }
+:where(.icon.calendar) { --icon: url("/_type/icons/calendar.svg"); }
+:where(.icon.globe) { --icon: url("/_type/icons/globe.svg"); }
+:where(.icon.target) { --icon: url("/_type/icons/target.svg"); }
+:where(.icon.zap) { --icon: url("/_type/icons/zap.svg"); }
+:where(.icon.idea) { --icon: url("/_type/icons/idea.svg"); }
+:where(.icon.search) { --icon: url("/_type/icons/search.svg"); }
+:where(.icon.layers) { --icon: url("/_type/icons/layers.svg"); }
+:where(.icon.workflow) { --icon: url("/_type/icons/workflow.svg"); }
+:where(.icon.puzzle) { --icon: url("/_type/icons/puzzle.svg"); }
+:where(.icon.handshake) { --icon: url("/_type/icons/handshake.svg"); }
+:where(.icon.briefcase) { --icon: url("/_type/icons/briefcase.svg"); }
+:where(.icon.money) { --icon: url("/_type/icons/money.svg"); }
+:where(.icon.wallet) { --icon: url("/_type/icons/wallet.svg"); }
+:where(.icon.document) { --icon: url("/_type/icons/document.svg"); }
+:where(.icon.chat) { --icon: url("/_type/icons/chat.svg"); }
+:where(.icon.mail) { --icon: url("/_type/icons/mail.svg"); }
+:where(.icon.mobile) { --icon: url("/_type/icons/mobile.svg"); }
+:where(.icon.education) { --icon: url("/_type/icons/education.svg"); }
+:where(.icon.brain) { --icon: url("/_type/icons/brain.svg"); }
+:where(.icon.bot) { --icon: url("/_type/icons/bot.svg"); }
+:where(.icon.sparkles) { --icon: url("/_type/icons/sparkles.svg"); }
+:where(.icon.gauge) { --icon: url("/_type/icons/gauge.svg"); }
+:where(.icon.branch) { --icon: url("/_type/icons/branch.svg"); }
+:where(.icon.sync) { --icon: url("/_type/icons/sync.svg"); }
+:where(.icon.eye) { --icon: url("/_type/icons/eye.svg"); }
+:where(.icon.flag) { --icon: url("/_type/icons/flag.svg"); }
+:where(.icon.key) { --icon: url("/_type/icons/key.svg"); }
+:where(.icon.building) { --icon: url("/_type/icons/building.svg"); }
+:where(.icon.truck) { --icon: url("/_type/icons/truck.svg"); }
+:where(.icon.cart) { --icon: url("/_type/icons/cart.svg"); }
+:where(.icon.leaf) { --icon: url("/_type/icons/leaf.svg"); }
+:where(.icon.scale) { --icon: url("/_type/icons/scale.svg"); }
+:where(.icon.link) { --icon: url("/_type/icons/link.svg"); }
+:where(.icon.download) { --icon: url("/_type/icons/download.svg"); }
+:where(.icon.play) { --icon: url("/_type/icons/play.svg"); }
+
+/* A list of six over two halves: 01-03 on the left, 04-06 on a color panel that fills the right half. */
+:where(.frame:has(> section > ol.halves)) { background: linear-gradient(to right, var(--background) 50%, var(--panel, var(--accent)) 50%); }
+:where(ol.halves) { flex: 1 1 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, auto); grid-auto-flow: column; align-content: space-evenly; column-gap: 216px; padding-left: 32px; }
+:where(ol.halves > li) { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; column-gap: 24px; padding: 0; max-width: none; font-size: 28px; line-height: 1.2; }
+:where(ol.halves > li)::before { grid-row: 1 / 4; width: auto; margin: 0; font-size: 100px; font-weight: 300; line-height: 0.9; letter-spacing: -0.02em; color: inherit; }
+:where(ol.halves > li > strong) { display: block; margin-bottom: 6px; font-size: 45px; line-height: 1.1; }
+:where(ol.halves > li:nth-child(n+4)) { color: var(--panel-ink, var(--on-accent)); }
+
+/* Team roles: the title and one role on the left half, a second role on a color half at the right;
+   .left puts the color on the left half. */
+:where(.roles) { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto 1fr; }
+:where(.roles)::before { content: ""; grid-area: 1 / 2 / 3 / 3; background: var(--panel, var(--accent)); }
+:where(.roles.left)::before { grid-column: 1; }
+:where(.roles > h2) { grid-area: 1 / 1; padding: 72px 96px 0 88px; }
+:where(.roles > div) { grid-row: 2; display: flex; flex-direction: column; gap: 40px; min-width: 0; padding: 104px 96px 136px 88px; }
+:where(.roles > div:nth-of-type(1)) { grid-column: 1; }
+:where(.roles > div:nth-of-type(2)) { grid-column: 2; }
+:where(.roles:not(.left) > div:nth-of-type(2)), :where(.roles.left > div:nth-of-type(1)) { color: var(--panel-ink, var(--on-accent)); --foreground: var(--panel-ink, var(--on-accent)); }
+:where(.roles h3) { font-size: 50px; }
+:where(.roles p) { font-size: 31px; line-height: 1.35; }
+
+/* Team: round photos with the name and the role under each; .avatar with initials when there is no photo. */
+:where(ul.team) { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 64px; margin-block: auto; }
+:where(ul.team > li) { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0; max-width: none; font-size: 35px; line-height: 1.3; text-align: center; }
+:where(ul.team > li)::before { content: none; }
+:where(ul.team > li > :is(img, .avatar)) { width: 424px; max-width: 100%; aspect-ratio: 1; margin-bottom: 40px; border-radius: 50%; object-fit: cover; }
+:where(ul.team .avatar) { display: grid; place-items: center; background: var(--surface); color: var(--muted); font-size: 120px; font-weight: 600; }
+:where(ul.team strong) { font-size: 46px; font-weight: 400; }
+
+/* A client wall: up to 20 logos in five columns. */
+:where(ul.logos.wall) { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 72px 48px; margin-block: auto; }
+:where(ul.logos.wall img) { max-height: 100px; max-width: 82%; }
+
+/* Similar cases: the title and the lead in the top left quarter, a colored case tile in each other one.
+   A case holds ul.tags (the first tag at the left, the rest at the right), an h3, a p and optionally a map img. */
+:where(.cases) { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); }
+:where(.cases > :first-child:not(.case)) { display: flex; flex-direction: column; gap: 56px; padding: 140px 88px 0; }
+:where(.cases > .case) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+  padding: 64px 72px 56px 52px;
+  background: var(--case, var(--accent));
+  color: var(--case-ink, var(--on-accent));
+  --foreground: var(--case-ink, var(--on-accent));
+  --muted: var(--case-ink, var(--on-accent));
+}
+:where(.cases > .case.gray) { --case: var(--surface); --case-ink: var(--s-foreground); }
+:where(.case > ul.tags > li) { border-color: currentColor; }
+:where(.case > ul.tags > li:first-child) { margin-right: auto; }
+:where(.case > h3) { margin-top: 16px; font-size: 37px; line-height: 1.2; max-width: 16em; }
+:where(.case > p) { font-size: 31px; line-height: 1.3; max-width: 24em; }
+:where(.case > img) { position: absolute; z-index: -1; right: 48px; bottom: 24px; width: 58%; height: 76%; object-fit: contain; object-position: right bottom; opacity: 0.4; border-radius: 0; }
+:where(.case.gray > img) { opacity: 1; }
+/* Full-bleed compositions carry no footer; it would land on a color panel. */
+.frame:has(> section > :is(.cases, .roles, ol.halves)) .frame-footer { display: none; }
+
+/* A Gantt chart: month heads on a band, one bar per stage placed with style="--from: 2; --span: 3"
+   (months from the first column), status classes for color, a dotted p.milestone at style="--at: 7.2". */
+:where(.gantt) { --months: 12; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+:where(.gantt > .months) { position: relative; display: grid; grid-template-columns: repeat(var(--months), minmax(0, 1fr)); margin-top: 56px; background: var(--surface); }
+:where(.gantt > .months > span) { position: relative; padding: 6px 0; font-size: 29px; text-align: center; }
+:where(.gantt > .months > span[data-year])::before { content: attr(data-year); position: absolute; left: 0; bottom: 100%; padding: 0 0 8px 12px; border-left: 2px solid var(--border); font-size: 37px; font-weight: 600; }
+:where(.gantt > .bars) {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 18px;
+  background: repeating-linear-gradient(to right, var(--border) 0 2px, transparent 2px calc(100% / var(--months)));
+}
+:where(.gantt > .bars > p:not(.milestone)) {
+  max-width: none;
+  width: calc(var(--span, 1) / var(--months) * 100%);
+  margin-left: calc(var(--from, 0) / var(--months) * 100%);
+  padding: 6px 14px;
+  border-radius: 6px 999px 999px 6px;
+  background: var(--status, var(--accent));
+  color: var(--status-ink, var(--on-accent));
+  font-size: 19px;
+  line-height: 1.25;
+}
+:where(.gantt > .bars > p.milestone) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--at, 0) / var(--months) * 100%);
+  max-width: none;
+  padding: 18px 0 0 22px;
+  border-left: 5px dotted var(--accent);
+  font-size: 22px;
+  white-space: nowrap;
+}
+:where(.gantt .done) { --status: var(--accent); --status-ink: var(--on-accent); }
+:where(.gantt .wip) { --status: var(--foreground); --status-ink: var(--background); }
+:where(.gantt .offset) { --status: var(--surface); --status-ink: var(--foreground); }
+:where(.gantt .blocked) { --status: #E5484D; --status-ink: #FFFFFF; }
+:where(.gantt .planned) { --status: var(--border); --status-ink: var(--foreground); }
+:where(.gantt > ul.legend) { flex-direction: row; top: 148px; gap: 6px; }
+:where(.gantt > ul.legend > li) { justify-content: center; min-width: 160px; padding: 2px 20px; border-radius: 999px; background: var(--status); color: var(--status-ink); font-size: 21px; }
+
+/* A legend at the top right, for comparison marks or Gantt statuses. */
+:where(ul.legend) { position: absolute; top: 112px; right: 128px; gap: 12px; font-size: 24px; }
+:where(section:has(ul.legend) > h2) { padding-right: 440px; }
+:where(ul.legend > li) { display: flex; align-items: center; gap: 16px; padding: 0; max-width: none; }
+:where(ul.legend > li)::before { content: none; }
+:where(ul.legend :is(.yes, .part, .no)) { width: 32px; height: 32px; }
+
+/* Ratings in a comparison: <span class="rating"><b>$$$</b>$$</span>, b holds the filled marks; .stars for stars. */
+:where(.rating) { display: block; font-size: 42px; line-height: 1.1; letter-spacing: 0.04em; color: var(--border); white-space: nowrap; }
+:where(.rating > b) { font-weight: inherit; color: var(--foreground); }
+:where(.rating.stars > b) { color: var(--accent); }
+/* A detailed comparison: each cell a rating or an uppercase verdict in strong, with a short line below. */
+:where(table.compare.detail th) { text-align: left; }
+:where(table.compare.detail td) { padding-block: 18px; font-size: 22px; line-height: 1.3; text-align: left; }
+:where(table.compare.detail td:first-child) { font-size: 29px; }
+:where(table.compare.detail td > strong) { display: block; font-size: 24px; text-transform: uppercase; }
+/* A dense table for plans and allocations: small type and a full grid. */
+:where(table.dense) { font-size: 20px; }
+:where(table.dense :is(th, td)) { padding: 6px 12px; border: 1px solid var(--border); font-size: 20px; }
+
+/* The case on one page: logo and tags, the title over spheres, then problem and solution, partners and numbers. */
+:where(.onepager.case) { grid-template-columns: 32% 31% 19% 18%; }
+:where(.onepager.case > .brand) { justify-content: space-between; }
+:where(.onepager.case > .hero) { grid-area: 1 / 2 / 2 / 5; }
+:where(.onepager.case > .hero > h2) { position: relative; font-size: 104px; line-height: 1.05; }
+:where(.onepager.case > .hero)::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 62%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1300 440' preserveAspectRatio='xMidYMax slice'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='40%25' r='60%25'%3E%3Cstop offset='0' stop-color='%23B57BD9' stop-opacity='.04'/%3E%3Cstop offset='1' stop-color='%236A1B9A' stop-opacity='.3'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='url(%23g)' stroke='%236A1B9A' stroke-opacity='.25' stroke-width='2'%3E%3Ccircle cx='180' cy='420' r='200'/%3E%3Ccircle cx='450' cy='420' r='200'/%3E%3Ccircle cx='650' cy='210' r='170'/%3E%3Ccircle cx='650' cy='470' r='170'/%3E%3Ccircle cx='850' cy='420' r='200'/%3E%3Ccircle cx='1120' cy='420' r='200'/%3E%3C/g%3E%3C/svg%3E") center bottom / cover no-repeat;
+}
+:where(.onepager.case > .cols) { grid-area: 2 / 1 / 3 / 3; gap: 48px; padding: 36px 24px 24px; background: var(--surface); font-size: 26px; }
+:where(.onepager.case > .cols h4) { font-size: 29px; }
+:where(.onepager.case > .cols li) { padding-left: 44px; font-size: 26px; line-height: 1.3; }
+:where(.onepager.case > .cols ul) { gap: 4px; }
+:where(.onepager.case > .partners) { grid-area: 2 / 3; align-items: center; padding: 24px; border-inline: 2px solid var(--border); background: var(--surface); }
+:where(.onepager.case > .partners ul.logos) { grid-template-columns: 1fr; gap: 40px; width: 100%; }
+:where(.onepager.case > .stats) { grid-area: 2 / 4; grid-auto-flow: row; align-content: center; gap: 28px; padding: 24px 28px; background: var(--surface); }
+:where(.onepager.case .stat > strong) { font-size: 85px; }
+:where(.onepager.case .stat > span) { font-size: 26px; line-height: 1.2; }
+
+/* A detailed timeline: small above the date labels a point; li.down drops its text to a second level on a
+   short line, for one long text between short ones; ol.timeline.arrow ends the line in an arrow. */
+:where(ol.timeline > li > small) { position: absolute; left: 0; bottom: calc(100% - 4px); font-size: 22px; line-height: 1.2; color: var(--accent); white-space: nowrap; }
+:where(ol.timeline:has(> li > small)) { margin-top: 40px; }
+:where(ol.timeline > li.down > strong) { margin-bottom: 200px; }
+:where(ol.timeline > li.down > strong)::after { content: ""; position: absolute; left: 14px; top: 86px; width: 2px; height: 128px; background: var(--foreground); }
+:where(ol.timeline.arrow > li:last-child)::after {
+  right: -32px;
+  top: 62px;
+  height: 18px;
+  background: var(--foreground);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 18'%3E%3Cpath d='M4 0l20 9-20 9 6-9z'/%3E%3C/svg%3E") right center / 24px 18px no-repeat, linear-gradient(#000, #000) left center / calc(100% - 12px) 2px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 18'%3E%3Cpath d='M4 0l20 9-20 9 6-9z'/%3E%3C/svg%3E") right center / 24px 18px no-repeat, linear-gradient(#000, #000) left center / calc(100% - 12px) 2px no-repeat;
+}
+
+/* Owner cards instead of the legend: a dark card per party, first at the top right, second at the bottom
+   left, with the name (strong or a logo img), what it does and its site as a link. */
+:where(ul.owners.cards) { inset: 0; pointer-events: none; }
+:where(ul.owners.cards > li) {
+  position: absolute;
+  width: 480px;
+  padding: 30px 40px 34px;
+  border-radius: calc(36px * var(--radius-scale));
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 24px;
+  line-height: 1.3;
+  box-shadow: 0 24px 64px color-mix(in srgb, var(--owner, var(--accent)) 28%, transparent);
+}
+:where(ul.owners.cards > li)::before { content: none; }
+:where(ul.owners.cards > li.partner) { --owner: var(--foreground); }
+:where(ul.owners.cards > li:first-child) { top: 330px; right: 280px; }
+:where(ul.owners.cards > li:nth-child(2)) { left: 64px; bottom: 160px; }
+:where(ul.owners.cards > li > strong) { display: block; margin-bottom: 6px; font-size: 56px; font-weight: 700; line-height: 1.1; }
+:where(ul.owners.cards > li > img) { display: block; max-height: 56px; margin-bottom: 14px; }
+:where(ul.owners.cards a) { display: block; margin-top: 18px; color: var(--owner, var(--accent)); text-decoration: none; }
+
 /* t1a: the corporate template. Content slides stay plain, with the logo at the bottom left. Title and
    section slides carry a story background: on navy a corner glow and line circles, on light pale
    spheres. --tone is 1 on dark; it blends the two, so a slide's data-theme and the scheme both work.
@@ -780,13 +1121,16 @@
 :where(.frame[data-preset="t1a"] ol.agenda > li) { font-size: 85px; }
 
 :where(.frame[data-preset="t1a"] .eyebrow) { color: var(--muted); }
-:where(.frame[data-preset="t1a"] ul:not(.check, .plain, .tags, .owners) > li)::before { left: 10px; top: 0.55em; width: 10px; height: 10px; border-radius: 50%; background: var(--foreground); }
-:where(.frame[data-preset="t1a"] li > ul:not(.check, .plain, .tags, .owners) > li)::before { background: none; border: 2px solid var(--foreground); }
-:where(.frame[data-preset="t1a"] ol:not(.agenda) > li)::before { color: var(--foreground); }
-:where(.frame[data-preset="t1a"] ol.steps > li)::before { background: var(--foreground); color: var(--background); }
+:where(.frame[data-preset="t1a"] ul:not(.check, .plain, .tags, .owners, .bars, .points, .team, .legend) > li)::before { left: 10px; top: 0.55em; width: 10px; height: 10px; border-radius: 50%; background: var(--foreground); }
+:where(.frame[data-preset="t1a"] li > ul:not(.check, .plain, .tags, .owners, .bars, .points, .team, .legend) > li)::before { background: none; border: 2px solid var(--foreground); }
+:where(.frame[data-preset="t1a"] ol:not(.agenda, .numerals) > li)::before { color: var(--foreground); }
+:where(.frame[data-preset="t1a"] ol.steps:not(.numerals) > li)::before { background: var(--foreground); color: var(--background); }
 :where(.frame[data-preset="t1a"] .stat) { gap: 6px; padding-top: 0; border-top: 0; }
 :where(.frame[data-preset="t1a"] .stat > span), :where(.frame[data-preset="t1a"] .stat > p) { font-size: 29px; }
 :where(.frame[data-preset="t1a"] .card:not(.highlight, .packages > *)) { border: 0; background: #FFFFFF; box-shadow: 0 10px 40px rgb(17 23 41 / 0.09); --foreground: #111729; --muted: #4A5567; color: #111729; }
+/* On dark, cards are navy panels and the showcase caption strip is the highlight purple. */
+:where(.frame[data-preset="t1a"] .card:not(.highlight, .packages > *)) { background: color-mix(in srgb, #1C2438 calc(var(--tone) * 100%), #FFFFFF); box-shadow: 0 10px 40px rgb(17 23 41 / calc(0.09 + var(--tone) * 0.3)); --foreground: color-mix(in srgb, #FCFCFC calc(var(--tone) * 100%), #111729); --muted: color-mix(in srgb, #A3ACBD calc(var(--tone) * 100%), #4A5567); color: var(--foreground); }
+:where(.frame[data-preset="t1a"] .showcase .band) { background: color-mix(in srgb, #6A1B9A calc(var(--tone) * 100%), var(--foreground)); color: color-mix(in srgb, #FCFCFC calc(var(--tone) * 100%), var(--background)); }
 :where(.frame[data-preset="t1a"][data-layout="quote"] blockquote)::before { background: var(--muted); }
 :where(.frame[data-preset="t1a"] .card.highlight) { background: #6A1B9A; border-color: #6A1B9A; box-shadow: none; --foreground: #FCFCFC; --muted: #E5D6F0; color: #FCFCFC; }
 :where(.frame[data-preset="t1a"] ol.journey > li), :where(.frame[data-preset="t1a"] ul.owners > li)::before { border-color: var(--story-bright); }
@@ -828,6 +1172,43 @@
 :where(.frame[data-preset="t1a"] table:not(.compare) td:first-child) { padding-left: 24px; }
 :where(.frame[data-preset="t1a"] tr.highlight td) { color: var(--foreground); background: var(--surface); }
 
+/* The blocks from the template's second half in the t1a colors. */
+:where(.frame[data-preset="t1a"] .icon) { color: color-mix(in srgb, #C792EA calc(var(--tone) * 100%), #6A1B9A); }
+:where(.frame[data-preset="t1a"] ul.points.badges .icon) { background: color-mix(in srgb, #A3ACBD calc(var(--tone) * 100%), #4A5567); color: var(--background); }
+:where(.frame[data-preset="t1a"]:has(> section > ol.halves)) { --panel: #009688; --panel-ink: #FCFCFC; }
+:where(.frame[data-preset="t1a"] ol.halves > li)::before { color: inherit; }
+:where(.frame[data-preset="t1a"] .roles) { --panel: #00CE93; --panel-ink: #111729; }
+:where(.frame[data-preset="t1a"] .roles.left) { --panel: color-mix(in srgb, #2A3247 calc(var(--tone) * 100%), #E0E0E0); --panel-ink: var(--s-foreground); }
+:where(.frame[data-preset="t1a"] .case.teal) { --case: #009688; --case-ink: #FCFCFC; }
+:where(.frame[data-preset="t1a"] .case.purple) { --case: #6A1B9A; --case-ink: #FCFCFC; }
+:where(.frame[data-preset="t1a"] .case.blue) { --case: #00A1DF; --case-ink: #111729; }
+:where(.frame[data-preset="t1a"] .case.orange) { --case: #FF6D00; --case-ink: #111729; }
+:where(.frame[data-preset="t1a"] .cases > .case.gray) { --case: color-mix(in srgb, #2A3247 calc(var(--tone) * 100%), #E0E0E0); }
+:where(.frame[data-preset="t1a"] .case > ul.tags > li) { border-color: #111729; background: #FCFCFC; color: #111729; }
+:where(.frame[data-preset="t1a"] section:has(> .cases > .case:nth-child(3):not(.gray, .blue, .orange))) { --logo: #FCFCFC; }
+:where(.frame[data-preset="t1a"] .gantt .done) { --status: #009688; --status-ink: #FCFCFC; }
+:where(.frame[data-preset="t1a"] .gantt .wip) { --status: #6A1B9A; --status-ink: #FCFCFC; }
+:where(.frame[data-preset="t1a"] .gantt .offset) { --status: #FFCCA8; --status-ink: #111729; }
+:where(.frame[data-preset="t1a"] .gantt .blocked) { --status: #EF5350; --status-ink: #FCFCFC; }
+:where(.frame[data-preset="t1a"] .gantt .planned) { --status: #BDBDBD; --status-ink: #FCFCFC; }
+:where(.frame[data-preset="t1a"] .gantt > .months) { background: color-mix(in srgb, var(--surface) calc(var(--tone) * 100%), #D9DCE3); }
+:where(.frame[data-preset="t1a"] .gantt > .bars > p.milestone) { border-left-color: color-mix(in srgb, #C792EA calc(var(--tone) * 100%), #6A1B9A); }
+:where(.frame[data-preset="t1a"] ul.owners.cards > li) { background: #111729; color: #FCFCFC; box-shadow: 0 24px 64px color-mix(in srgb, var(--owner) 30%, transparent), 0 0 0 calc(var(--tone) * 2px) #2A3247; --owner: #C792EA; }
+:where(.frame[data-preset="t1a"] ul.owners.cards > li.partner) { --owner: #00CE93; }
+:where(.frame[data-preset="t1a"] .rating.stars > b) { color: #FFAB76; }
+:where(.frame[data-preset="t1a"] table.dense th) { padding: 8px 12px; font-size: 20px; }
+:where(.frame[data-preset="t1a"] table.dense td) { padding: 6px 12px; font-size: 20px; }
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section > .panel:has(> .stats)) { padding: 112px 48px 64px 64px; }
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section:has(> .panel > .stats) > :nth-child(2) > h2) { font-size: 104px; }
+:where(.frame[data-preset="t1a"][data-layout="panel"] > section:has(> .panel > .stats) > :nth-child(n+3)) { font-size: 31px; }
+:where(.frame[data-preset="t1a"] .onepager.case .logo) { width: 180px; }
+:where(.frame[data-preset="t1a"] .onepager.case > .hero)::after { opacity: calc(1 - var(--tone) * 0.3); }
+:where(.frame[data-preset="t1a"][data-layout="split"] > section:has(> :is(img, figure, video, svg, .media):first-child))::after { content: none; }
+:where(.frame[data-preset="t1a"][data-layout="image"] > section) { padding-bottom: 136px; }
+:where(.frame[data-preset="t1a"][data-layout="image"] > section:has(> :not(img, figure, video)))::before { background: rgb(17 23 41 / 0.55); }
+:where(.frame[data-preset="t1a"][data-layout="image"] h2) { margin-bottom: 220px; font-size: 85px; }
+:where(.frame[data-preset="t1a"][data-layout="image"] p) { font-size: 37px; line-height: 1.4; }
+
 /* swiss: a monochrome grid with one accent. Labels are small and plain, the deck label and the page
    number sit at the top, rules are hairlines in the foreground color, and color appears only with intent.
    Section dividers are always dark with a soft gray glow; covers follow the scheme. */
@@ -845,12 +1226,12 @@
 :where(.frame[data-preset="swiss"] h3) { font-size: 40px; }
 :where(.frame[data-preset="swiss"] .lead) { color: var(--muted); font-weight: 500; }
 :where(.frame[data-preset="swiss"] .lead :is(strong, b)) { color: var(--foreground); font-weight: 650; }
-:where(.frame[data-preset="swiss"] ul:not(.check, .plain, .tags, .owners, .logos) > li)::before { top: 0.68em; width: 18px; height: 3px; border-radius: 0; background: var(--foreground); }
-:where(.frame[data-preset="swiss"] li > ul:not(.check, .plain, .tags, .owners, .logos) > li)::before { width: 10px; height: 10px; top: 0.5em; border: 0; border-radius: 0; background: var(--muted); }
+:where(.frame[data-preset="swiss"] ul:not(.check, .plain, .tags, .owners, .logos, .bars, .points, .team, .legend) > li)::before { top: 0.68em; width: 18px; height: 3px; border-radius: 0; background: var(--foreground); }
+:where(.frame[data-preset="swiss"] li > ul:not(.check, .plain, .tags, .owners, .logos, .bars, .points, .team, .legend) > li)::before { width: 10px; height: 10px; top: 0.5em; border: 0; border-radius: 0; background: var(--muted); }
 :where(.frame[data-preset="swiss"] ol:not(.agenda, .steps, .timeline, .journey) > li)::before { color: var(--foreground); }
-:where(.frame[data-preset="swiss"] ol.steps > li)::before { width: 44px; height: 44px; font-size: 22px; font-weight: 600; }
+:where(.frame[data-preset="swiss"] ol.steps:not(.numerals) > li)::before { width: 44px; height: 44px; font-size: 22px; font-weight: 600; }
 :where(.frame[data-preset="swiss"] ol.steps > li)::after { content: none; }
-:where(.frame[data-preset="swiss"] ol.steps > li) { padding-top: 76px; font-size: 30px; }
+:where(.frame[data-preset="swiss"] ol.steps:not(.numerals) > li) { padding-top: 76px; font-size: 30px; }
 :where(.frame[data-preset="swiss"] ol.steps > li > strong) { font-size: 38px; }
 :where(.frame[data-preset="swiss"] .stat) { padding-top: 28px; border-top: 2px solid var(--foreground); }
 :where(.frame[data-preset="swiss"] .card) { padding: 32px 0 0; background: none; border: 0; border-top: 2px solid var(--foreground); }
@@ -958,8 +1339,8 @@
 :where(.frame[data-preset="antares"][data-layout="statement"] :is(em, strong, .accent)) { color: var(--foreground); }
 
 /* Lists: a hairline arrow before each item; feature lists use strong, an em dash and the text. */
-:where(.frame[data-preset="antares"] ul:not(.check, .plain, .tags, .owners) > li) { padding-left: 120px; }
-:where(.frame[data-preset="antares"] ul:not(.check, .plain, .tags, .owners) > li)::before {
+:where(.frame[data-preset="antares"] ul:not(.check, .plain, .tags, .owners, .bars, .points, .team, .legend) > li) { padding-left: 120px; }
+:where(.frame[data-preset="antares"] ul:not(.check, .plain, .tags, .owners, .bars, .points, .team, .legend) > li)::before {
   left: 0;
   top: 0.32em;
   width: 84px;
@@ -969,14 +1350,14 @@
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 18' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M0 9h82M74 2l8 7-8 7'/%3E%3C/svg%3E") center / contain no-repeat;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 18' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M0 9h82M74 2l8 7-8 7'/%3E%3C/svg%3E") center / contain no-repeat;
 }
-:where(.frame[data-preset="antares"] li > ul:not(.check, .plain, .tags, .owners) > li) { padding-left: 44px; }
-:where(.frame[data-preset="antares"] li > ul:not(.check, .plain, .tags, .owners) > li)::before { top: 0.6em; width: 22px; height: 2px; border: 0; -webkit-mask: none; mask: none; background: var(--muted); }
+:where(.frame[data-preset="antares"] li > ul:not(.check, .plain, .tags, .owners, .bars, .points, .team, .legend) > li) { padding-left: 44px; }
+:where(.frame[data-preset="antares"] li > ul:not(.check, .plain, .tags, .owners, .bars, .points, .team, .legend) > li)::before { top: 0.6em; width: 22px; height: 2px; border: 0; -webkit-mask: none; mask: none; background: var(--muted); }
 :where(.frame[data-preset="antares"] ol:not(.agenda, .steps, .timeline, .journey) > li)::before { color: var(--foreground); }
 
 /* Numbered columns: small filled blue circles, the item's title in strong and the text in full black. */
 :where(.frame[data-preset="antares"] ol.steps) { gap: 56px; }
-:where(.frame[data-preset="antares"] ol.steps > li) { padding-top: 76px; font-size: 28px; line-height: 1.38; color: var(--foreground); }
-:where(.frame[data-preset="antares"] ol.steps > li)::before { width: 48px; height: 48px; font-size: 22px; font-weight: 400; }
+:where(.frame[data-preset="antares"] ol.steps:not(.numerals) > li) { padding-top: 76px; font-size: 28px; line-height: 1.38; color: var(--foreground); }
+:where(.frame[data-preset="antares"] ol.steps:not(.numerals) > li)::before { width: 48px; height: 48px; font-size: 22px; font-weight: 400; }
 :where(.frame[data-preset="antares"] ol.steps > li)::after { content: none; }
 :where(.frame[data-preset="antares"] ol.steps > li > strong) { margin-bottom: 4px; font-size: 28px; line-height: 1.38; }
 
@@ -1046,7 +1427,7 @@
 :where(.frame[data-preset="lakesentry"] .good) { color: var(--good); }
 :where(.frame[data-preset="lakesentry"] .lead) { font-family: var(--font-lead); font-size: 44px; font-weight: 700; line-height: 1.32; letter-spacing: -0.01em; color: var(--lead); }
 :where(.frame[data-preset="lakesentry"] .lead strong) { color: var(--foreground); font-weight: 700; }
-:where(.frame[data-preset="lakesentry"] ul:not(.check, .plain, .tags, .owners, .logos) > li)::before { left: 6px; top: 0.7em; width: 16px; height: 2.5px; background: var(--foreground); }
+:where(.frame[data-preset="lakesentry"] ul:not(.check, .plain, .tags, .owners, .logos, .bars, .points, .team, .legend) > li)::before { left: 6px; top: 0.7em; width: 16px; height: 2.5px; background: var(--foreground); }
 
 :where(.frame[data-preset="lakesentry"] ol.steps) { gap: 64px; }
 :where(.frame[data-preset="lakesentry"] ol.steps > li) { padding-top: 68px; font-size: 26px; color: var(--foreground); }

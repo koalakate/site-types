@@ -5,7 +5,7 @@
 import DOMPurify from "/_type/vendor/purify.es.js";
 
 const TYPE_NAME = "t1a-slides";
-const TYPE_VERSION = "1.5.0"; // must equal type.json "version"; repin detection compares against it
+const TYPE_VERSION = "1.6.0"; // must equal type.json "version"; repin detection compares against it
 const TYPE_ID = `${TYPE_NAME}@${TYPE_VERSION}`;
 const W = 1920;
 const H = 1080;
@@ -1755,7 +1755,7 @@ function waitForMedia(frame) {
   return Promise.race([Promise.all(pending), new Promise((resolve) => setTimeout(resolve, 8000))]);
 }
 
-const BLEED = ':is([data-layout="image"]) > section > :is(img, figure, video):first-child, :is([data-layout="split"]) > section > :is(img, figure, video, svg, .media):last-child, :is([data-layout="panel"]) > section > .panel:first-child, .showcase .band, .showcase > .laptop';
+const BLEED = ':is([data-layout="image"]) > section > :is(img, figure, video):first-child, :is([data-layout="split"]) > section > :is(img, figure, video, svg, .media):last-child, :is([data-layout="panel"]) > section > .panel:first-child, .showcase .band, .showcase > .laptop, .showcase > .phone, :is([data-layout="split"]) > section > :is(img, figure, video, svg, .media):first-child, .roles, .cases, ul.owners.cards';
 
 // Computed colors come as rgb() or color(srgb ...); either gives [r, g, b, a] in 0..1.
 function rgba(value) {
