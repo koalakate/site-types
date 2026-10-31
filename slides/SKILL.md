@@ -64,8 +64,8 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - `quote`: one `blockquote` with a `cite`.
   - `center`: centered content, for a closing slide.
   - `image`: the first child `img` or `figure` fills the slide; text after it sits on a dark scrim at the bottom.
-  - `split`: first child is a `div` with the text, last child an `img`, `figure` or `div.media` filling the right half.
-  - `panel`: first child is a `div.panel` that fills the left third with a color; the text follows on the right. For a case or a partner slide.
+  - `split`: first child is a `div` with the text, last child an `img`, `figure` or `div.media` filling the right half. Put the picture first to fill the left half instead, with the text at the top right.
+  - `panel`: first child is a `div.panel` that fills the left third with a color; the text follows on the right. For a case or a partner slide. A `div.stats` in the panel stacks the key results there.
   - `blank`: no margins and no footer, for a slide you compose entirely yourself.
 - `data-theme="dark"`, `"light"` or `"accent"` on the section gives one slide its own colors, for emphasis.
 - A footer with the deck title, section and slide number appears on every slide except `title`, `section`, `image` and `blank` layouts. `data-footer="off"` hides it on one slide, `data-footer="on"` shows it on one of those layouts.
@@ -86,6 +86,19 @@ A slide file holds exactly one `<section>`. An optional last child `<aside>` hol
   - `div.onepager` on a `blank` slide for the company or a project on one page: four cells between hairlines, `div.brand` (in t1a `<span class="logo"></span>` and a `p` tagline), `div.hero` (a `div.stat`, an optional `p.site` link; in t1a add `globe` to the class for the t1a.com globe with the office pins), `div.fact` (a `div.stat` and one `p`) and `div.partners` (a `p` label and `ul.logos` with one partner logo `img` per item, from `project/assets/`).
   - `div.window` frames one `img`, inline `svg` or `iframe` as a product screen in a browser window with three dots.
   - `div.showcase` for a product on a laptop with the key numbers beside it: the first child is a `div` with a `p.band` caption on a dark strip from the slide edge and a `div.stats` of up to 3 stats stacked; the second child is `div.laptop` holding one `img`, inline `svg` or `iframe` as the screen (16:10). Draw a product screen as inline SVG in the product's own colors and say in the notes when it is an illustration. For a mobile app, use `div.phone` instead of `div.laptop` (one `img` or inline `svg`, portrait, it runs off the bottom edge) and add a third child: a `div` with a `p.band` and a `ul.bars` of 3-4 short points.
+  - `ul.points` for 2-6 points with icons: `<li><span class="icon lock"></span><h3>Title</h3><p>Text</p></li>`; the h3 is optional, 5-6 items make a 3x2 grid, `ul.points.badges` puts the icons in filled discs. Built-in icons: lock, shield, star, heart, bell, award, book, check, sliders, map, chart, trend, pie, users, user, cloud, database, server, cpu, code, rocket, gear, clock, calendar, globe, target, zap, idea, search, layers, workflow, puzzle, handshake, briefcase, money, wallet, document, chat, mail, mobile, education, brain, bot, sparkles, gauge, branch, sync, eye, flag, key, building, truck, cart, leaf, scale, link, download, play. For another icon, put an inline `svg` with `stroke="currentColor"` in the `span.icon`.
+  - `ol.halves` for exactly six points: 01-03 on the left half, 04-06 on a color panel that fills the right half; each `<li><strong>Title</strong>Short text</li>`.
+  - `div.roles` for two team roles: an `h2`, then two `div`s, each an `h3`, a `p` and a `ul.tags` of skills. The second role sits on a color half; `div.roles.left` colors the left half instead.
+  - `ul.team` for people: `<li><img src="assets/people/name.jpg" alt=""><strong>Name</strong><span>Role</span></li>`, 3-4 people; without a photo use `<span class="avatar">AB</span>`.
+  - `ul.logos.wall` for client logos: up to 20 `img` items in five columns. Show only clients relevant to the audience.
+  - `div.cases` for similar cases: a first `div` with the `h2` and a `p`, then three `div.case` tiles (`teal`, `purple`, `blue`, `orange` or `gray`), each `ul.tags` (duration first, then volumes), `h3`, `p` and optionally a country map `img`.
+  - `div.onepager.case` on a `blank` slide for one case on one page: `div.brand` (`span.logo` and `ul.tags`), `div.hero` with the `h2`, `div.cols` with Problem and Solution lists, `div.partners` and `div.stats` with two stats.
+  - `div.gantt` for a plan by months: `ul.legend` of statuses, `div.months` of `span`s (`data-year="2026"` on the first month of a year), and `div.bars` of `p` bars with `style="--from: 2; --span: 3"` (months from the first column, fractions allowed) and a status class `done`, `wip`, `offset`, `blocked` or `planned`; a `p.milestone` with `style="--at: 7.5"` draws a dotted line. Set `style="--months: N"` on the `div.gantt` when it has other than 12 months. Keep it to about 8 bars with two short lines each.
+  - In `ol.timeline`, `<small>` before the `strong` labels a point above its date, `li.down` drops one long text to a second level, and `ol.timeline.arrow` ends the line in an arrow.
+  - `ul.owners.cards` instead of the plain legend under `ol.journey`: one card per party, `<li><strong>T1A</strong>What it does<a href="https://t1a.com">t1a.com</a></li>` and `li.partner` for the partner, two cards at most.
+  - `ul.legend` at the top right explains marks or statuses: `<li><span class="yes"></span>Fully supported</li>`.
+  - `table.compare.detail` compares in words: each cell a `<span class="rating"><b>$$$</b>$$</span>` (`b` holds the filled marks; `rating stars` for ★) or a `<strong>` verdict, then a short line. `table.dense` sets a wide plan table in small type.
+  - `div.cols` of `figure`s with an `img` and a `figcaption` each shows pictures side by side with centered captions.
   - `table.compare` for options side by side: the options as column heads, the features as rows, and `<span class="yes"></span>`, `<span class="part"></span>` or `<span class="no"></span>` in the cells.
 - Use the theme colors in inline SVG and styles through `var(--accent)`, `var(--foreground)`, `var(--muted)`, `var(--surface)` and `var(--border)`, so the slide works in both themes.
 - A `<style>` element inside the section applies only to that slide, and its rules win over the built-in styles. Prefer the layouts and building blocks above.
@@ -108,7 +121,7 @@ The `t1a` preset is the T1A corporate template; a t1a deck must look like that t
 - `data-story="purple"`, `"teal"`, `"blue"` or `"orange"` on a `title` or `section` slide picks its background: on dark a corner glow with line circles, on light pale spheres at the right edge. Purple is the default. Use one story per section and keep it for the section's divider.
 - The T1A logo appears at the bottom left of every slide by itself. Do not add it, and do not write the company name as a heading or a footer. In a partner lockup, `<span class="logo"></span>` draws it in the lockup's color.
 - Orange is the highlight on light slides only, once per slide: one `strong` in a `statement`, one `.accent` phrase, a `p.callout`. Never write orange text on a dark slide or a dark panel; on dark the accent is teal by itself. Check mode reports `orange-on-dark` as an error.
-- Do not use `data-theme="accent"` in t1a: the template has no full orange slide. Use the `image` layout only with a real photo the user gave; never with a placeholder picture.
+- Do not use `data-theme="accent"` in t1a: the template has no full orange slide. Use photos (the `image` layout, a picture in `split`, `figure`s, `ul.team`) only when the user gave them; never a placeholder picture. Without photos, choose another layout, or `span.avatar` in `ul.team`.
 - Draw product screens for `div.laptop` and `div.window` with `var(--background)`, `var(--surface)` and `var(--border)`, so the screen follows a dark slide.
 - Eyebrows, list markers and numbers stay neutral. No italics; bold only for the key point; underline only for links.
 - Map the plan blocks to the template's layouts:
@@ -126,8 +139,26 @@ The `t1a` preset is the T1A corporate template; a t1a deck must look like that t
 | Timeline | `ol.timeline`, 3-6 points |
 | Process or journey | `ol.journey`; stages the partner or the client does as `li.partner` (teal) with a `ul.owners` legend; all purple when T1A does everything |
 | Options or packages | `div.cards.packages`, 3-4 cards, one `card highlight` (purple) |
-| Comparison of options | `table.compare` with yes, part and no marks, at most 3-4 columns |
+| Comparison of options | `table.compare` with yes, part and no marks, at most 3-4 columns, and a `ul.legend` |
 | Data table | `table`, at most 3-4 columns; the header row is navy |
+| Case with results | `panel` layout with `div.stats` (3 stats) in a `div.panel.teal`, the title and tags, then Problem and Solution in `div.cols` |
+| Case on one page | `blank` slide with `div.onepager.case` |
+| Similar cases | `div.cases`: the title cell and three tiles, `teal`, `purple` and `gray` |
+| Detailed timeline | `ol.timeline.arrow` with `small` labels and at most one `li.down` |
+| Journey with the parties | `ol.journey` with `ul.owners.cards` |
+| Plan with statuses | `div.gantt` |
+| Two or three key points | `ul.points.badges`, each an icon, an `h3` and a short `p` |
+| Four to six points | `ul.points`: 4 with an `h3` each, or 6 with a short `p` only |
+| List of six | `ol.halves` |
+| Team roles | `div.roles`, or `div.roles.left` |
+| Picture and text | `split` with the picture first |
+| Two pictures | `div.cols` of two `figure`s with captions |
+| Photo with a message | `image` layout: the photo, an `h2` and one `p` |
+| The team | `ul.team` |
+| Clients | `ul.logos.wall` |
+| Big screenshot or picture | the `h2` and `img.fill` |
+| Comparison in words | `table.compare.detail` with ratings and verdicts, a footnote in `p.small` |
+| Plan table with its chart | `table.dense`, an `h4` and an inline SVG chart with `class="grow"` |
 | Key message | `statement`, one `strong` phrase |
 | Decision or ask | `center` with `p.eyebrow`, `h2` and `p.lead` |
 
